@@ -1,26 +1,160 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+ * Short-viewport variant. Width breakpoints alone cannot express "this screen
+ * is not tall enough" — a 320x568 phone and a 1280x600 laptop have the same
+ * problem and need the same answer: trim vertical rhythm so a full-height
+ * section still fits one screen.
+ */
+@custom-variant short (@media (max-height: 640px));
+
+/* ──────────────────────────────────────────────────────────────
+   OFG design tokens
+   Industrial auto-parts commerce: high-visibility yellow, ink black,
+   signal red for actions/discounts, WhatsApp green for direct contact.
+   ────────────────────────────────────────────────────────────── */
+@theme {
+  /* Brand */
+  --color-brand-50:  #fffbe6;
+  --color-brand-100: #fff5bf;
+  --color-brand-200: #ffec8a;
+  --color-brand-300: #ffe14d;
+  --color-brand-400: #ffd400;
+  --color-brand-500: #f5c400;
+  --color-brand-600: #d9a800;
+  --color-brand-700: #a87f00;
+  --color-brand-800: #6b5100;
+  --color-brand-900: #3d2e00;
+
+  /* Ink (neutral ramp, slightly warm so it sits well next to the yellow) */
+  --color-ink-50:  #f7f7f6;
+  --color-ink-100: #eeeeec;
+  --color-ink-200: #dededa;
+  --color-ink-300: #c2c2bd;
+  --color-ink-400: #92928c;
+  --color-ink-500: #6b6b65;
+  --color-ink-600: #4d4d48;
+  --color-ink-700: #373733;
+  --color-ink-800: #212120;
+  --color-ink-900: #141413;
+  --color-ink-950: #0a0a09;
+
+  /* Signal */
+  --color-signal-400: #ef3b55;
+  --color-signal-500: #d7263d;
+  --color-signal-600: #b21730;
+
+  --color-whatsapp: #25d366;
+  --color-whatsapp-dark: #1da851;
+
+  --color-stock-in: #15803d;
+  --color-stock-low: #b45309;
+  --color-stock-out: #b91c1c;
+
+  /* Typography */
+  --font-display: var(--font-archivo), "Archivo", system-ui, sans-serif;
+  --font-sans: var(--font-barlow), "Barlow", system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), "JetBrains Mono", ui-monospace, monospace;
+
+  /* Elevation — tuned low and tight; industrial UI, not floaty cards */
+  --shadow-card: 0 1px 2px rgb(20 20 19 / 0.06), 0 1px 1px rgb(20 20 19 / 0.04);
+  --shadow-card-hover: 0 8px 24px -8px rgb(20 20 19 / 0.18), 0 2px 4px rgb(20 20 19 / 0.06);
+  --shadow-menu: 0 16px 48px -12px rgb(20 20 19 / 0.28);
+
+  --radius-card: 0.5rem;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /*
+     * Height of the sticky header. The hero subtracts this from 100dvh so the
+     * first screen fills the viewport exactly — no scrollbar from an overshoot,
+     * no gap from an undershoot. Keep in sync with Header.tsx if its rows
+     * change height.
+     */
+    --header-h: 7.75rem; /* 124px — logo row + search row */
+  }
+
+  /* The dark utility bar appears at lg, adding 36px. */
+  @media (min-width: 64rem) {
+    :root {
+      --header-h: 10rem; /* 160px */
+    }
+  }
+
+  * {
+    border-color: var(--color-ink-200);
+  }
+
+  html {
+    -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: #ffffff;
+    color: var(--color-ink-900);
+    font-family: var(--font-sans);
+    font-feature-settings: "tnum" 0;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+
+  /* Part numbers, prices and SKUs read as data, not prose. */
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ink-900);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  /* Keep the yellow header's focus ring visible against the yellow. */
+  .on-brand :focus-visible {
+    outline-color: var(--color-ink-950);
+  }
+
+  ::selection {
+    background-color: var(--color-brand-400);
+    color: var(--color-ink-950);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  /* Diagonal hazard stripe — used sparingly as a section rule.
+     Reads as "workshop / industrial" without resorting to a texture image. */
+  .hazard-rule {
+    background-image: repeating-linear-gradient(
+      -45deg,
+      var(--color-ink-950) 0 8px,
+      var(--color-brand-400) 8px 16px
+    );
+  }
+
+  .scrollbar-none {
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

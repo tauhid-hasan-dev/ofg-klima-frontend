@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img" aria-label="Klima kompresörü">
+  <g fill="none" stroke="#373733" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
+    <rect x="118" y="86" width="190" height="128" rx="18" fill="#eeeeec"/>
+    <path d="M150 86v128M186 86v128M222 86v128M258 86v128"/>
+    <rect x="300" y="104" width="34" height="92" rx="10" fill="#dedeca" opacity=".5"/>
+    <circle cx="112" cy="150" r="62" fill="#ffd400"/>
+    <circle cx="112" cy="150" r="44"/>
+    <circle cx="112" cy="150" r="16" fill="#373733"/>
+    <path d="M66 110h92M66 190h92" stroke-width="4" opacity=".55"/>
+    <path d="M312 118h46M312 182h46" stroke-width="10" stroke-linecap="round"/>
+  </g>
+</svg>

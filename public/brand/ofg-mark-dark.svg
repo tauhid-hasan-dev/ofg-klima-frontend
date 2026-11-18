@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="OFG">
+  <title>OFG</title>
+  <polygon points="32,2 57.98,17 57.98,47 32,62 6.02,47 6.02,17" fill="#ffd400"/>
+  <polygon points="32,9 51.92,20.5 51.92,43.5 32,55 12.08,43.5 12.08,20.5" fill="#141413"/>
+  <path d="M22 24 L42 24 M32 24 L32 46"
+        fill="none" stroke="#ffd400" stroke-width="7"
+        stroke-linecap="square" stroke-linejoin="miter"/>
+</svg>

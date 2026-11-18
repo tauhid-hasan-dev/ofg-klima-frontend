@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img" aria-label="Oto klima hortumu">
+  <g fill="none" stroke="#373733" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M70 196c0-66 52-104 112-104 52 0 84 28 84 62s-26 56-56 56-46-18-46-38 14-32 30-32" stroke="#ffd400" stroke-width="26"/>
+    <path d="M70 196c0-66 52-104 112-104 52 0 84 28 84 62s-26 56-56 56-46-18-46-38 14-32 30-32"/>
+    <rect x="44" y="176" width="40" height="40" rx="8" fill="#eeeeec"/>
+    <rect x="180" y="124" width="36" height="36" rx="8" fill="#eeeeec"/>
+  </g>
+</svg>

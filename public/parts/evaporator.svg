@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img" aria-label="Oto klima evaporatörü">
+  <g fill="none" stroke="#373733" stroke-width="6" stroke-linejoin="round">
+    <rect x="74" y="74" width="252" height="152" rx="10" fill="#eeeeec"/>
+    <g stroke-width="3" opacity=".55">
+      <path d="M100 86v128M120 86v128M140 86v128M160 86v128M180 86v128M200 86v128M220 86v128M240 86v128M260 86v128M280 86v128M300 86v128"/>
+    </g>
+    <rect x="74" y="74" width="252" height="152" rx="10"/>
+    <path d="M74 124h252M74 176h252" stroke-width="5" stroke="#ffd400"/>
+    <path d="M52 100h22M52 200h22" stroke-width="12" stroke-linecap="round"/>
+  </g>
+</svg>

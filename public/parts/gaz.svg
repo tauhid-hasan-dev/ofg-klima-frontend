@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img" aria-label="Oto klima gazı">
+  <g fill="none" stroke="#373733" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
+    <rect x="136" y="72" width="128" height="186" rx="22" fill="#ffd400"/>
+    <path d="M136 120h128M136 210h128" stroke-width="4" opacity=".5"/>
+    <rect x="170" y="36" width="60" height="38" rx="8" fill="#eeeeec"/>
+    <path d="M186 36V20h28v16" stroke-width="8"/>
+    <rect x="160" y="140" width="80" height="50" rx="6" fill="#ffffff" stroke-width="4"/>
+  </g>
+</svg>

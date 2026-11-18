@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img" aria-label="Klima radyatörü / kondenser">
+  <g fill="none" stroke="#373733" stroke-width="6" stroke-linejoin="round">
+    <rect x="58" y="62" width="284" height="176" rx="8" fill="#eeeeec"/>
+    <rect x="58" y="62" width="26" height="176" rx="6" fill="#ffd400"/>
+    <rect x="316" y="62" width="26" height="176" rx="6" fill="#ffd400"/>
+    <g stroke-width="3" opacity=".6">
+      <path d="M96 76v148M114 76v148M132 76v148M150 76v148M168 76v148M186 76v148M204 76v148M222 76v148M240 76v148M258 76v148M276 76v148M294 76v148"/>
+    </g>
+    <path d="M84 110h232M84 150h232M84 190h232" stroke-width="5"/>
+    <path d="M44 92h14M44 208h14" stroke-width="10" stroke-linecap="round"/>
+  </g>
+</svg>

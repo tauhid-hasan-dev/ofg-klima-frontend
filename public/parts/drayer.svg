@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img" aria-label="Klima kurutucu filtre (drayer)">
+  <g fill="none" stroke="#373733" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
+    <rect x="148" y="56" width="104" height="188" rx="30" fill="#ffd400"/>
+    <path d="M148 96h104M148 204h104" stroke-width="4" opacity=".55"/>
+    <circle cx="200" cy="150" r="26" fill="#ffffff" stroke-width="4"/>
+    <path d="M252 86h40M252 214h40" stroke-width="12"/>
+    <path d="M200 40v16" stroke-width="8"/>
+  </g>
+</svg>

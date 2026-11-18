@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img" aria-label="Klima fanı">
+  <g fill="none" stroke="#373733" stroke-width="6" stroke-linejoin="round">
+    <rect x="78" y="28" width="244" height="244" rx="20" fill="#eeeeec"/>
+    <circle cx="200" cy="150" r="104" fill="#ffffff"/>
+    <g fill="#ffd400">
+      <path d="M200 150c0-46 14-76 46-82 14 38 2 70-46 82Z"/>
+      <path d="M200 150c40-23 73-24 90 4-30 27-64 29-90-4Z"/>
+      <path d="M200 150c40 23 54 53 40 81-38-13-56-39-40-81Z"/>
+      <path d="M200 150c-40 23-73 24-90-4 30-27 64-29 90 4Z"/>
+      <path d="M200 150c-26-38-24-72 6-88 24 31 24 65-6 88Z" opacity="0"/>
+      <path d="M200 150c-40-23-54-53-40-81 38 13 56 39 40 81Z"/>
+    </g>
+    <circle cx="200" cy="150" r="26" fill="#373733"/>
+    <circle cx="106" cy="56" r="7" fill="#373733" stroke="none"/>
+    <circle cx="294" cy="56" r="7" fill="#373733" stroke="none"/>
+    <circle cx="106" cy="244" r="7" fill="#373733" stroke="none"/>
+    <circle cx="294" cy="244" r="7" fill="#373733" stroke="none"/>
+  </g>
+</svg>

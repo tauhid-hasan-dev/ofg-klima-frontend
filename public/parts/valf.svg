@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img" aria-label="Klima valfi">
+  <g fill="none" stroke="#373733" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
+    <rect x="132" y="104" width="136" height="110" rx="12" fill="#eeeeec"/>
+    <path d="M166 104V70a34 34 0 0 1 68 0v34" fill="#ffd400"/>
+    <circle cx="200" cy="66" r="16" fill="#373733"/>
+    <path d="M132 134H74M132 184H74M268 134h58M268 184h58" stroke-width="12"/>
+    <path d="M170 214v26M230 214v26" stroke-width="5" opacity=".6"/>
+  </g>
+</svg>
