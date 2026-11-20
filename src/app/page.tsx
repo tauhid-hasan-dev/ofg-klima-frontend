@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { connection } from "next/server";
+import { Suspense } from "react";
 import { ProductGrid } from "@/components/commerce/ProductCard";
+import { BrandStrip } from "@/components/home/BrandStrip";
 import { FeaturedTabs } from "@/components/home/FeaturedTabs";
 import { HeroSlider, type Slide } from "@/components/home/HeroSlider";
 import { Container, SectionHeading } from "@/components/ui/Container";
@@ -63,6 +66,58 @@ const FEATURED_SECTIONS = [
   { slug: "klima-kasnak-seti", title: "Klima Kasnak Seti" },
 ] as const;
 
+/**
+ * The two sections of the home page that show prices.
+ *
+ * Split out and pushed behind a Suspense boundary because of `connection()`:
+ * prices are USD converted at the current TCMB rate, and a prerendered home
+ * page would freeze that rate at build time and keep quoting it until the next
+ * deploy. Everything else on this page — the hero, the category cards, the
+ * brand strip, the SEO copy — has no price in it and stays fully static.
+ */
+async function PricedSections({ brandNames }: { brandNames: Record<string, string> }) {
+  await connection();
+
+  const [featured, newest] = await Promise.all([
+    Promise.all(
+      FEATURED_SECTIONS.map(async (section) => ({
+        ...section,
+        products: await getFeaturedProducts(section.slug, 8),
+      })),
+    ),
+    getNewestProducts(8),
+  ]);
+
+  return (
+    <>
+      {/* Featured products — one section with pill tabs, matching the reference */}
+      <Container className="pt-14">
+        <FeaturedTabs groups={featured} brandNames={brandNames} />
+      </Container>
+
+      {/* Newest arrivals — requirement 2 on the home page, requirement 15 in
+          substance: a product imported from DIA shows up here on its own. */}
+      <Container className="pt-14">
+        <SectionHeading title="Yeni Ürünler" href="/yeni-urunler" />
+        <ProductGrid products={newest} brandNames={brandNames} />
+      </Container>
+    </>
+  );
+}
+
+function PricedSectionsFallback() {
+  return (
+    <Container className="pt-14">
+      <div className="h-8 w-56 animate-pulse rounded bg-ink-100" />
+      <div className="mt-6 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 xl:grid-cols-4">
+        {Array.from({ length: 8 }, (_, index) => (
+          <div key={index} className="h-80 animate-pulse rounded-card bg-ink-100" />
+        ))}
+      </div>
+    </Container>
+  );
+}
+
 export default async function HomePage() {
   const [topCategories, allBrands] = await Promise.all([getTopLevelCategories(), getBrandsWithCounts()]);
 
@@ -72,15 +127,6 @@ export default async function HomePage() {
       children: (await getChildCategories(category.slug)).slice(0, 4),
     })),
   );
-
-  const featured = await Promise.all(
-    FEATURED_SECTIONS.map(async (section) => ({
-      ...section,
-      products: await getFeaturedProducts(section.slug, 8),
-    })),
-  );
-
-  const newest = await getNewestProducts(8);
 
   const brandNames = Object.fromEntries(allBrands.map((brand) => [brand.slug, brand.name]));
 
@@ -119,6 +165,9 @@ export default async function HomePage() {
     <>
       {/* Full-bleed: deliberately outside Container so it spans the viewport. */}
       <HeroSlider slides={slides} />
+
+      {/* Requirement 4 — supplier logos directly under the banner. */}
+      <BrandStrip brands={manufacturers.map(({ slug, name, productCount }) => ({ slug, name, productCount }))} />
 
       {/* Category entry points */}
       <Container className="pt-14">
@@ -174,32 +223,19 @@ export default async function HomePage() {
         </ul>
       </Container>
 
-      {/* Manufacturer brands */}
-      <Container className="pt-14">
-        <SectionHeading title="Üretici Markaları" href="/marka" />
-        <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-7">
-          {manufacturers.map((brand) => (
-            <li key={brand.slug}>
-              <Link
-                href={`/marka/${brand.slug}`}
-                className="flex h-20 flex-col items-center justify-center rounded-card bg-white px-3 text-center ring-1 ring-ink-200 transition-all hover:-translate-y-0.5 hover:ring-ink-950"
-              >
-                <span className="font-display text-sm font-extrabold tracking-tight text-ink-950 uppercase">
-                  {brand.name}
-                </span>
-                <span className="mt-0.5 text-[0.7rem] text-ink-500 tabular">{brand.productCount} ürün</span>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </Container>
+      {/* The manufacturer grid that used to sit here was dropped: BrandStrip
+          above already lists the same eleven brands, and showing them twice on
+          one page made neither instance feel like the way in. */}
 
       {/* Two-up brand banners, as on the reference home page */}
       <Container className="pt-14">
         <div className="grid gap-4 lg:grid-cols-2">
           {[
-            { slug: "valeo", name: "VALEO", theme: "bg-signal-600", image: "/parts/kompresor.svg" },
-            { slug: "denso", name: "DENSO", theme: "bg-ink-950", image: "/parts/kompresor.svg" },
+            // One red panel, one ink: on the red one the brand name has to be
+            // white, since brand-400 on brand-600 is two reds on top of each
+            // other.
+            { slug: "valeo", name: "VALEO", theme: "bg-brand-600", title: "text-white", image: "/parts/kompresor.svg" },
+            { slug: "denso", name: "DENSO", theme: "bg-ink-950", title: "text-brand-400", image: "/parts/kompresor.svg" },
           ].map((banner) => (
             <Link
               key={banner.slug}
@@ -207,7 +243,7 @@ export default async function HomePage() {
               className={`group relative flex min-h-[15rem] items-center overflow-hidden rounded-card ${banner.theme}`}
             >
               <div className="relative z-10 max-w-[55%] p-8 lg:p-10">
-                <span className="block font-display text-2xl font-extrabold tracking-tight text-brand-400">
+                <span className={`block font-display text-2xl font-extrabold tracking-tight ${banner.title}`}>
                   {banner.name}
                 </span>
                 <span className="mt-1 block font-display text-lg font-bold tracking-tight text-white uppercase">
@@ -229,23 +265,16 @@ export default async function HomePage() {
         </div>
       </Container>
 
-      {/* Featured products — one section with pill tabs, matching the reference */}
-      <Container className="pt-14">
-        <FeaturedTabs groups={featured} brandNames={brandNames} />
-      </Container>
-
-      {/* Newest arrivals */}
-      <Container className="pt-14">
-        <SectionHeading title="Yeni Ürünler" href="/arama?siralama=newest" />
-        <ProductGrid products={newest} brandNames={brandNames} />
-      </Container>
+      <Suspense fallback={<PricedSectionsFallback />}>
+        <PricedSections brandNames={brandNames} />
+      </Suspense>
 
       {/* Fitment help — the single biggest source of enquiries in this trade */}
       <Container className="pt-16">
         <div className="overflow-hidden rounded-card bg-ink-950">
           <div className="grid items-center gap-8 p-8 lg:grid-cols-[1.3fr_1fr] lg:p-12">
             <div>
-              <span className="inline-block bg-brand-400 px-2.5 py-1 font-display text-xs font-bold tracking-[0.12em] text-ink-950 uppercase">
+              <span className="inline-block bg-brand-500 px-2.5 py-1 font-display text-xs font-bold tracking-[0.12em] text-white uppercase">
                 Doğru Parça Garantisi
               </span>
               <h2 className="mt-4 font-display text-2xl font-extrabold tracking-tight text-white sm:text-3xl">

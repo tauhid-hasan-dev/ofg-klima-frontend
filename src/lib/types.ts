@@ -15,6 +15,12 @@ export type BrandKind = "manufacturer" | "vehicle";
 export interface Category {
   slug: string;
   name: string;
+  /**
+   * Shorter label for the header nav strip, where the full name would wrap.
+   * "Klima Radyatörü ( Kondanser )" is correct on the category page and far
+   * too long between two other nav items.
+   */
+  shortName?: string;
   /** Slug of the parent category; absent for top-level categories. */
   parent?: string;
   description?: string;
@@ -22,6 +28,17 @@ export interface Category {
   image: string;
   /** Shown in the header mega menu. */
   inMainNav?: boolean;
+  /**
+   * DIA "Grup Kodu" this category maps to (requirement 1). The ERP's group
+   * codes are the authoritative taxonomy; the import keys on this field, so a
+   * product lands in the right category without a manual mapping step.
+   */
+  groupCode?: string;
+  /**
+   * Percentage added to the DIA price for this category (requirement 9).
+   * Inherited from the parent when absent — see `src/lib/pricing.ts`.
+   */
+  markupPercent?: number;
 }
 
 export interface Brand {
@@ -64,6 +81,13 @@ export interface Product {
   priceUsd: number;
   /** Pre-discount USD price, when the product is on offer. */
   listPriceUsd?: number;
+  /**
+   * The USD figure DIA holds before the category markup (requirement 9) — the
+   * ERP's "Fiyat 6". Kept so the admin can see the real cost, and so a
+   * re-import starts from the cost price instead of marking up a marked-up
+   * number. Never rendered on the storefront.
+   */
+  costPriceUsd?: number;
 
   stock: StockStatus;
   /** Units on hand. The client's product page prints this number directly. */
@@ -106,6 +130,11 @@ export interface ProductQuery {
   /** Matches the stock code (SKU) only — the "Stok Kodu" field in Detaylı Arama. */
   stockCode?: string;
   inStockOnly?: boolean;
+  /**
+   * Limits the listing to best sellers — what /cok-satanlar is. Set by the
+   * page, not by the querystring: the URL already says what the page is about.
+   */
+  bestSellersOnly?: boolean;
   /** Bounds are in TRY: that is the currency the shopper reads and types. */
   minPrice?: number;
   maxPrice?: number;

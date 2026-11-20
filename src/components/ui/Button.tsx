@@ -11,9 +11,9 @@ const BASE =
   "active:translate-y-px disabled:pointer-events-none disabled:opacity-50";
 
 const VARIANTS: Record<Variant, string> = {
-  // Yellow is the brand's loudest surface — reserve it for the single primary
-  // action in any view.
-  primary: "bg-brand-400 text-ink-950 hover:bg-brand-300 shadow-[inset_0_-2px_0_rgba(0,0,0,0.12)]",
+  // Brand red is the loudest surface on the site — reserve it for the single
+  // primary action in any view. It is a dark surface, so the label is white.
+  primary: "bg-brand-500 text-white hover:bg-brand-600 shadow-[inset_0_-2px_0_rgba(0,0,0,0.18)]",
   secondary: "bg-ink-900 text-white hover:bg-ink-800",
   outline: "border border-ink-300 bg-white text-ink-800 hover:border-ink-900 hover:bg-ink-50",
   ghost: "text-ink-700 hover:bg-ink-100 hover:text-ink-900",

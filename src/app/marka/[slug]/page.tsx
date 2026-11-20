@@ -8,8 +8,7 @@ import { Container } from "@/components/ui/Container";
 import {
   getAllBrandSlugs,
   getBrand,
-  getChildCategories,
-  getTopLevelCategories,
+  getCategoryRail,
   listProducts,
 } from "@/lib/repository";
 import { parseProductQuery, type RawSearchParams } from "@/lib/search-params";
@@ -62,13 +61,26 @@ async function BrandResults({
   // suppressed and the user filters by vehicle, stock and price instead.
   const result = await listProducts({ ...query, brand: [brand.slug] });
 
-  const topCategories = await getTopLevelCategories();
-  const childLists = await Promise.all(topCategories.map((category) => getChildCategories(category.slug)));
+  /*
+   * On a brand page the rail is narrowed to the groups this brand actually
+   * sells into — Sanden makes compressors, not klima gazı, and listing the
+   * empty groups would promise products that are not there. Within those
+   * groups the sub-headings still expand (requirement 8).
+   */
+  const { tops, childrenBySlug } = await getCategoryRail();
   const relevant = new Set(result.facets.categories.map((facet) => facet.slug));
 
-  const categoryLinks = [...topCategories, ...childLists.flat()].filter((category) =>
-    relevant.has(category.slug),
+  const categoryLinks = tops.filter(
+    (category) =>
+      relevant.has(category.slug) ||
+      (childrenBySlug[category.slug] ?? []).some((child) => relevant.has(child.slug)),
   );
+
+  const categoryChildren: Record<string, typeof tops> = {};
+  for (const category of categoryLinks) {
+    const children = (childrenBySlug[category.slug] ?? []).filter((child) => relevant.has(child.slug));
+    if (children.length > 0) categoryChildren[category.slug] = children;
+  }
 
   return (
     <ProductListing
@@ -77,6 +89,8 @@ async function BrandResults({
       result={result}
       sort={query.sort ?? "recommended"}
       categoryLinks={categoryLinks}
+      categoryChildren={categoryChildren}
+      activeCategory={query.category}
       lockedFilters={[{ label: "Marka", value: brand.name }]}
       showBrandFacet={false}
       emptyTitle={`${brand.name} için bu filtrelerle ürün bulunamadı`}

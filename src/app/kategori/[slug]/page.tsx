@@ -8,8 +8,8 @@ import { Container } from "@/components/ui/Container";
 import {
   getAllCategorySlugs,
   getCategory,
+  getCategoryRail,
   getCategoryTrail,
-  getChildCategories,
   listProducts,
 } from "@/lib/repository";
 import { parseProductQuery, type RawSearchParams } from "@/lib/search-params";
@@ -52,10 +52,16 @@ async function CategoryResults({
   const query = parseProductQuery(resolved);
   const result = await listProducts({ ...query, category: category.slug });
 
-  // Sidebar navigation: children when we are on a top-level category, siblings
-  // when we are on a leaf. Either way the user can move sideways in the tree.
-  const children = await getChildCategories(category.slug);
-  const siblings = category.parent ? await getChildCategories(category.parent) : [];
+  /*
+   * Requirement 8 — the rail lists every top-level group, and the one you are
+   * in expands to its sub-headings.
+   *
+   * The earlier version listed only the current category's children (or its
+   * siblings on a leaf page), which meant the rail changed shape under you as
+   * you moved around and never showed the rest of the catalogue. Listing all
+   * the groups and expanding one keeps a fixed frame of reference.
+   */
+  const { tops, childrenBySlug } = await getCategoryRail();
 
   return (
     <ProductListing
@@ -63,7 +69,10 @@ async function CategoryResults({
       searchParams={resolved}
       result={result}
       sort={query.sort ?? "recommended"}
-      categoryLinks={children.length > 0 ? children : siblings}
+      categoryLinks={tops}
+      categoryChildren={childrenBySlug}
+      // A leaf expands its parent, so the group you are inside stays visible.
+      activeCategory={category.parent ?? category.slug}
       emptyTitle={`${category.name} kategorisinde bu filtrelerle ürün bulunamadı`}
     />
   );

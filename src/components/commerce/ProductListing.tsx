@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { FilterSidebar, type SidebarProps } from "@/components/commerce/FilterSidebar";
+import { InfiniteProductGrid } from "@/components/commerce/InfiniteProductGrid";
 import { ActiveFilterChips, ListingToolbar } from "@/components/commerce/ListingToolbar";
-import { Pagination } from "@/components/commerce/Pagination";
-import { ProductGrid } from "@/components/commerce/ProductCard";
 import { ButtonLink } from "@/components/ui/Button";
 import { SearchIcon, WhatsAppIcon } from "@/components/ui/icons";
+import { getRates } from "@/lib/currency";
 import { whatsappLink } from "@/lib/format";
 import type { RawSearchParams } from "@/lib/search-params";
 import { QUERY_KEYS } from "@/lib/search-params";
@@ -25,8 +25,12 @@ export function ProductListing({
   result,
   sort,
   categoryLinks,
+  categoryChildren,
+  activeCategory,
   lockedFilters,
   showBrandFacet = true,
+  showSort = true,
+  bestSellersOnly = false,
   emptyTitle = "Aradığınız kriterlere uygun ürün bulunamadı",
   emptyBody = "Filtreleri gevşetmeyi ya da parça kodu ile aramayı deneyin. Doğru parçayı bulamadıysanız WhatsApp'tan yazın, birlikte seçelim.",
 }: {
@@ -35,18 +39,30 @@ export function ProductListing({
   result: ProductListResult;
   sort: SortValue;
   categoryLinks: Category[];
+  /** Sub-headings keyed by parent slug, for the expandable rail (req 8). */
+  categoryChildren?: Record<string, Category[]>;
+  activeCategory?: string;
   lockedFilters?: { label: string; value: string }[];
   showBrandFacet?: boolean;
+  /** Hidden where the page's whole identity is its order, e.g. /yeni-urunler. */
+  showSort?: boolean;
+  /** Passed through so the infinite-scroll feed keeps the page's own scope. */
+  bestSellersOnly?: boolean;
   emptyTitle?: string;
   emptyBody?: string;
 }) {
   const view = parseViewMode(searchParams.gorunum);
+  // Read once on the server and handed to the client grid, so rows appended
+  // by infinite scroll are priced at the same rate as the first page.
+  const rates = getRates();
 
   const sidebarProps: SidebarProps = {
     pathname,
     facets: { brands: result.facets.brands, vehicles: result.facets.vehicles },
     priceRange: result.priceRange,
     categoryLinks,
+    categoryChildren,
+    activeCategory,
     lockedFilters,
     showBrandFacet,
   };
@@ -75,6 +91,7 @@ export function ProductListing({
           pathname={pathname}
           total={result.total}
           sort={sort}
+          showSort={showSort}
           view={view}
           sidebar={sidebarProps}
           activeCount={activeCount}
@@ -87,28 +104,36 @@ export function ProductListing({
         ) : null}
 
         {result.items.length > 0 ? (
-          <>
-            <div className="mt-4">
-              <ProductGrid
-                products={result.items}
-                brandNames={brandNames}
-                layout={view === "liste" ? "list" : "grid"}
-                columns={view === "3" ? 3 : 4}
-              />
-            </div>
-
-            <Pagination
-              pathname={pathname}
-              searchParams={searchParams}
-              page={result.page}
+          <div className="mt-4">
+            {/* Requirement 11: no 1 2 3 4 pager — the grid keeps loading as
+                the visitor scrolls. Page 1 is still rendered on the server, so
+                the listing is complete without JavaScript and crawlable. */}
+            <InfiniteProductGrid
+              /*
+               * Remount on any change to the query. The grid accumulates
+               * appended pages in state; keying it means a new filter starts
+               * from the new server-rendered first page instead of stacking
+               * the new results onto the old ones.
+               */
+              key={`${pathname}?${new URLSearchParams(
+                Object.entries(searchParams).flatMap(([name, value]) =>
+                  value === undefined
+                    ? []
+                    : Array.isArray(value)
+                      ? value.map((entry) => [name, entry] as [string, string])
+                      : [[name, value] as [string, string]],
+                ),
+              ).toString()}`}
+              initialItems={result.items}
+              initialPage={result.page}
               pageCount={result.pageCount}
+              brandNames={brandNames}
+              rates={rates}
+              bestSellersOnly={bestSellersOnly}
+              layout={view === "liste" ? "list" : "grid"}
+              columns={view === "3" ? 3 : 4}
             />
-
-            <p className="mt-4 text-center text-sm text-ink-500 tabular">
-              {result.total} üründen {(result.page - 1) * result.perPage + 1}–
-              {Math.min(result.page * result.perPage, result.total)} arası gösteriliyor
-            </p>
-          </>
+          </div>
         ) : (
           <div className="mt-4 rounded-card bg-white px-6 py-16 text-center ring-1 ring-ink-200">
             <span className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-ink-100 text-ink-400">

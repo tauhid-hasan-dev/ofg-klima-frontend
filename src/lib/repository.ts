@@ -1,7 +1,8 @@
 import { brands } from "@/lib/data/brands";
 import { categories } from "@/lib/data/categories";
-import { products, slugify } from "@/lib/data/products";
+import { products as sourceProducts, slugify } from "@/lib/data/products";
 import { usdToTry } from "@/lib/currency";
+import { applyMarkup } from "@/lib/pricing";
 import {
   DEFAULT_SORT,
   type Brand,
@@ -23,6 +24,18 @@ import {
 
 export const DEFAULT_PER_PAGE = 24;
 
+/**
+ * The catalogue as the storefront sees it: trade prices from the source,
+ * uplifted by their category's retail markup (requirement 9).
+ *
+ * Applied here, once, rather than at each render. Doing it at the boundary is
+ * what makes requirement 15 fall out for free — a product imported from DIA
+ * tomorrow carries a grup kodu, so it picks up the right markup with nobody
+ * touching it — and it keeps sorting, the price facet and the cart all working
+ * off the same number the shopper is reading.
+ */
+const products = sourceProducts.map(applyMarkup);
+
 /* ── Categories ─────────────────────────────────────────────────────────── */
 
 export async function getCategories(): Promise<Category[]> {
@@ -43,6 +56,29 @@ export async function getCategory(slug: string): Promise<Category | undefined> {
 
 export async function getChildCategories(parentSlug: string): Promise<Category[]> {
   return categories.filter((category) => category.parent === parentSlug);
+}
+
+/**
+ * The listing sidebar's "Ürün Grupları" rail: every top-level group plus the
+ * sub-headings each one expands to (requirement 8).
+ *
+ * One call so every listing page shows the same rail — a sidebar whose
+ * contents depend on which page you came from is a navigation aid that needs
+ * its own navigation aid.
+ */
+export async function getCategoryRail(): Promise<{
+  tops: Category[];
+  childrenBySlug: Record<string, Category[]>;
+}> {
+  const tops = categories.filter((category) => !category.parent);
+  const childrenBySlug: Record<string, Category[]> = {};
+
+  for (const top of tops) {
+    const children = categories.filter((category) => category.parent === top.slug);
+    if (children.length > 0) childrenBySlug[top.slug] = children;
+  }
+
+  return { tops, childrenBySlug };
 }
 
 /** The category itself plus all of its descendants — used when filtering. */
@@ -162,6 +198,7 @@ export async function listProducts(query: ProductQuery = {}): Promise<ProductLis
     vehicle = [],
     search = "",
     inStockOnly = false,
+    bestSellersOnly = false,
     minPrice,
     maxPrice,
     stockCode,
@@ -177,6 +214,9 @@ export async function listProducts(query: ProductQuery = {}): Promise<ProductLis
   const scope = products.filter((product) => {
     if (branch && !branch.includes(product.categorySlug)) return false;
     if (search && !matchesSearch(product, search)) return false;
+    // Part of the scope, not a facet: on /cok-satanlar it is what the page is,
+    // so the brand and vehicle counts must be computed within it.
+    if (bestSellersOnly && !product.isBestSeller) return false;
     return true;
   });
 

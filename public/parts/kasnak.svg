@@ -1,13 +1,82 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img" aria-label="Klima kasnak seti">
-  <g fill="none" stroke="#373733" stroke-width="6">
-    <circle cx="150" cy="150" r="96" fill="#ffd400"/>
-    <circle cx="150" cy="150" r="80" stroke-width="3"/>
-    <circle cx="150" cy="150" r="68" stroke-width="3"/>
-    <circle cx="150" cy="150" r="42" fill="#eeeeec"/>
-    <circle cx="150" cy="150" r="18" fill="#373733"/>
-    <circle cx="288" cy="150" r="58" fill="#eeeeec"/>
-    <circle cx="288" cy="150" r="38" stroke-width="4"/>
-    <circle cx="288" cy="150" r="12" fill="#373733"/>
-    <path d="M288 92v-18M288 226v18" stroke-width="5" opacity=".6"/>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800" role="img">
+<defs>
+  <radialGradient id="bg" cx="50%" cy="42%" r="72%">
+    <stop offset="0%" stop-color="#fbfbfa"/>
+    <stop offset="100%" stop-color="#ececea"/>
+  </radialGradient>
+
+  <linearGradient id="steel" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%"   stop-color="#b9bcc0"/>
+    <stop offset="18%"  stop-color="#eef0f2"/>
+    <stop offset="45%"  stop-color="#c8ccd1"/>
+    <stop offset="72%"  stop-color="#8f949b"/>
+    <stop offset="100%" stop-color="#6d727a"/>
+  </linearGradient>
+
+  <linearGradient id="steelX" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0%"   stop-color="#80858d"/>
+    <stop offset="22%"  stop-color="#dfe2e5"/>
+    <stop offset="55%"  stop-color="#b4b9bf"/>
+    <stop offset="100%" stop-color="#787d85"/>
+  </linearGradient>
+
+  <linearGradient id="alu" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%"   stop-color="#d7dbe0"/>
+    <stop offset="35%"  stop-color="#f3f5f7"/>
+    <stop offset="70%"  stop-color="#bcc1c8"/>
+    <stop offset="100%" stop-color="#90959d"/>
+  </linearGradient>
+
+  <linearGradient id="dark" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%"   stop-color="#4a4d52"/>
+    <stop offset="30%"  stop-color="#2e3135"/>
+    <stop offset="100%" stop-color="#17191c"/>
+  </linearGradient>
+
+  <linearGradient id="brass" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%"   stop-color="#e3c88b"/>
+    <stop offset="35%"  stop-color="#c9a95b"/>
+    <stop offset="100%" stop-color="#8d7332"/>
+  </linearGradient>
+
+  <linearGradient id="red" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%"   stop-color="#f4585e"/>
+    <stop offset="45%"  stop-color="#e71a21"/>
+    <stop offset="100%" stop-color="#a30f15"/>
+  </linearGradient>
+
+  <linearGradient id="gloss" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%"   stop-color="#ffffff" stop-opacity="0.75"/>
+    <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+  </linearGradient>
+
+  <radialGradient id="hub" cx="38%" cy="32%" r="75%">
+    <stop offset="0%"   stop-color="#f2f4f6"/>
+    <stop offset="55%"  stop-color="#b6bbc1"/>
+    <stop offset="100%" stop-color="#70757d"/>
+  </radialGradient>
+
+  <filter id="drop" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur stdDeviation="16"/>
+  </filter>
+
+  <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+    <feGaussianBlur stdDeviation="4"/>
+  </filter>
+</defs>
+<ellipse cx="400" cy="648" rx="210" ry="30" fill="#1b1d20" opacity="0.28" filter="url(#drop)"/>
+<circle cx="400" cy="380" r="236" fill="url(#hub)" stroke="#5a5f66" stroke-width="3"/>
+<circle cx="400" cy="380" r="226" fill="none" stroke="#6b7079" stroke-width="3" opacity="0.65"/>
+<circle cx="400" cy="380" r="213.728" fill="none" stroke="#6b7079" stroke-width="3" opacity="0.65"/>
+<circle cx="400" cy="380" r="201.456" fill="none" stroke="#6b7079" stroke-width="3" opacity="0.65"/>
+<circle cx="400" cy="380" r="189.184" fill="none" stroke="#6b7079" stroke-width="3" opacity="0.65"/>
+<circle cx="400" cy="380" r="176.912" fill="none" stroke="#6b7079" stroke-width="3" opacity="0.65"/>
+<circle cx="400" cy="380" r="164.64" fill="none" stroke="#6b7079" stroke-width="3" opacity="0.65"/>
+<circle cx="400" cy="380" r="132.16" fill="url(#alu)" stroke="#5a5f66" stroke-width="3"/>
+<circle cx="400" cy="380" r="68.7232" fill="url(#red)" opacity="0.9"/>
+<circle cx="400" cy="380" r="29.0752" fill="url(#dark)"/>
+<circle cx="400" cy="276.915" r="7" fill="#50555c"/>
+<circle cx="489.274" cy="431.542" r="7" fill="#50555c"/>
+<circle cx="310.726" cy="431.542" r="7" fill="#50555c"/>
+<path d="M 230.08 280.88 a 236 236 0 0 1 122.72 -103.84" fill="none" stroke="#ffffff" stroke-width="10" stroke-linecap="round" opacity="0.5"/>
 </svg>

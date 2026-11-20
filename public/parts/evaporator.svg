@@ -1,11 +1,94 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img" aria-label="Oto klima evaporatörü">
-  <g fill="none" stroke="#373733" stroke-width="6" stroke-linejoin="round">
-    <rect x="74" y="74" width="252" height="152" rx="10" fill="#eeeeec"/>
-    <g stroke-width="3" opacity=".55">
-      <path d="M100 86v128M120 86v128M140 86v128M160 86v128M180 86v128M200 86v128M220 86v128M240 86v128M260 86v128M280 86v128M300 86v128"/>
-    </g>
-    <rect x="74" y="74" width="252" height="152" rx="10"/>
-    <path d="M74 124h252M74 176h252" stroke-width="5" stroke="#ffd400"/>
-    <path d="M52 100h22M52 200h22" stroke-width="12" stroke-linecap="round"/>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800" role="img">
+<defs>
+  <radialGradient id="bg" cx="50%" cy="42%" r="72%">
+    <stop offset="0%" stop-color="#fbfbfa"/>
+    <stop offset="100%" stop-color="#ececea"/>
+  </radialGradient>
+
+  <linearGradient id="steel" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%"   stop-color="#b9bcc0"/>
+    <stop offset="18%"  stop-color="#eef0f2"/>
+    <stop offset="45%"  stop-color="#c8ccd1"/>
+    <stop offset="72%"  stop-color="#8f949b"/>
+    <stop offset="100%" stop-color="#6d727a"/>
+  </linearGradient>
+
+  <linearGradient id="steelX" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0%"   stop-color="#80858d"/>
+    <stop offset="22%"  stop-color="#dfe2e5"/>
+    <stop offset="55%"  stop-color="#b4b9bf"/>
+    <stop offset="100%" stop-color="#787d85"/>
+  </linearGradient>
+
+  <linearGradient id="alu" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%"   stop-color="#d7dbe0"/>
+    <stop offset="35%"  stop-color="#f3f5f7"/>
+    <stop offset="70%"  stop-color="#bcc1c8"/>
+    <stop offset="100%" stop-color="#90959d"/>
+  </linearGradient>
+
+  <linearGradient id="dark" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%"   stop-color="#4a4d52"/>
+    <stop offset="30%"  stop-color="#2e3135"/>
+    <stop offset="100%" stop-color="#17191c"/>
+  </linearGradient>
+
+  <linearGradient id="brass" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%"   stop-color="#e3c88b"/>
+    <stop offset="35%"  stop-color="#c9a95b"/>
+    <stop offset="100%" stop-color="#8d7332"/>
+  </linearGradient>
+
+  <linearGradient id="red" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%"   stop-color="#f4585e"/>
+    <stop offset="45%"  stop-color="#e71a21"/>
+    <stop offset="100%" stop-color="#a30f15"/>
+  </linearGradient>
+
+  <linearGradient id="gloss" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%"   stop-color="#ffffff" stop-opacity="0.75"/>
+    <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+  </linearGradient>
+
+  <radialGradient id="hub" cx="38%" cy="32%" r="75%">
+    <stop offset="0%"   stop-color="#f2f4f6"/>
+    <stop offset="55%"  stop-color="#b6bbc1"/>
+    <stop offset="100%" stop-color="#70757d"/>
+  </radialGradient>
+
+  <filter id="drop" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur stdDeviation="16"/>
+  </filter>
+
+  <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+    <feGaussianBlur stdDeviation="4"/>
+  </filter>
+</defs>
+<ellipse cx="400" cy="630" rx="230" ry="30" fill="#1b1d20" opacity="0.28" filter="url(#drop)"/>
+<rect x="190" y="230" width="420" height="330" rx="10" fill="#ced3d8" stroke="#5a5f66" stroke-width="4"/>
+<line x1="195" y1="246.5" x2="605" y2="246.5" stroke="#959ba2" stroke-width="5"/>
+<line x1="195" y1="263" x2="605" y2="263" stroke="#959ba2" stroke-width="5"/>
+<line x1="195" y1="279.5" x2="605" y2="279.5" stroke="#959ba2" stroke-width="5"/>
+<line x1="195" y1="296" x2="605" y2="296" stroke="#959ba2" stroke-width="5"/>
+<line x1="195" y1="312.5" x2="605" y2="312.5" stroke="#959ba2" stroke-width="5"/>
+<line x1="195" y1="329" x2="605" y2="329" stroke="#959ba2" stroke-width="5"/>
+<line x1="195" y1="345.5" x2="605" y2="345.5" stroke="#959ba2" stroke-width="5"/>
+<line x1="195" y1="362" x2="605" y2="362" stroke="#959ba2" stroke-width="5"/>
+<line x1="195" y1="378.5" x2="605" y2="378.5" stroke="#959ba2" stroke-width="5"/>
+<line x1="195" y1="395" x2="605" y2="395" stroke="#959ba2" stroke-width="5"/>
+<line x1="195" y1="411.5" x2="605" y2="411.5" stroke="#959ba2" stroke-width="5"/>
+<line x1="195" y1="428" x2="605" y2="428" stroke="#959ba2" stroke-width="5"/>
+<line x1="195" y1="444.5" x2="605" y2="444.5" stroke="#959ba2" stroke-width="5"/>
+<line x1="195" y1="461" x2="605" y2="461" stroke="#959ba2" stroke-width="5"/>
+<line x1="195" y1="477.5" x2="605" y2="477.5" stroke="#959ba2" stroke-width="5"/>
+<line x1="195" y1="494" x2="605" y2="494" stroke="#959ba2" stroke-width="5"/>
+<line x1="195" y1="510.5" x2="605" y2="510.5" stroke="#959ba2" stroke-width="5"/>
+<line x1="195" y1="527" x2="605" y2="527" stroke="#959ba2" stroke-width="5"/>
+<line x1="195" y1="543.5" x2="605" y2="543.5" stroke="#959ba2" stroke-width="5"/>
+<rect x="170" y="216" width="36" height="358" rx="12" fill="url(#alu)" stroke="#5a5f66" stroke-width="4"/>
+<rect x="594" y="216" width="36" height="358" rx="12" fill="url(#alu)" stroke="#5a5f66" stroke-width="4"/>
+<path d="M 188 216 q 0 -70 70 -70 l 90 0" fill="none" stroke="url(#steelX)" stroke-width="30" stroke-linecap="round"/>
+<path d="M 612 216 q 0 -70 -70 -70 l -60 0" fill="none" stroke="url(#steelX)" stroke-width="30" stroke-linecap="round"/>
+<rect x="326" y="118" width="60" height="56" rx="10" fill="url(#brass)" stroke="#5a5f66" stroke-width="3"/>
+<rect x="446" y="118" width="60" height="56" rx="10" fill="url(#brass)" stroke="#5a5f66" stroke-width="3"/>
 </svg>

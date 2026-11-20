@@ -173,17 +173,69 @@ export function slugify(value: string): string {
     .replace(/^-+|-+$/g, "");
 }
 
-function categoryImage(categorySlug: string): string {
-  if (categorySlug.includes("kompresor")) return "/parts/kompresor.svg";
-  if (categorySlug.includes("radyator")) return "/parts/kondenser.svg";
-  if (categorySlug.includes("kasnak") || categorySlug.includes("bobin") || categorySlug.includes("plaka")) {
-    return "/parts/kasnak.svg";
+/**
+ * Which drawing family a category belongs to.
+ *
+ * Each family has three views in `public/parts/` — `<family>-1` (main),
+ * `-2` (angled) and `-3` (detail) — so a product page gallery shows the same
+ * part from three sides instead of the same picture three times. They are
+ * placeholder renders; OFG's own photography replaces them by dropping files
+ * at these paths.
+ */
+export function partFamily(categorySlug: string): string {
+  if (categorySlug.includes("kompresor") && !categorySlug.includes("kapak")) return "kompresor";
+  if (categorySlug.includes("radyator") || categorySlug.includes("kondenser")) return "kondenser";
+  if (
+    categorySlug.includes("kasnak") ||
+    categorySlug.includes("bobin") ||
+    categorySlug.includes("plaka") ||
+    categorySlug.includes("playt") ||
+    categorySlug.includes("bilya")
+  ) {
+    return "kasnak";
   }
-  if (categorySlug.includes("valf") || categorySlug.includes("termostat")) return "/parts/valf.svg";
-  if (categorySlug.includes("fan")) return "/parts/fan.svg";
-  if (categorySlug.includes("gaz")) return "/parts/gaz.svg";
-  if (categorySlug.includes("hortum")) return "/parts/hortum.svg";
-  return "/parts/kimyasal.svg";
+  if (categorySlug.includes("evaporator") || categorySlug.includes("petegi")) return "evaporator";
+  if (categorySlug.includes("drayer") || categorySlug.includes("kurutucu")) return "drayer";
+  if (categorySlug.includes("oring") || categorySlug.includes("kece") || categorySlug.includes("pul")) {
+    return "oring";
+  }
+  if (categorySlug.includes("servis") || categorySlug.includes("pres") || categorySlug.includes("manifold")) {
+    return "servis";
+  }
+  if (categorySlug.includes("isitici")) return "isitici";
+  if (
+    categorySlug.includes("valf") ||
+    categorySlug.includes("termostat") ||
+    categorySlug.includes("sibob") ||
+    categorySlug.includes("musur") ||
+    categorySlug.includes("flator")
+  ) {
+    return "valf";
+  }
+  if (categorySlug.includes("fan") || categorySlug.includes("klape") || categorySlug.includes("rezistans")) {
+    return "fan";
+  }
+  if (categorySlug.includes("gaz")) return "gaz";
+  if (categorySlug.includes("hortum") || categorySlug.includes("rekor") || categorySlug.includes("tesisat")) {
+    return "hortum";
+  }
+  return "kimyasal";
+}
+
+/**
+ * The gallery for one product: all three views of its family.
+ *
+ * The lead image alternates between views 1 and 2 so a category grid is not
+ * sixty copies of one drawing — that reads as a broken image loader rather
+ * than as a catalogue. View 3 is always last and never the thumbnail: it is a
+ * close-up of one feature, and a compressor whose card shows only its pulley
+ * looks like a pulley for sale.
+ */
+function productImages(categorySlug: string, h: number): string[] {
+  const family = partFamily(categorySlug);
+  const lead = (h % 2) + 1;
+  const second = lead === 1 ? 2 : 1;
+  return [lead, second, 3].map((view) => `/parts/${family}-${view}.svg`);
 }
 
 function buildSpecs(row: Row, seed: string): ProductSpec[] {
@@ -262,8 +314,6 @@ export const products: Product[] = rows.map((row, index) => {
   // Fixed calendar spread so "newest" sorting is meaningful and reproducible.
   const createdAt = new Date(Date.UTC(2024, 3, 1) + (h % 640) * 86_400_000).toISOString().slice(0, 10);
 
-  const primary = categoryImage(categorySlug);
-
   return {
     id: `P${String(index + 1).padStart(4, "0")}`,
     slug: `${slugify(name).slice(0, 72).replace(/-+$/, "")}-${slugify(oem)}`,
@@ -279,9 +329,7 @@ export const products: Product[] = rows.map((row, index) => {
     listPriceUsd,
     stock,
     stockQuantity: stockQuantityFor(stock, h),
-    // One illustration per category, repeated to exercise the gallery. Real
-    // photography (several angles per part) is coming from the client.
-    images: [primary, "/parts/kasnak.svg", "/parts/valf.svg", primary].slice(0, 2 + (h % 3)),
+    images: productImages(categorySlug, h),
     vehicles,
     specs: buildSpecs(row, seed),
     rating: Math.round((3.9 + (h % 11) / 10) * 10) / 10,

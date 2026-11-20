@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800" role="img">
+<defs>
+  <radialGradient id="bg" cx="50%" cy="42%" r="72%">
+    <stop offset="0%" stop-color="#fbfbfa"/>
+    <stop offset="100%" stop-color="#ececea"/>
+  </radialGradient>
+
+  <linearGradient id="steel" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%"   stop-color="#b9bcc0"/>
+    <stop offset="18%"  stop-color="#eef0f2"/>
+    <stop offset="45%"  stop-color="#c8ccd1"/>
+    <stop offset="72%"  stop-color="#8f949b"/>
+    <stop offset="100%" stop-color="#6d727a"/>
+  </linearGradient>
+
+  <linearGradient id="steelX" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0%"   stop-color="#80858d"/>
+    <stop offset="22%"  stop-color="#dfe2e5"/>
+    <stop offset="55%"  stop-color="#b4b9bf"/>
+    <stop offset="100%" stop-color="#787d85"/>
+  </linearGradient>
+
+  <linearGradient id="alu" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%"   stop-color="#d7dbe0"/>
+    <stop offset="35%"  stop-color="#f3f5f7"/>
+    <stop offset="70%"  stop-color="#bcc1c8"/>
+    <stop offset="100%" stop-color="#90959d"/>
+  </linearGradient>
+
+  <linearGradient id="dark" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%"   stop-color="#4a4d52"/>
+    <stop offset="30%"  stop-color="#2e3135"/>
+    <stop offset="100%" stop-color="#17191c"/>
+  </linearGradient>
+
+  <linearGradient id="brass" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%"   stop-color="#e3c88b"/>
+    <stop offset="35%"  stop-color="#c9a95b"/>
+    <stop offset="100%" stop-color="#8d7332"/>
+  </linearGradient>
+
+  <linearGradient id="red" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%"   stop-color="#f4585e"/>
+    <stop offset="45%"  stop-color="#e71a21"/>
+    <stop offset="100%" stop-color="#a30f15"/>
+  </linearGradient>
+
+  <linearGradient id="gloss" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%"   stop-color="#ffffff" stop-opacity="0.75"/>
+    <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+  </linearGradient>
+
+  <radialGradient id="hub" cx="38%" cy="32%" r="75%">
+    <stop offset="0%"   stop-color="#f2f4f6"/>
+    <stop offset="55%"  stop-color="#b6bbc1"/>
+    <stop offset="100%" stop-color="#70757d"/>
+  </radialGradient>
+
+  <filter id="drop" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur stdDeviation="16"/>
+  </filter>
+
+  <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+    <feGaussianBlur stdDeviation="4"/>
+  </filter>
+</defs>
+<ellipse cx="400" cy="640" rx="240" ry="28" fill="#1b1d20" opacity="0.28" filter="url(#drop)"/>
+<rect x="232" y="396" width="336" height="130" rx="22" fill="url(#alu)" stroke="#5a5f66" stroke-width="5"/>
+<circle cx="300" cy="330" r="128" fill="url(#hub)" stroke="#5a5f66" stroke-width="5"/>
+<circle cx="300" cy="330" r="107.52" fill="#fbfbfa" stroke="#5a5f66" stroke-width="3"/>
+<line x1="300" y1="235.28" x2="300" y2="250.64" stroke="#4a4d52" stroke-width="4"/>
+<line x1="347.36" y1="247.97" x2="339.68" y2="261.272" stroke="#4a4d52" stroke-width="4"/>
+<line x1="382.03" y1="282.64" x2="368.728" y2="290.32" stroke="#4a4d52" stroke-width="4"/>
+<line x1="394.72" y1="330" x2="379.36" y2="330" stroke="#4a4d52" stroke-width="4"/>
+<line x1="382.03" y1="377.36" x2="368.728" y2="369.68" stroke="#4a4d52" stroke-width="4"/>
+<line x1="347.36" y1="412.03" x2="339.68" y2="398.728" stroke="#4a4d52" stroke-width="4"/>
+<line x1="300" y1="424.72" x2="300" y2="409.36" stroke="#4a4d52" stroke-width="4"/>
+<line x1="252.64" y1="412.03" x2="260.32" y2="398.728" stroke="#4a4d52" stroke-width="4"/>
+<line x1="217.97" y1="377.36" x2="231.272" y2="369.68" stroke="#4a4d52" stroke-width="4"/>
+<line x1="205.28" y1="330" x2="220.64" y2="330" stroke="#4a4d52" stroke-width="4"/>
+<line x1="217.97" y1="282.64" x2="231.272" y2="290.32" stroke="#4a4d52" stroke-width="4"/>
+<line x1="252.64" y1="247.97" x2="260.32" y2="261.272" stroke="#4a4d52" stroke-width="4"/>
+<path d="M 228.32 273.68 A 89.6 89.6 0 0 1 312.8 241.68" fill="none" stroke="#2f6fb0" stroke-width="9" stroke-linecap="round"/>
+<line x1="300" y1="330" x2="364" y2="276.24" stroke="#e71a21" stroke-width="6" stroke-linecap="round"/>
+<circle cx="300" cy="330" r="9" fill="#2e3135"/>
+<circle cx="512" cy="330" r="128" fill="url(#hub)" stroke="#5a5f66" stroke-width="5"/>
+<circle cx="512" cy="330" r="107.52" fill="#fbfbfa" stroke="#5a5f66" stroke-width="3"/>
+<line x1="512" y1="235.28" x2="512" y2="250.64" stroke="#4a4d52" stroke-width="4"/>
+<line x1="559.36" y1="247.97" x2="551.68" y2="261.272" stroke="#4a4d52" stroke-width="4"/>
+<line x1="594.03" y1="282.64" x2="580.728" y2="290.32" stroke="#4a4d52" stroke-width="4"/>
+<line x1="606.72" y1="330" x2="591.36" y2="330" stroke="#4a4d52" stroke-width="4"/>
+<line x1="594.03" y1="377.36" x2="580.728" y2="369.68" stroke="#4a4d52" stroke-width="4"/>
+<line x1="559.36" y1="412.03" x2="551.68" y2="398.728" stroke="#4a4d52" stroke-width="4"/>
+<line x1="512" y1="424.72" x2="512" y2="409.36" stroke="#4a4d52" stroke-width="4"/>
+<line x1="464.64" y1="412.03" x2="472.32" y2="398.728" stroke="#4a4d52" stroke-width="4"/>
+<line x1="429.97" y1="377.36" x2="443.272" y2="369.68" stroke="#4a4d52" stroke-width="4"/>
+<line x1="417.28" y1="330" x2="432.64" y2="330" stroke="#4a4d52" stroke-width="4"/>
+<line x1="429.97" y1="282.64" x2="443.272" y2="290.32" stroke="#4a4d52" stroke-width="4"/>
+<line x1="464.64" y1="247.97" x2="472.32" y2="261.272" stroke="#4a4d52" stroke-width="4"/>
+<path d="M 440.32 273.68 A 89.6 89.6 0 0 1 524.8 241.68" fill="none" stroke="#e71a21" stroke-width="9" stroke-linecap="round"/>
+<line x1="512" y1="330" x2="576" y2="276.24" stroke="#e71a21" stroke-width="6" stroke-linecap="round"/>
+<circle cx="512" cy="330" r="9" fill="#2e3135"/>
+<circle cx="300" cy="500" r="34" fill="url(#dark)"/>
+<circle cx="512" cy="500" r="34" fill="url(#dark)"/>
+<path d="M 232 462 L 150 462 Q 110 462 110 500 L 110 600" fill="none" stroke="url(#dark)" stroke-width="26" stroke-linecap="round"/>
+<path d="M 568 462 L 650 462 Q 690 462 690 500 L 690 600" fill="none" stroke="#2f6fb0" stroke-width="26" stroke-linecap="round"/>
+<path d="M 400 526 L 400 620" stroke="url(#dark)" stroke-width="26" stroke-linecap="round"/>
+</svg>

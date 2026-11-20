@@ -36,7 +36,7 @@ export function FeaturedTabs({
       <div className="mb-6 flex flex-wrap items-center gap-x-8 gap-y-4">
         <h2 className="relative shrink-0 pb-3 font-display text-xl font-extrabold tracking-tight uppercase sm:text-2xl">
           Öne Çıkan Ürünler
-          <span aria-hidden="true" className="absolute bottom-0 left-0 h-1 w-16 bg-brand-400" />
+          <span aria-hidden="true" className="absolute bottom-0 left-0 h-1 w-16 bg-brand-500" />
         </h2>
 
         <div role="tablist" aria-label="Öne çıkan ürün grupları" className="flex flex-wrap gap-2">

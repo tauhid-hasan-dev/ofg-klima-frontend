@@ -75,15 +75,15 @@ export function MobileNav({ tree }: { tree: CategoryNode[] }) {
             className="absolute inset-y-0 left-0 flex w-[min(21rem,85vw)] flex-col bg-white shadow-menu"
             onClick={closeIfLinkClicked}
           >
-            <div className="flex items-center justify-between gap-3 bg-brand-400 px-4 py-3">
+            <div className="on-brand flex items-center justify-between gap-3 bg-brand-500 px-4 py-3">
               <Link href="/" onClick={() => setOpen(false)}>
-                <Logo tone="onBrand" markClassName="h-8 w-8" />
+                <Logo tone="onBrand" showTagline={false} className="h-8" />
               </Link>
               <button
                 type="button"
                 onClick={() => setOpen(false)}
                 aria-label="Menüyü kapat"
-                className="grid h-10 w-10 place-items-center rounded-md text-ink-950 transition-colors hover:bg-ink-950/10"
+                className="grid h-10 w-10 place-items-center rounded-md text-white transition-colors hover:bg-white/15"
               >
                 <CloseIcon className="h-5 w-5" />
               </button>
@@ -137,15 +137,21 @@ export function MobileNav({ tree }: { tree: CategoryNode[] }) {
               })}
 
               <div className="mt-2 border-t-4 border-ink-100">
-                <Link href="/marka" className="block px-4 py-3.5 text-[0.95rem] font-semibold text-ink-900">
-                  Tüm Markalar
-                </Link>
-                <Link href="/hakkimizda" className="block px-4 py-3.5 text-[0.95rem] font-semibold text-ink-900">
-                  Hakkımızda
-                </Link>
-                <Link href="/iletisim" className="block px-4 py-3.5 text-[0.95rem] font-semibold text-ink-900">
-                  İletişim
-                </Link>
+                {[
+                  { href: "/cok-satanlar", label: "Çok Satanlar" },
+                  { href: "/yeni-urunler", label: "Yeni Ürünler" },
+                  { href: "/marka", label: "Tüm Markalar" },
+                  { href: "/hakkimizda", label: "Hakkımızda" },
+                  { href: "/iletisim", label: "İletişim" },
+                ].map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className="block px-4 py-3.5 text-[0.95rem] font-semibold text-ink-900"
+                  >
+                    {item.label}
+                  </Link>
+                ))}
               </div>
             </nav>
 

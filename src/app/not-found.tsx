@@ -7,7 +7,7 @@ export default function NotFound() {
   return (
     <Container>
       <div className="mx-auto max-w-xl py-24 text-center">
-        <p className="font-display text-7xl font-extrabold tracking-tight text-brand-400 tabular sm:text-8xl">404</p>
+        <p className="font-display text-7xl font-extrabold tracking-tight text-brand-500 tabular sm:text-8xl">404</p>
 
         <h1 className="mt-4 font-display text-2xl font-extrabold tracking-tight text-ink-950">
           Aradığınız sayfa bulunamadı

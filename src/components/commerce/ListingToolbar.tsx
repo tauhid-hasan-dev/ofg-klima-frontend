@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FilterDrawer, type SidebarProps } from "@/components/commerce/FilterSidebar";
-import { ChevronDownIcon, CloseIcon, GridFourIcon, GridTwoIcon, ListIcon } from "@/components/ui/icons";
+import { CheckIcon, ChevronDownIcon, CloseIcon, GridFourIcon, GridTwoIcon, ListIcon } from "@/components/ui/icons";
 import { QUERY_KEYS, buildListingUrl } from "@/lib/search-params";
 import { SORT_OPTIONS, type SortValue } from "@/lib/types";
 import { VIEW_KEY, type ViewMode } from "@/lib/view-mode";
@@ -79,6 +79,7 @@ export function ListingToolbar({
   view,
   sidebar,
   activeCount,
+  showSort = true,
 }: {
   pathname: string;
   total: number;
@@ -86,43 +87,78 @@ export function ListingToolbar({
   view: ViewMode;
   sidebar: SidebarProps;
   activeCount: number;
+  showSort?: boolean;
 }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const params = new URLSearchParams(searchParams.toString());
+  const inStockOnly = params.get(QUERY_KEYS.inStock) === "1";
 
   return (
     <div className="flex flex-wrap items-center justify-between gap-3 rounded-card bg-white p-3 ring-1 ring-ink-200">
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-4">
         <FilterDrawer {...sidebar} activeCount={activeCount} />
-        <p className="text-sm text-ink-600">
+
+        {/*
+          Requirement 5 puts "Stoktakiler" above the grid, not only in the
+          sidebar. It is the one filter people reach for constantly — "do you
+          have it today" — and burying it behind a facet group on mobile cost
+          a tap for the most common question on the page.
+        */}
+        <Link
+          href={buildListingUrl(pathname, params, {
+            set: { [QUERY_KEYS.inStock]: inStockOnly ? null : "1" },
+          })}
+          scroll={false}
+          aria-pressed={inStockOnly}
+          className="group flex shrink-0 items-center gap-2 text-sm"
+        >
+          <span
+            className={clsx(
+              "grid h-[1.15rem] w-[1.15rem] shrink-0 place-items-center rounded-[3px] border transition-colors",
+              inStockOnly
+                ? "border-brand-500 bg-brand-500 text-white"
+                : "border-ink-300 bg-white group-hover:border-ink-500",
+            )}
+            aria-hidden="true"
+          >
+            {inStockOnly ? <CheckIcon className="h-3 w-3" strokeWidth={3} /> : null}
+          </span>
+          <span className={clsx("whitespace-nowrap", inStockOnly ? "font-semibold text-ink-950" : "text-ink-700")}>
+            Stoktakiler
+          </span>
+        </Link>
+
+        <p className="hidden text-sm text-ink-600 sm:block">
           Toplam <strong className="font-bold text-ink-950 tabular">{total}</strong> ürün
         </p>
       </div>
 
       <div className="flex items-center gap-2">
-        <label className="relative">
-          <span className="sr-only">Sıralama</span>
-          <select
-            value={sort}
-            onChange={(event) => {
-              router.push(
-                buildListingUrl(pathname, params, {
-                  set: { [QUERY_KEYS.sort]: event.target.value },
-                }),
-                { scroll: false },
-              );
-            }}
-            className="h-10 appearance-none rounded-md border border-ink-300 bg-white py-0 pr-9 pl-3 text-sm font-medium text-ink-800 outline-none focus:border-ink-900"
-          >
-            {SORT_OPTIONS.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-          <ChevronDownIcon className="pointer-events-none absolute top-1/2 right-2.5 h-4 w-4 -translate-y-1/2 text-ink-500" />
-        </label>
+        {showSort ? (
+          <label className="relative">
+            <span className="sr-only">Sıralama</span>
+            <select
+              value={sort}
+              onChange={(event) => {
+                router.push(
+                  buildListingUrl(pathname, params, {
+                    set: { [QUERY_KEYS.sort]: event.target.value },
+                  }),
+                  { scroll: false },
+                );
+              }}
+              className="h-10 appearance-none rounded-md border border-ink-300 bg-white py-0 pr-9 pl-3 text-sm font-medium text-ink-800 outline-none focus:border-ink-900"
+            >
+              {SORT_OPTIONS.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+            <ChevronDownIcon className="pointer-events-none absolute top-1/2 right-2.5 h-4 w-4 -translate-y-1/2 text-ink-500" />
+          </label>
+        ) : null}
 
         <div className="hidden items-center gap-0.5 rounded-md border border-ink-300 p-0.5 sm:flex">
           {VIEW_MODES.map(({ value, label, Icon }) => {
@@ -136,7 +172,7 @@ export function ListingToolbar({
                 aria-current={isActive ? "true" : undefined}
                 className={clsx(
                   "grid h-8 w-9 place-items-center rounded transition-colors",
-                  isActive ? "bg-ink-950 text-brand-400" : "text-ink-500 hover:bg-ink-100 hover:text-ink-900",
+                  isActive ? "bg-brand-500 text-white" : "text-ink-500 hover:bg-ink-100 hover:text-ink-900",
                 )}
               >
                 <Icon className="h-5 w-5" />

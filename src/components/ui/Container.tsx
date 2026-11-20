@@ -17,7 +17,7 @@ export function Container({
   return <Tag className={clsx("mx-auto w-full max-w-[1440px] px-4 sm:px-6 lg:px-8", className)}>{children}</Tag>;
 }
 
-/** Section heading with the brand's yellow underscore rule. */
+/** Section heading with the brand's red underscore rule. */
 export function SectionHeading({
   title,
   href,
@@ -35,7 +35,7 @@ export function SectionHeading({
         {title}
         <span
           aria-hidden="true"
-          className="absolute bottom-0 left-0 h-1 w-16 bg-brand-400"
+          className="absolute bottom-0 left-0 h-1 w-16 bg-brand-500"
         />
       </h2>
       {href ? (

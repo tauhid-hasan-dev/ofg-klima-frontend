@@ -10,7 +10,7 @@ export function CartButton() {
   return (
     <Link
       href="/sepet"
-      className="group flex items-center gap-2 rounded-md px-2 py-2 text-ink-950 transition-colors hover:bg-ink-950/10"
+      className="group flex items-center gap-2 rounded-md px-2 py-2 text-ink-800 transition-colors hover:text-brand-600"
     >
       <span className="relative">
         <CartIcon className="h-6 w-6" />

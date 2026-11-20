@@ -69,7 +69,7 @@ export function HeroSlider({ slides }: { slides: Slide[] }) {
           hazard rule pinned to the bottom edge. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_70%_60%_at_75%_45%,rgba(255,212,0,0.16),transparent_70%)]"
+        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_70%_60%_at_75%_45%,rgba(231,26,33,0.22),transparent_70%)]"
       />
       <div aria-hidden="true" className="hazard-rule absolute inset-x-0 bottom-0 z-20 h-1.5 opacity-70" />
 
@@ -98,7 +98,7 @@ export function HeroSlider({ slides }: { slides: Slide[] }) {
             >
               {/* Copy — second on mobile so the part image leads the screen */}
               <div className="order-2 w-full max-w-2xl lg:order-1">
-                <span className="inline-block bg-brand-400 px-2.5 py-1 font-display text-[0.7rem] font-bold tracking-[0.14em] text-ink-950 uppercase sm:text-xs">
+                <span className="inline-block bg-brand-500 px-2.5 py-1 font-display text-[0.7rem] font-bold tracking-[0.14em] text-white uppercase sm:text-xs">
                   {slide.eyebrow}
                 </span>
 
@@ -113,7 +113,7 @@ export function HeroSlider({ slides }: { slides: Slide[] }) {
                 <Link
                   href={slide.href}
                   tabIndex={isActive ? 0 : -1}
-                  className="mt-7 inline-flex h-12 items-center gap-2 rounded-md bg-brand-400 px-6 short:mt-4 short:h-11 font-display text-sm font-bold tracking-wide text-ink-950 uppercase transition-transform hover:-translate-y-0.5 sm:mt-9 sm:h-14 sm:px-8 sm:text-base"
+                  className="mt-7 inline-flex h-12 items-center gap-2 rounded-md bg-brand-500 px-6 short:mt-4 short:h-11 font-display text-sm font-bold tracking-wide text-white uppercase transition-transform hover:-translate-y-0.5 sm:mt-9 sm:h-14 sm:px-8 sm:text-base"
                 >
                   {slide.cta}
                   <ChevronRightIcon className="h-5 w-5" />
@@ -159,7 +159,7 @@ export function HeroSlider({ slides }: { slides: Slide[] }) {
             type="button"
             onClick={() => go(index - 1)}
             aria-label="Önceki slayt"
-            className="absolute top-1/2 left-3 z-20 hidden h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-white/10 text-white backdrop-blur transition-colors hover:bg-brand-400 hover:text-ink-950 xl:grid"
+            className="absolute top-1/2 left-3 z-20 hidden h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-white/10 text-white backdrop-blur transition-colors hover:bg-brand-500 hover:text-white xl:grid"
           >
             <ChevronLeftIcon className="h-5 w-5" />
           </button>
@@ -167,7 +167,7 @@ export function HeroSlider({ slides }: { slides: Slide[] }) {
             type="button"
             onClick={() => go(index + 1)}
             aria-label="Sonraki slayt"
-            className="absolute top-1/2 right-3 z-20 hidden h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-white/10 text-white backdrop-blur transition-colors hover:bg-brand-400 hover:text-ink-950 xl:grid"
+            className="absolute top-1/2 right-3 z-20 hidden h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-white/10 text-white backdrop-blur transition-colors hover:bg-brand-500 hover:text-white xl:grid"
           >
             <ChevronRightIcon className="h-5 w-5" />
           </button>

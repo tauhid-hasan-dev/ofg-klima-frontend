@@ -44,7 +44,7 @@ function BrandTile({
 
         <div className="flex items-center justify-between">
           <span className="text-sm text-ink-600 tabular">{productCount} ürün</span>
-          <span className="grid h-7 w-7 place-items-center rounded-full bg-ink-100 text-ink-500 transition-colors group-hover:bg-brand-400 group-hover:text-ink-950">
+          <span className="grid h-7 w-7 place-items-center rounded-full bg-ink-100 text-ink-500 transition-colors group-hover:bg-brand-500 group-hover:text-white">
             <ChevronRightIcon className="h-4 w-4" />
           </span>
         </div>

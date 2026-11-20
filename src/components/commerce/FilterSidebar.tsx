@@ -19,6 +19,13 @@ export interface SidebarProps {
   priceRange: { min: number; max: number };
   /** Category links shown under "Ürün Grupları". */
   categoryLinks: Category[];
+  /**
+   * Children keyed by parent slug, so a group can expand in place
+   * (requirement 8). Absent for pages that only pass a flat list.
+   */
+  categoryChildren?: Record<string, Category[]>;
+  /** The category the page is currently showing, expanded by default. */
+  activeCategory?: string;
   /** Facets the page itself pins (e.g. the brand on /marka/sanden). */
   lockedFilters?: { label: string; value: string }[];
   /** Hide the brand facet where it would be a single locked value. */
@@ -139,7 +146,106 @@ function FacetGroup({
   );
 }
 
-function SidebarBody({ pathname, facets, priceRange, categoryLinks, lockedFilters, showBrandFacet = true, onNavigate }: SidebarProps & { onNavigate: (href: string) => void }) {
+/**
+ * "Ürün Grupları" — requirement 8.
+ *
+ * "kategori seçildiğinde alt başlıklar çıkmalı": picking a group reveals its
+ * sub-headings in place rather than navigating away and redrawing the rail.
+ * The group header is a link (it is a real category page) and the chevron is a
+ * separate button, so expanding to look does not cost you a page load, and
+ * clicking the name still takes you there — the two intents the one row has to
+ * serve without stealing from each other.
+ */
+function CategoryTree({
+  categories,
+  childrenBySlug,
+  activeCategory,
+  onNavigate,
+}: {
+  categories: Category[];
+  childrenBySlug?: Record<string, Category[]>;
+  activeCategory?: string;
+  onNavigate: (href: string) => void;
+}) {
+  // Whatever the page is showing starts open; everything else starts closed.
+  const [expanded, setExpanded] = useState<string | null>(activeCategory ?? null);
+
+  return (
+    <section className="px-4 py-3.5">
+      <h3 className="font-display text-sm font-bold tracking-wide text-ink-950 uppercase">Ürün Grupları</h3>
+
+      <ul className="mt-2.5">
+        {categories.map((category) => {
+          const children = childrenBySlug?.[category.slug] ?? [];
+          const isOpen = expanded === category.slug;
+          const isActive = activeCategory === category.slug;
+
+          return (
+            <li key={category.slug} className="border-b border-ink-100 last:border-b-0">
+              <div className="flex items-stretch">
+                <Link
+                  href={`/kategori/${category.slug}`}
+                  onClick={() => onNavigate(`/kategori/${category.slug}`)}
+                  className={clsx(
+                    "flex-1 rounded px-1 py-2 text-sm transition-colors hover:text-ink-950",
+                    isActive ? "font-semibold text-brand-600" : "text-ink-700",
+                  )}
+                >
+                  {category.name}
+                </Link>
+
+                {children.length > 0 ? (
+                  <button
+                    type="button"
+                    onClick={() => setExpanded(isOpen ? null : category.slug)}
+                    aria-expanded={isOpen}
+                    aria-label={`${category.name} alt kategorileri`}
+                    className="grid w-8 shrink-0 place-items-center text-ink-400 transition-colors hover:text-ink-900"
+                  >
+                    <ChevronDownIcon
+                      className={clsx("h-4 w-4 transition-transform duration-200", !isOpen && "-rotate-90")}
+                    />
+                  </button>
+                ) : null}
+              </div>
+
+              {isOpen && children.length > 0 ? (
+                <ul className="mb-1.5 ml-1 border-l-2 border-ink-200 pl-3">
+                  {children.map((child) => (
+                    <li key={child.slug}>
+                      <Link
+                        href={`/kategori/${child.slug}`}
+                        onClick={() => onNavigate(`/kategori/${child.slug}`)}
+                        className={clsx(
+                          "block rounded px-1 py-1.5 text-sm transition-colors hover:bg-ink-50 hover:text-ink-950",
+                          activeCategory === child.slug ? "font-semibold text-brand-600" : "text-ink-600",
+                        )}
+                      >
+                        {child.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
+            </li>
+          );
+        })}
+      </ul>
+    </section>
+  );
+}
+
+function SidebarBody({
+  pathname,
+  facets,
+  priceRange,
+  categoryLinks,
+  categoryChildren,
+  activeCategory,
+  lockedFilters,
+  showBrandFacet = true,
+  onNavigate,
+}: SidebarProps & { onNavigate: (href: string) => void }) {
   const searchParams = useSearchParams();
   const params = new URLSearchParams(searchParams.toString());
   const inStockOnly = params.get(QUERY_KEYS.inStock) === "1";
@@ -184,21 +290,12 @@ function SidebarBody({ pathname, facets, priceRange, categoryLinks, lockedFilter
       ) : null}
 
       {categoryLinks.length > 0 ? (
-        <section className="px-4 py-3.5">
-          <h3 className="font-display text-sm font-bold tracking-wide text-ink-950 uppercase">Ürün Grupları</h3>
-          <ul className="mt-2.5 space-y-0.5">
-            {categoryLinks.map((category) => (
-              <li key={category.slug}>
-                <Link
-                  href={`/kategori/${category.slug}`}
-                  className="block rounded px-1 py-1.5 text-sm text-ink-700 transition-colors hover:bg-ink-50 hover:text-ink-950"
-                >
-                  {category.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </section>
+        <CategoryTree
+          categories={categoryLinks}
+          childrenBySlug={categoryChildren}
+          activeCategory={activeCategory}
+          onNavigate={onNavigate}
+        />
       ) : null}
 
       <section className="px-4 py-3.5">

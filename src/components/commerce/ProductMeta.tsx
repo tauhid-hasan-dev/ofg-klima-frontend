@@ -1,6 +1,6 @@
 import { StarIcon } from "@/components/ui/icons";
-import { buildPrice } from "@/lib/currency";
-import { formatPrice, formatUsd } from "@/lib/format";
+import { buildPrice, type ExchangeRates } from "@/lib/currency";
+import { formatPrice } from "@/lib/format";
 import type { StockStatus } from "@/lib/types";
 import { clsx } from "@/lib/utils";
 
@@ -43,7 +43,7 @@ export function Rating({
         {[1, 2, 3, 4, 5].map((star) => (
           <StarIcon
             key={star}
-            className={clsx("h-3.5 w-3.5", star <= rounded ? "fill-brand-400 text-brand-500" : "text-ink-300")}
+            className={clsx("h-3.5 w-3.5", star <= rounded ? "fill-star-dim text-star" : "text-ink-300")}
           />
         ))}
       </span>
@@ -60,80 +60,69 @@ export function Rating({
 }
 
 /**
- * Dual-currency price, laid out the way the client's live site does it:
+ * Price, in Turkish lira only.
  *
- *   $340.00  $400.00        ← USD row, list price struck through in red
- *   16.889,81 TL  19.870,36 TL  ← TL row, same treatment
+ *   16.889,81 TL   19.870,36 TL   %15
+ *   └ sell price   └ struck list  └ discount
  *
- * USD leads because that is the currency the business quotes and invoices in;
- * TL is the derived figure. Both list prices come from the same USD ratio, so
- * the discount badge can never disagree between the two rows.
+ * The business still *holds* prices in USD — that is what DIA stores, what the
+ * category markup is applied to and what the catalogue sorts by — but the
+ * shopper is only ever shown lira. An earlier version printed both; it made a
+ * retail storefront read like a trade quotation, and the dollar figure was the
+ * one number on the card nobody buying a compressor needed.
+ *
+ * The discount percentage is still derived from the USD pair, so it can never
+ * drift from the two lira figures beside it by a rounding step.
  */
 export function PriceBlock({
   priceUsd,
   listPriceUsd,
+  rates,
   size = "md",
   className,
 }: {
   priceUsd: number;
   listPriceUsd?: number;
+  /**
+   * Pass the rate explicitly when this renders inside a client component.
+   * The TCMB cache lives on the server; a browser left to call `getRates()`
+   * itself falls back to the hard-coded figure and quotes a different lira
+   * price than the server-rendered card next to it.
+   */
+  rates?: ExchangeRates;
   size?: "sm" | "md" | "lg";
   className?: string;
 }) {
-  const price = buildPrice(priceUsd, listPriceUsd);
+  const price = buildPrice(priceUsd, listPriceUsd, rates);
   const discount = price.discountPercent;
 
   return (
-    <div className={clsx("flex flex-col gap-0.5", className)}>
-      <div className="flex flex-wrap items-baseline gap-x-2">
+    <div className={clsx("flex flex-wrap items-baseline gap-x-2 gap-y-0.5", className)}>
+      <span
+        className={clsx(
+          "font-display font-extrabold tracking-tight text-ink-950 tabular",
+          size === "lg" ? "text-3xl" : size === "md" ? "text-lg" : "text-[0.95rem]",
+        )}
+      >
+        {formatPrice(price.try)}
+      </span>
+
+      {price.listTry ? (
         <span
           className={clsx(
-            "font-display font-extrabold tracking-tight text-ink-950 tabular",
-            size === "lg" ? "text-3xl" : size === "md" ? "text-lg" : "text-[0.95rem]",
+            "text-ink-400 line-through tabular",
+            size === "lg" ? "text-base" : "text-xs",
           )}
         >
-          {formatUsd(price.usd)}
+          {formatPrice(price.listTry)}
         </span>
+      ) : null}
 
-        {price.listUsd ? (
-          <span
-            className={clsx(
-              "text-signal-500/80 line-through tabular",
-              size === "lg" ? "text-base" : "text-xs",
-            )}
-          >
-            {formatUsd(price.listUsd)}
-          </span>
-        ) : null}
-
-        {discount ? (
-          <span className="rounded bg-signal-500 px-1.5 py-0.5 text-[0.7rem] font-bold text-white tabular">
-            %{discount}
-          </span>
-        ) : null}
-      </div>
-
-      <div className="flex flex-wrap items-baseline gap-x-2">
-        <span
-          className={clsx(
-            "font-semibold text-ink-700 tabular",
-            size === "lg" ? "text-xl" : size === "md" ? "text-[0.95rem]" : "text-sm",
-          )}
-        >
-          {formatPrice(price.try)}
+      {discount ? (
+        <span className="rounded bg-signal-500 px-1.5 py-0.5 text-[0.7rem] font-bold text-white tabular">
+          %{discount}
         </span>
-
-        {price.listTry ? (
-          <span
-            className={clsx(
-              "text-signal-500/70 line-through tabular",
-              size === "lg" ? "text-sm" : "text-[0.7rem]",
-            )}
-          >
-            {formatPrice(price.listTry)}
-          </span>
-        ) : null}
-      </div>
+      ) : null}
     </div>
   );
 }

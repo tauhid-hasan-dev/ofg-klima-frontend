@@ -5,7 +5,6 @@ import Link from "next/link";
 import { QuantityStepper } from "@/components/commerce/AddToCartButton";
 import { ButtonLink } from "@/components/ui/Button";
 import { CartIcon, TrashIcon, WhatsAppIcon } from "@/components/ui/icons";
-import { usdToTry } from "@/lib/currency";
 import { formatPrice, whatsappLink } from "@/lib/format";
 import { site } from "@/lib/site";
 import { useCart } from "@/lib/store/cart";
@@ -17,6 +16,8 @@ export interface CartProduct {
   name: string;
   oem: string;
   priceUsd: number;
+  /** Unit price in TL, already converted at the server's TCMB rate. */
+  priceTry: number;
   image: string;
   brandName: string;
   orderable: boolean;
@@ -63,7 +64,7 @@ export function CartView({ catalogue }: { catalogue: Record<string, CartProduct>
     );
   }
 
-  const subtotal = items.reduce((total, { line, product }) => total + usdToTry(product.priceUsd) * line.quantity, 0);
+  const subtotal = items.reduce((total, { line, product }) => total + product.priceTry * line.quantity, 0);
   const shipping = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_FEE;
   const remaining = Math.max(0, FREE_SHIPPING_THRESHOLD - subtotal);
 
@@ -107,7 +108,7 @@ export function CartView({ catalogue }: { catalogue: Record<string, CartProduct>
                 />
                 <div className="flex items-center gap-4">
                   <span className="font-display text-lg font-extrabold text-ink-950 tabular">
-                    {formatPrice(usdToTry(product.priceUsd * line.quantity))}
+                    {formatPrice(product.priceTry * line.quantity)}
                   </span>
                   <button
                     type="button"

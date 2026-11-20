@@ -27,7 +27,10 @@ export function ProductGallery({ images, alt }: { images: string[]; alt: string 
           height={800}
           priority
           sizes="(min-width: 1024px) 45vw, 100vw"
-          className="h-auto w-full object-contain p-10"
+          // The artwork carries its own margin inside an 800x800 canvas, so the
+          // container adds only a little — p-10 on top of that left the part
+          // floating in the middle of a very large empty frame.
+          className="h-auto w-full object-contain p-4"
         />
       </div>
 
@@ -46,7 +49,7 @@ export function ProductGallery({ images, alt }: { images: string[]; alt: string 
                 index === active ? "ring-2 ring-ink-950" : "ring-ink-200 hover:ring-ink-400",
               )}
             >
-              <Image src={image} alt="" width={120} height={120} className="h-full w-full object-contain p-1.5" />
+              <Image src={image} alt="" width={120} height={120} className="h-full w-full object-contain" />
             </button>
           ))}
         </div>

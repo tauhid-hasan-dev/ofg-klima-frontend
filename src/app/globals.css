@@ -10,21 +10,27 @@
 
 /* ──────────────────────────────────────────────────────────────
    OFG design tokens
-   Industrial auto-parts commerce: high-visibility yellow, ink black,
-   signal red for actions/discounts, WhatsApp green for direct contact.
+   Industrial auto-parts commerce: OFG red, ink black, WhatsApp green
+   for direct contact.
+
+   The brand red is #E71A21 and it sits at --color-brand-500. Unlike the
+   yellow it replaced, it is a DARK surface: anything on `bg-brand-500`
+   takes white text, never `text-ink-950`. On dark backgrounds use
+   brand-400, which is light enough to clear 4.5:1 against ink-950.
    ────────────────────────────────────────────────────────────── */
 @theme {
   /* Brand */
-  --color-brand-50:  #fffbe6;
-  --color-brand-100: #fff5bf;
-  --color-brand-200: #ffec8a;
-  --color-brand-300: #ffe14d;
-  --color-brand-400: #ffd400;
-  --color-brand-500: #f5c400;
-  --color-brand-600: #d9a800;
-  --color-brand-700: #a87f00;
-  --color-brand-800: #6b5100;
-  --color-brand-900: #3d2e00;
+  --color-brand-50:  #fff1f1;
+  --color-brand-100: #ffe0e1;
+  --color-brand-200: #ffc6c8;
+  --color-brand-300: #fb9ca0;
+  --color-brand-400: #f4585e;
+  --color-brand-500: #e71a21;
+  --color-brand-600: #c7121a;
+  --color-brand-700: #a30f15;
+  --color-brand-800: #7d0e13;
+  --color-brand-900: #561013;
+  --color-brand-950: #2e0608;
 
   /* Ink (neutral ramp, slightly warm so it sits well next to the yellow) */
   --color-ink-50:  #f7f7f6;
@@ -39,10 +45,20 @@
   --color-ink-900: #141413;
   --color-ink-950: #0a0a09;
 
-  /* Signal */
-  --color-signal-400: #ef3b55;
-  --color-signal-500: #d7263d;
-  --color-signal-600: #b21730;
+  /*
+   * Signal — destructive actions, discounts, struck-through prices.
+   * Deliberately the same red as the brand: two competing reds on one page
+   * reads as a rendering bug, not a hierarchy. Kept as its own token set so
+   * the meaning stays legible at the call site.
+   */
+  --color-signal-400: #f4585e;
+  --color-signal-500: #e71a21;
+  --color-signal-600: #c7121a;
+
+  /* Ratings stay amber. Red stars read as an error state, not a score — and
+     next to a red brand they would be the third red thing in one card. */
+  --color-star: #f5a524;
+  --color-star-dim: #fbbf4d;
 
   --color-whatsapp: #25d366;
   --color-whatsapp-dark: #1da851;
@@ -72,13 +88,14 @@
      * no gap from an undershoot. Keep in sync with Header.tsx if its rows
      * change height.
      */
-    --header-h: 7.75rem; /* 124px — logo row + search row */
+    --header-h: 8rem; /* 128px — identity row (68) + search row (60) */
   }
 
-  /* The dark utility bar appears at lg, adding 36px. */
+  /* At lg the utility bar (36) and the red nav strip (48) both appear, and
+     the search moves up into the identity row (72). */
   @media (min-width: 64rem) {
     :root {
-      --header-h: 10rem; /* 160px */
+      --header-h: 9.75rem; /* 156px */
     }
   }
 
@@ -117,14 +134,14 @@
     border-radius: 2px;
   }
 
-  /* Keep the yellow header's focus ring visible against the yellow. */
+  /* The brand red is dark, so the ink outline disappears into it. */
   .on-brand :focus-visible {
-    outline-color: var(--color-ink-950);
+    outline-color: #ffffff;
   }
 
   ::selection {
-    background-color: var(--color-brand-400);
-    color: var(--color-ink-950);
+    background-color: var(--color-brand-500);
+    color: #ffffff;
   }
 }
 
@@ -135,7 +152,7 @@
     background-image: repeating-linear-gradient(
       -45deg,
       var(--color-ink-950) 0 8px,
-      var(--color-brand-400) 8px 16px
+      var(--color-brand-500) 8px 16px
     );
   }
 

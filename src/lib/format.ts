@@ -25,19 +25,13 @@ export function formatPrice(value: number): string {
   return `${formatNumber(value)} ${TL}`;
 }
 
-/**
- * 340 → "$340.00"
- *
- * US convention deliberately — the client's site prints `$340.00`, not
- * `340,00 $`. Mixing Turkish separators into a dollar figure would look like a
- * bug to anyone reading an invoice next to the screen.
+/*
+ * There is deliberately no `formatUsd` here. The storefront quotes Turkish
+ * lira and nothing else; USD exists only as the stored figure DIA supplies and
+ * the markup is applied to (see src/lib/pricing.ts), and it never reaches a
+ * page. If an admin screen ever needs to show cost prices, give it its own
+ * formatter rather than re-exposing one to the storefront by accident.
  */
-export function formatUsd(value: number): string {
-  const safe = Number.isFinite(value) ? value : 0;
-  const [whole, fraction] = Math.abs(safe).toFixed(2).split(".");
-  const grouped = whole.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  return `${safe < 0 ? "-" : ""}$${grouped}.${fraction}`;
-}
 
 /** 19870 → "%19" (rounded down, so we never overstate a discount). */
 export function discountPercent(price: number, listPrice?: number): number | null {

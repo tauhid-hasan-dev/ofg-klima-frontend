@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800" role="img">
+<defs>
+  <radialGradient id="bg" cx="50%" cy="42%" r="72%">
+    <stop offset="0%" stop-color="#fbfbfa"/>
+    <stop offset="100%" stop-color="#ececea"/>
+  </radialGradient>
+
+  <linearGradient id="steel" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%"   stop-color="#b9bcc0"/>
+    <stop offset="18%"  stop-color="#eef0f2"/>
+    <stop offset="45%"  stop-color="#c8ccd1"/>
+    <stop offset="72%"  stop-color="#8f949b"/>
+    <stop offset="100%" stop-color="#6d727a"/>
+  </linearGradient>
+
+  <linearGradient id="steelX" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0%"   stop-color="#80858d"/>
+    <stop offset="22%"  stop-color="#dfe2e5"/>
+    <stop offset="55%"  stop-color="#b4b9bf"/>
+    <stop offset="100%" stop-color="#787d85"/>
+  </linearGradient>
+
+  <linearGradient id="alu" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%"   stop-color="#d7dbe0"/>
+    <stop offset="35%"  stop-color="#f3f5f7"/>
+    <stop offset="70%"  stop-color="#bcc1c8"/>
+    <stop offset="100%" stop-color="#90959d"/>
+  </linearGradient>
+
+  <linearGradient id="dark" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%"   stop-color="#4a4d52"/>
+    <stop offset="30%"  stop-color="#2e3135"/>
+    <stop offset="100%" stop-color="#17191c"/>
+  </linearGradient>
+
+  <linearGradient id="brass" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%"   stop-color="#e3c88b"/>
+    <stop offset="35%"  stop-color="#c9a95b"/>
+    <stop offset="100%" stop-color="#8d7332"/>
+  </linearGradient>
+
+  <linearGradient id="red" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%"   stop-color="#f4585e"/>
+    <stop offset="45%"  stop-color="#e71a21"/>
+    <stop offset="100%" stop-color="#a30f15"/>
+  </linearGradient>
+
+  <linearGradient id="gloss" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%"   stop-color="#ffffff" stop-opacity="0.75"/>
+    <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+  </linearGradient>
+
+  <radialGradient id="hub" cx="38%" cy="32%" r="75%">
+    <stop offset="0%"   stop-color="#f2f4f6"/>
+    <stop offset="55%"  stop-color="#b6bbc1"/>
+    <stop offset="100%" stop-color="#70757d"/>
+  </radialGradient>
+
+  <filter id="drop" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur stdDeviation="16"/>
+  </filter>
+
+  <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+    <feGaussianBlur stdDeviation="4"/>
+  </filter>
+</defs>
+<ellipse cx="400" cy="614" rx="262" ry="26" fill="#1b1d20" opacity="0.28" filter="url(#drop)"/>
+<circle cx="236" cy="352" r="136" fill="url(#hub)" stroke="#5a5f66" stroke-width="3"/>
+<circle cx="236" cy="352" r="126" fill="none" stroke="#6b7079" stroke-width="3" opacity="0.65"/>
+<circle cx="236" cy="352" r="118.928" fill="none" stroke="#6b7079" stroke-width="3" opacity="0.65"/>
+<circle cx="236" cy="352" r="111.856" fill="none" stroke="#6b7079" stroke-width="3" opacity="0.65"/>
+<circle cx="236" cy="352" r="104.784" fill="none" stroke="#6b7079" stroke-width="3" opacity="0.65"/>
+<circle cx="236" cy="352" r="97.712" fill="none" stroke="#6b7079" stroke-width="3" opacity="0.65"/>
+<circle cx="236" cy="352" r="76.16" fill="url(#alu)" stroke="#5a5f66" stroke-width="3"/>
+<circle cx="236" cy="352" r="39.6032" fill="url(#red)" opacity="0.9"/>
+<circle cx="236" cy="352" r="16.7552" fill="url(#dark)"/>
+<circle cx="236" cy="292.595" r="7" fill="#50555c"/>
+<circle cx="287.446" cy="381.702" r="7" fill="#50555c"/>
+<circle cx="184.554" cy="381.702" r="7" fill="#50555c"/>
+<path d="M 138.08 294.88 a 136 136 0 0 1 70.72 -59.84" fill="none" stroke="#ffffff" stroke-width="10" stroke-linecap="round" opacity="0.5"/>
+<circle cx="520" cy="300" r="112" fill="url(#dark)" stroke="#5a5f66" stroke-width="4"/>
+<circle cx="520" cy="300" r="62" fill="url(#bg)" stroke="#5a5f66" stroke-width="4"/>
+<path d="M 520 188 l 46 -34 l 18 26" fill="none" stroke="#b9801f" stroke-width="9" stroke-linecap="round"/>
+<circle cx="430" cy="516" r="96" fill="url(#alu)" stroke="#5a5f66" stroke-width="4"/>
+<circle cx="430" cy="516" r="30" fill="url(#dark)"/>
+<circle cx="430" cy="516" r="66" fill="none" stroke="#7e848c" stroke-width="4" opacity="0.7"/>
+</svg>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { connection } from "next/server";
 import { Suspense } from "react";
 import { Breadcrumb, type Crumb } from "@/components/commerce/Breadcrumb";
 import { ProductGrid } from "@/components/commerce/ProductCard";
@@ -9,7 +10,7 @@ import { ProductGallery } from "@/components/commerce/ProductGallery";
 import { ProductPurchasePanel } from "@/components/commerce/ProductPurchasePanel";
 import { Container, SectionHeading } from "@/components/ui/Container";
 import { ClockIcon, ShieldIcon, TruckIcon } from "@/components/ui/icons";
-import { RATES, usdToTry } from "@/lib/currency";
+import { getRates, usdToTry } from "@/lib/currency";
 import { formatDate, formatNumber } from "@/lib/format";
 import {
   getAllProductSlugs,
@@ -56,6 +57,18 @@ const STOCK_AVAILABILITY: Record<string, string> = {
 };
 
 async function ProductContent({ params }: PageProps) {
+  /*
+   * Request-time, deliberately.
+   *
+   * Prices are USD converted at the current TCMB rate (requirement 10). A
+   * prerendered product page would bake whatever the rate was at build time
+   * and then show that number until the next deploy — which is exactly the
+   * stale-TL-column failure the pricing design exists to avoid. The shell
+   * around this boundary still prerenders, so the page paints immediately and
+   * the priced body streams in.
+   */
+  await connection();
+
   const { slug } = await params;
   const product = await getProduct(slug);
   if (!product) notFound();
@@ -69,6 +82,10 @@ async function ProductContent({ params }: PageProps) {
 
   const brandNames = Object.fromEntries(allBrands.map((item) => [item.slug, item.name]));
   const trail = category ? await getCategoryTrail(category.slug) : [];
+
+  // Read once per render so the buy box, the structured data and the rate
+  // footnote all quote the same figure even if TCMB refreshes mid-request.
+  const rates = getRates();
 
   const crumbs: Crumb[] = [
     ...trail.map((item) => ({ label: item.name, href: `/kategori/${item.slug}` })),
@@ -88,7 +105,7 @@ async function ProductContent({ params }: PageProps) {
       "@type": "Offer",
       url: `${site.url}/urun/${product.slug}`,
       priceCurrency: "TRY",
-      price: usdToTry(product.priceUsd).toFixed(2),
+      price: usdToTry(product.priceUsd, rates).toFixed(2),
       availability: STOCK_AVAILABILITY[product.stock],
       seller: { "@type": "Organization", name: site.legalName },
     },
@@ -107,7 +124,13 @@ async function ProductContent({ params }: PageProps) {
     <>
       <Breadcrumb items={crumbs} />
 
-      <div className="grid gap-8 pb-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:gap-12">
+      <div
+        // Scopes the analytics tracker's product view and any WhatsApp
+        // hand-off from this page to this product (requirement 16).
+        data-product-id={product.id}
+        data-product-name={product.name}
+        className="grid gap-8 pb-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:gap-12"
+      >
         {/* Media */}
         <ProductGallery images={product.images} alt={product.name} />
 
@@ -123,7 +146,7 @@ async function ProductContent({ params }: PageProps) {
               </Link>
             ) : null}
             {product.isBestSeller ? (
-              <span className="rounded bg-brand-400 px-2 py-1 text-xs font-bold text-ink-950 uppercase">
+              <span className="rounded bg-brand-500 px-2 py-1 text-xs font-bold text-white uppercase">
                 Çok satan
               </span>
             ) : null}
@@ -139,12 +162,17 @@ async function ProductContent({ params }: PageProps) {
 
           <div className="mt-5 rounded-card bg-ink-50 p-5 ring-1 ring-ink-200">
             <PriceBlock priceUsd={product.priceUsd} listPriceUsd={product.listPriceUsd} size="lg" />
-            <p className="mt-1 text-xs text-ink-500">
-              KDV dahil. TL tutar {RATES.source} kuru ({formatNumber(RATES.USD, 4)}) ile hesaplanmıştır.
+            {/* The rate is disclosed even though the dollar figure is not:
+                prices move with the lira, and a customer who sees yesterday's
+                price change should be able to see why. */}
+            <p className="mt-1.5 text-xs text-ink-500">
+              KDV dahildir. Fiyatlarımız {rates.source} ile güncellenir —{" "}
+              <span className="tabular">1 USD = {formatNumber(rates.USD, 4)} TL</span>,{" "}
+              <span className="tabular">{formatDate(rates.asOf)}</span>.
             </p>
 
             <div className="mt-5">
-              <ProductPurchasePanel product={product} />
+              <ProductPurchasePanel product={product} priceTry={usdToTry(product.priceUsd, rates)} />
             </div>
           </div>
 

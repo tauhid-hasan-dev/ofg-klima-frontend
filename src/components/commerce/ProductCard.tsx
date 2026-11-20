@@ -3,7 +3,7 @@ import Link from "next/link";
 import { AddToCartButton, CardQuantityAdd } from "@/components/commerce/AddToCartButton";
 import { PriceBlock, Rating, StockBadge, isOrderable } from "@/components/commerce/ProductMeta";
 import { WhatsAppIcon } from "@/components/ui/icons";
-import { usdToTry } from "@/lib/currency";
+import { usdToTry, type ExchangeRates } from "@/lib/currency";
 import { formatPrice, whatsappLink } from "@/lib/format";
 import { site } from "@/lib/site";
 import type { Product } from "@/lib/types";
@@ -11,21 +11,29 @@ import { clsx } from "@/lib/utils";
 
 export type CardLayout = "grid" | "list";
 
-function enquiryLink(product: Product): string {
+function enquiryLink(product: Product, rates?: ExchangeRates): string {
   return whatsappLink(
     site.whatsapp,
-    `Merhaba, "${product.name}" (Kod: ${product.oem}) ürünü hakkında bilgi almak istiyorum. Listelenen fiyat: ${formatPrice(usdToTry(product.priceUsd))}`,
+    `Merhaba, "${product.name}" (Kod: ${product.oem}) ürünü hakkında bilgi almak istiyorum. Listelenen fiyat: ${formatPrice(usdToTry(product.priceUsd, rates))}`,
   );
 }
 
 export function ProductCard({
   product,
   brandName,
+  rates,
   layout = "grid",
   priority = false,
 }: {
   product: Product;
   brandName: string;
+  /**
+   * Required when the card renders inside a client component (the
+   * infinite-scroll grid): the TCMB rate is server state, and a browser
+   * computing its own would price appended rows differently from the ones
+   * above them. Server callers can leave it out.
+   */
+  rates?: ExchangeRates;
   layout?: CardLayout;
   priority?: boolean;
 }) {
@@ -34,7 +42,13 @@ export function ProductCard({
 
   if (layout === "list") {
     return (
-      <article className="group flex gap-4 rounded-card bg-white p-4 shadow-card ring-1 ring-ink-200/70 transition-shadow hover:shadow-card-hover sm:gap-6">
+      <article
+        // Read by the analytics tracker so a WhatsApp click from this card is
+        // attributed to this product (requirement 16).
+        data-product-id={product.id}
+        data-product-name={product.name}
+        className="group flex gap-4 rounded-card bg-white p-4 shadow-card ring-1 ring-ink-200/70 transition-shadow hover:shadow-card-hover sm:gap-6"
+      >
         <Link href={href} className="relative block w-28 shrink-0 self-start sm:w-40" tabIndex={-1} aria-hidden="true">
           <div className="aspect-square overflow-hidden rounded-md bg-ink-50">
             <Image
@@ -42,7 +56,7 @@ export function ProductCard({
               alt=""
               width={400}
               height={400}
-              className="h-full w-full object-contain p-3 transition-transform duration-300 group-hover:scale-[1.04]"
+              className="h-full w-full object-contain p-1 transition-transform duration-300 group-hover:scale-[1.04]"
             />
           </div>
         </Link>
@@ -59,7 +73,7 @@ export function ProductCard({
               {product.oem}
             </code>
             {product.isBestSeller ? (
-              <span className="rounded bg-brand-400 px-1.5 py-0.5 text-[0.65rem] font-bold text-ink-950 uppercase">
+              <span className="rounded bg-brand-500 px-1.5 py-0.5 text-[0.65rem] font-bold text-white uppercase">
                 Çok satan
               </span>
             ) : null}
@@ -81,10 +95,10 @@ export function ProductCard({
           </div>
 
           <div className="mt-auto flex flex-wrap items-end justify-between gap-3 pt-2">
-            <PriceBlock priceUsd={product.priceUsd} listPriceUsd={product.listPriceUsd} />
+            <PriceBlock priceUsd={product.priceUsd} listPriceUsd={product.listPriceUsd} rates={rates} />
             <div className="flex items-center gap-2">
               <a
-                href={enquiryLink(product)}
+                href={enquiryLink(product, rates)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex h-10 items-center gap-2 rounded-md border border-whatsapp px-3 text-sm font-semibold text-whatsapp-dark transition-colors hover:bg-whatsapp hover:text-white"
@@ -101,7 +115,11 @@ export function ProductCard({
   }
 
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-card bg-white shadow-card ring-1 ring-ink-200/70 transition-shadow hover:shadow-card-hover">
+    <article
+      data-product-id={product.id}
+      data-product-name={product.name}
+      className="group flex h-full flex-col overflow-hidden rounded-card bg-white shadow-card ring-1 ring-ink-200/70 transition-shadow hover:shadow-card-hover"
+    >
       <Link href={href} className="relative block" tabIndex={-1} aria-hidden="true">
         <div className="aspect-square overflow-hidden bg-ink-50">
           <Image
@@ -111,13 +129,13 @@ export function ProductCard({
             height={400}
             priority={priority}
             sizes="(min-width: 1280px) 20vw, (min-width: 768px) 33vw, 50vw"
-            className="h-full w-full object-contain p-5 transition-transform duration-300 group-hover:scale-[1.06]"
+            className="h-full w-full object-contain p-2 transition-transform duration-300 group-hover:scale-[1.06]"
           />
         </div>
 
         <div className="absolute top-2.5 left-2.5 flex flex-col items-start gap-1.5">
           {product.isBestSeller ? (
-            <span className="rounded bg-brand-400 px-1.5 py-0.5 text-[0.65rem] font-bold text-ink-950 uppercase">
+            <span className="rounded bg-brand-500 px-1.5 py-0.5 text-[0.65rem] font-bold text-white uppercase">
               Çok satan
             </span>
           ) : null}
@@ -160,7 +178,7 @@ export function ProductCard({
         <Rating value={product.rating} count={product.reviewCount} />
 
         <div className="mt-auto space-y-2.5 pt-2">
-          <PriceBlock priceUsd={product.priceUsd} listPriceUsd={product.listPriceUsd} />
+          <PriceBlock priceUsd={product.priceUsd} listPriceUsd={product.listPriceUsd} rates={rates} />
           <StockBadge status={product.stock} />
 
           {/* Quantity is set on the card itself — see CardQuantityAdd. The
@@ -177,11 +195,13 @@ export function ProductCard({
 export function ProductGrid({
   products,
   brandNames,
+  rates,
   layout = "grid",
   columns = 4,
 }: {
   products: Product[];
   brandNames: Record<string, string>;
+  rates?: ExchangeRates;
   layout?: CardLayout;
   columns?: 2 | 3 | 4;
 }) {
@@ -193,6 +213,7 @@ export function ProductGrid({
             key={product.id}
             product={product}
             brandName={brandNames[product.brandSlug] ?? product.brandSlug}
+            rates={rates}
             layout="list"
           />
         ))}
@@ -214,6 +235,7 @@ export function ProductGrid({
           key={product.id}
           product={product}
           brandName={brandNames[product.brandSlug] ?? product.brandSlug}
+          rates={rates}
           priority={index < 4}
         />
       ))}

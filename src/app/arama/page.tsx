@@ -5,7 +5,7 @@ import { ListingSkeleton } from "@/components/commerce/ListingSkeleton";
 import { DetailedSearchForm } from "@/components/commerce/DetailedSearchForm";
 import { ProductListing } from "@/components/commerce/ProductListing";
 import { Container } from "@/components/ui/Container";
-import { getBrands, getTopLevelCategories, listProducts } from "@/lib/repository";
+import { getBrands, getCategoryRail, listProducts } from "@/lib/repository";
 import { parseProductQuery, type RawSearchParams } from "@/lib/search-params";
 
 export const metadata: Metadata = {
@@ -20,9 +20,9 @@ async function SearchResults({ searchParams }: { searchParams: Promise<RawSearch
   const query = parseProductQuery(resolved);
   const term = query.search ?? "";
 
-  const [result, categoryLinks, allBrands] = await Promise.all([
+  const [result, rail, allBrands] = await Promise.all([
     listProducts(query),
-    getTopLevelCategories(),
+    getCategoryRail(),
     getBrands(),
   ]);
 
@@ -45,7 +45,7 @@ async function SearchResults({ searchParams }: { searchParams: Promise<RawSearch
 
       <div className="pb-8">
         <DetailedSearchForm
-          categories={categoryLinks}
+          categories={rail.tops}
           brands={allBrands.filter((brand) => brand.kind === "manufacturer")}
           initial={{
             term,
@@ -63,7 +63,9 @@ async function SearchResults({ searchParams }: { searchParams: Promise<RawSearch
         searchParams={resolved}
         result={result}
         sort={query.sort ?? "recommended"}
-        categoryLinks={categoryLinks}
+        categoryLinks={rail.tops}
+        categoryChildren={rail.childrenBySlug}
+        activeCategory={query.category}
         emptyTitle={term ? `"${term}" için sonuç bulunamadı` : "Sonuç bulunamadı"}
         emptyBody="Parça kodunu boşluk veya tire olmadan yazmayı deneyin (örn. SD5S146634). Aradığınızı bulamazsanız WhatsApp'tan yazın, stoğumuzdan birlikte seçelim."
       />

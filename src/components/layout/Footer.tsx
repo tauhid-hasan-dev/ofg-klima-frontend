@@ -32,7 +32,7 @@ export function Footer() {
               const Icon = HIGHLIGHT_ICONS[index] ?? TruckIcon;
               return (
                 <li key={highlight.title} className="flex items-start gap-3">
-                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-lg bg-brand-400 text-ink-950">
+                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-lg bg-brand-500 text-white">
                     <Icon className="h-6 w-6" />
                   </span>
                   <span>
@@ -53,7 +53,7 @@ export function Footer() {
           <div className="grid gap-10 py-14 lg:grid-cols-[22rem_1fr]">
             {/* Identity + contact */}
             <div>
-              <Logo tone="onDark" showTagline />
+              <Logo tone="onDark" className="h-14" />
 
               <p className="mt-5 max-w-sm text-sm leading-relaxed text-ink-400">{site.description}</p>
 
@@ -96,7 +96,7 @@ export function Footer() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={label}
-                    className="grid h-10 w-10 place-items-center rounded-md bg-white/10 text-white transition-colors hover:bg-brand-400 hover:text-ink-950"
+                    className="grid h-10 w-10 place-items-center rounded-md bg-white/10 text-white transition-colors hover:bg-brand-500 hover:text-white"
                   >
                     <Icon className="h-5 w-5" />
                   </a>

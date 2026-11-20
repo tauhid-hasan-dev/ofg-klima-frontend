@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Archivo, Barlow, JetBrains_Mono } from "next/font/google";
+import { AnalyticsTracker } from "@/components/analytics/Tracker";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { HeaderHeightSync } from "@/components/layout/HeaderHeightSync";
@@ -65,7 +66,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#ffd400",
+  themeColor: "#e71a21",
   width: "device-width",
   initialScale: 1,
 };
@@ -91,6 +92,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
           <Footer />
           <WhatsAppFab />
+          <AnalyticsTracker />
         </CartProvider>
       </body>
     </html>

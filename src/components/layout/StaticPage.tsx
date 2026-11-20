@@ -49,7 +49,7 @@ export function StaticPage({ slug }: { slug: string }) {
         </h1>
 
         {page.lead ? (
-          <p className="mt-4 border-l-4 border-brand-400 pl-4 text-lg leading-relaxed text-ink-700">{page.lead}</p>
+          <p className="mt-4 border-l-4 border-brand-500 pl-4 text-lg leading-relaxed text-ink-700">{page.lead}</p>
         ) : null}
 
         <div className="mt-8 space-y-5">

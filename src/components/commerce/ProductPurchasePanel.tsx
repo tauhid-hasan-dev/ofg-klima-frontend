@@ -4,16 +4,21 @@ import { useState } from "react";
 import { AddToCartButton, QuantityStepper } from "@/components/commerce/AddToCartButton";
 import { ButtonLink } from "@/components/ui/Button";
 import { WhatsAppIcon } from "@/components/ui/icons";
-import { usdToTry } from "@/lib/currency";
-import { formatPrice, formatUsd, whatsappLink } from "@/lib/format";
+import { formatPrice, whatsappLink } from "@/lib/format";
 import { site } from "@/lib/site";
 import type { Product } from "@/lib/types";
 
-export function ProductPurchasePanel({ product }: { product: Product }) {
+/**
+ * `priceTry` is converted on the server and passed in, not computed here. The
+ * TCMB rate lives in a server-side cache; a client-side conversion would fall
+ * back to the hard-coded rate and quote a different lira figure than the price
+ * block two centimetres above it.
+ */
+export function ProductPurchasePanel({ product, priceTry }: { product: Product; priceTry: number }) {
   const [quantity, setQuantity] = useState(1);
   const orderable = product.stock !== "out_of_stock";
 
-  const message = `Merhaba, "${product.name}" (Kod: ${product.oem}) ürününden ${quantity} adet almak istiyorum. Listelenen fiyat: ${formatUsd(product.priceUsd)} / ${formatPrice(usdToTry(product.priceUsd))}`;
+  const message = `Merhaba, "${product.name}" (Kod: ${product.oem}) ürününden ${quantity} adet almak istiyorum. Listelenen fiyat: ${formatPrice(priceTry)}`;
 
   return (
     <div className="space-y-4">
@@ -21,7 +26,7 @@ export function ProductPurchasePanel({ product }: { product: Product }) {
         <QuantityStepper value={quantity} onChange={setQuantity} />
         <span className="text-sm text-ink-500 tabular">
           Ara toplam:{" "}
-          <strong className="font-semibold text-ink-900">{formatUsd(product.priceUsd * quantity)} · {formatPrice(usdToTry(product.priceUsd * quantity))}</strong>
+          <strong className="font-semibold text-ink-900">{formatPrice(priceTry * quantity)}</strong>
         </span>
       </div>
 

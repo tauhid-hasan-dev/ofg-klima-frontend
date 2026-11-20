@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800" role="img">
+<defs>
+  <radialGradient id="bg" cx="50%" cy="42%" r="72%">
+    <stop offset="0%" stop-color="#fbfbfa"/>
+    <stop offset="100%" stop-color="#ececea"/>
+  </radialGradient>
+
+  <linearGradient id="steel" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%"   stop-color="#b9bcc0"/>
+    <stop offset="18%"  stop-color="#eef0f2"/>
+    <stop offset="45%"  stop-color="#c8ccd1"/>
+    <stop offset="72%"  stop-color="#8f949b"/>
+    <stop offset="100%" stop-color="#6d727a"/>
+  </linearGradient>
+
+  <linearGradient id="steelX" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0%"   stop-color="#80858d"/>
+    <stop offset="22%"  stop-color="#dfe2e5"/>
+    <stop offset="55%"  stop-color="#b4b9bf"/>
+    <stop offset="100%" stop-color="#787d85"/>
+  </linearGradient>
+
+  <linearGradient id="alu" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%"   stop-color="#d7dbe0"/>
+    <stop offset="35%"  stop-color="#f3f5f7"/>
+    <stop offset="70%"  stop-color="#bcc1c8"/>
+    <stop offset="100%" stop-color="#90959d"/>
+  </linearGradient>
+
+  <linearGradient id="dark" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%"   stop-color="#4a4d52"/>
+    <stop offset="30%"  stop-color="#2e3135"/>
+    <stop offset="100%" stop-color="#17191c"/>
+  </linearGradient>
+
+  <linearGradient id="brass" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%"   stop-color="#e3c88b"/>
+    <stop offset="35%"  stop-color="#c9a95b"/>
+    <stop offset="100%" stop-color="#8d7332"/>
+  </linearGradient>
+
+  <linearGradient id="red" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%"   stop-color="#f4585e"/>
+    <stop offset="45%"  stop-color="#e71a21"/>
+    <stop offset="100%" stop-color="#a30f15"/>
+  </linearGradient>
+
+  <linearGradient id="gloss" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%"   stop-color="#ffffff" stop-opacity="0.75"/>
+    <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+  </linearGradient>
+
+  <radialGradient id="hub" cx="38%" cy="32%" r="75%">
+    <stop offset="0%"   stop-color="#f2f4f6"/>
+    <stop offset="55%"  stop-color="#b6bbc1"/>
+    <stop offset="100%" stop-color="#70757d"/>
+  </radialGradient>
+
+  <filter id="drop" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur stdDeviation="16"/>
+  </filter>
+
+  <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+    <feGaussianBlur stdDeviation="4"/>
+  </filter>
+</defs>
+<ellipse cx="400" cy="648" rx="220" ry="28" fill="#1b1d20" opacity="0.28" filter="url(#drop)"/>
+<ellipse cx="400" cy="400" rx="256" ry="168" fill="#d9dde1" stroke="#5a5f66" stroke-width="5"/>
+<ellipse cx="400" cy="400" rx="222" ry="142" fill="url(#bg)" stroke="#5a5f66" stroke-width="4"/>
+<g transform="translate(400 400) scale(1 0.64) translate(-400 -400)"><path d="M 455.12 400 Q 533.438 459.274 575.756 518.549 L 512.141 579.912 Q 498.257 503.169 448.372 426.426 Z" fill="url(#dark)" stroke="#5a5f66" stroke-width="3" opacity="0.95"/>
+<path d="M 434.367 443.095 Q 443.632 527.21 416.897 611.326 L 329.258 599.849 Q 387.379 527.072 409.499 454.295 Z" fill="url(#dark)" stroke="#5a5f66" stroke-width="3" opacity="0.95"/>
+<path d="M 387.735 453.738 Q 334.524 499.354 245.314 544.97 L 199.645 469.295 Q 299.559 455.287 363.473 441.279 Z" fill="url(#dark)" stroke="#5a5f66" stroke-width="3" opacity="0.95"/>
+<path d="M 350.339 423.916 Q 288.276 396.682 190.213 369.449 L 220.903 286.561 Q 300.928 341.87 344.952 397.179 Z" fill="url(#dark)" stroke="#5a5f66" stroke-width="3" opacity="0.95"/>
+<path d="M 350.339 376.084 Q 339.712 296.509 293.086 216.933 L 377.025 189.249 Q 390.454 272.226 367.884 355.203 Z" fill="url(#dark)" stroke="#5a5f66" stroke-width="3" opacity="0.95"/>
+<path d="M 387.735 346.262 Q 450.101 274.266 476.467 202.271 L 550.447 250.636 Q 500.723 298.798 415 346.96 Z" fill="url(#dark)" stroke="#5a5f66" stroke-width="3" opacity="0.95"/>
+<path d="M 434.367 356.905 Q 536.317 346.704 602.267 336.502 L 610.58 424.498 Q 548.7 401.578 450.82 378.657 Z" fill="url(#dark)" stroke="#5a5f66" stroke-width="3" opacity="0.95"/></g>
+<ellipse cx="400" cy="400" rx="76" ry="48" fill="url(#hub)" stroke="#5a5f66" stroke-width="4"/>
+<ellipse cx="400" cy="400" rx="32" ry="20" fill="url(#red)"/>
+<path d="M 200 348 a 256 168 0 0 1 150 -92" fill="none" stroke="#ffffff" stroke-width="12" opacity="0.5" stroke-linecap="round"/>
+</svg>
