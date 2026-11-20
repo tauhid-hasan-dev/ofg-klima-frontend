@@ -117,7 +117,7 @@ export function ListingToolbar({
             className={clsx(
               "grid h-[1.15rem] w-[1.15rem] shrink-0 place-items-center rounded-[3px] border transition-colors",
               inStockOnly
-                ? "border-brand-500 bg-brand-500 text-white"
+                ? "border-navy-600 bg-navy-600 text-white"
                 : "border-ink-300 bg-white group-hover:border-ink-500",
             )}
             aria-hidden="true"
@@ -172,7 +172,7 @@ export function ListingToolbar({
                 aria-current={isActive ? "true" : undefined}
                 className={clsx(
                   "grid h-8 w-9 place-items-center rounded transition-colors",
-                  isActive ? "bg-brand-500 text-white" : "text-ink-500 hover:bg-ink-100 hover:text-ink-900",
+                  isActive ? "bg-navy-600 text-white" : "text-ink-500 hover:bg-ink-100 hover:text-ink-900",
                 )}
               >
                 <Icon className="h-5 w-5" />

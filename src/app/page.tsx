@@ -25,6 +25,18 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
 };
 
+/**
+ * Hero slides.
+ *
+ * Each one is a photograph of the part it is selling, shot on a dark set with
+ * the subject to the right — which is why the copy sits left and the scrim
+ * ramps that way. `focus` pushes the crop right so the part survives the hard
+ * horizontal crop a portrait phone gives a 2.37:1 image.
+ *
+ * Three slides, not four: there are three banner photographs, and a fourth
+ * slide would have to fall back to a drawing and break the set. Adding one is
+ * a matter of dropping `public/banners/hero-4.jpg` in and adding the entry.
+ */
 const slides: Slide[] = [
   {
     eyebrow: "Sanden Yetkili Stok",
@@ -32,31 +44,26 @@ const slides: Slide[] = [
     text: "SD5H14, SD7H15, SD6V12 ve PXE serisi kompresörler stoklarımızda. Orijinal kutusunda, faturalı ve 12 ay garantili.",
     href: "/marka/sanden",
     cta: "Şimdi İncele",
-    image: "/parts/kompresor.svg",
+    image: "/banners/hero-1.jpg",
+    focus: "72% center",
+  },
+  {
+    eyebrow: "Geniş Araç Uyumu",
+    title: "Wutse Klima Kompresörleri",
+    text: "Binek ve ticari araçlar için muadil kompresörler. Her ürün OEM kodu ve uyumlu araç listesiyle birlikte yayınlanır.",
+    href: "/marka/wutse",
+    cta: "Ürünleri İncele",
+    image: "/banners/hero-2.jpg",
+    focus: "70% center",
   },
   {
     eyebrow: "Komple Set Avantajı",
     title: "Klima Kasnak Setleri",
     text: "Kasnak, manyetik bobin ve baskı plakası tek pakette. Tek tek parça aramaya son.",
-    href: "/kategori/klima-kasnak-seti",
+    href: "/kategori/kompresor-yedek-parca",
     cta: "Setleri Gör",
-    image: "/parts/kasnak.svg",
-  },
-  {
-    eyebrow: "Yeni Sezon",
-    title: "Kondenser ve Klima Radyatörleri",
-    text: "Alüminyum kanatlı, sızdırmazlık testinden geçmiş kondenserler. Üniversal ve araca özel ölçülerde.",
-    href: "/kategori/klima-radyatoru",
-    cta: "Ürünleri İncele",
-    image: "/parts/kondenser.svg",
-  },
-  {
-    eyebrow: "R134a / R1234yf",
-    title: "Oto Klima Gazları",
-    text: "Orijinal ambalajında soğutucu akışkanlar, 1 kg bidondan 13,6 kg tüpe kadar.",
-    href: "/kategori/oto-klima-gazi",
-    cta: "Gaz Çeşitleri",
-    image: "/parts/gaz.svg",
+    image: "/banners/hero-3.jpg",
+    focus: "68% center",
   },
 ];
 
@@ -167,7 +174,7 @@ export default async function HomePage() {
       <HeroSlider slides={slides} />
 
       {/* Requirement 4 — supplier logos directly under the banner. */}
-      <BrandStrip brands={manufacturers.map(({ slug, name, productCount }) => ({ slug, name, productCount }))} />
+      <BrandStrip brands={manufacturers.map(({ slug, name, productCount, logo }) => ({ slug, name, productCount, logo }))} />
 
       {/* Category entry points */}
       <Container className="pt-14">
@@ -176,13 +183,19 @@ export default async function HomePage() {
           {categoryCards.map(({ category, children }) => (
             <li key={category.slug}>
               <div className="group flex h-full flex-col overflow-hidden rounded-card bg-white ring-1 ring-ink-200 transition-shadow hover:shadow-card-hover">
-                <Link href={`/kategori/${category.slug}`} className="block bg-ink-50 p-5">
+                {/* White, not grey: these tiles now mix photographs shot on a
+                    white sweep with generated renders, and a grey tile put a
+                    white rectangle inside a grey frame on every photo. */}
+                <Link
+                  href={`/kategori/${category.slug}`}
+                  className="block border-b border-ink-100 bg-white p-5"
+                >
                   <Image
                     src={category.image}
                     alt=""
                     width={400}
                     height={300}
-                    className="mx-auto h-28 w-auto transition-transform duration-300 group-hover:scale-105"
+                    className="mx-auto h-28 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
                   />
                 </Link>
 
@@ -227,39 +240,50 @@ export default async function HomePage() {
           above already lists the same eleven brands, and showing them twice on
           one page made neither instance feel like the way in. */}
 
-      {/* Two-up brand banners, as on the reference home page */}
+      {/*
+        Two-up brand banners, as on the reference home page.
+
+        These are photographs rather than panels with a part dropped on them:
+        each banner photo already carries its own lit background, so the card
+        is the image plus a scrim, and the only drawn element is the type.
+      */}
       <Container className="pt-14">
         <div className="grid gap-4 lg:grid-cols-2">
           {[
-            // One red panel, one ink: on the red one the brand name has to be
-            // white, since brand-400 on brand-600 is two reds on top of each
-            // other.
-            { slug: "valeo", name: "VALEO", theme: "bg-brand-600", title: "text-white", image: "/parts/kompresor.svg" },
-            { slug: "denso", name: "DENSO", theme: "bg-ink-950", title: "text-brand-400", image: "/parts/kompresor.svg" },
+            { slug: "valeo", name: "VALEO", image: "/banners/theme-1.png", focus: "right center" },
+            { slug: "denso", name: "DENSO", image: "/banners/theme-2.png", focus: "right center" },
           ].map((banner) => (
             <Link
               key={banner.slug}
               href={`/marka/${banner.slug}`}
-              className={`group relative flex min-h-[15rem] items-center overflow-hidden rounded-card ${banner.theme}`}
+              className="group relative flex min-h-[15rem] items-center overflow-hidden rounded-card bg-navy-900"
             >
-              <div className="relative z-10 max-w-[55%] p-8 lg:p-10">
-                <span className={`block font-display text-2xl font-extrabold tracking-tight ${banner.title}`}>
-                  {banner.name}
-                </span>
-                <span className="mt-1 block font-display text-lg font-bold tracking-tight text-white uppercase">
-                  Klima Kompresörü
-                </span>
-                <span className="mt-6 inline-flex h-11 items-center rounded-full bg-white px-6 text-sm font-bold text-ink-950">
-                  Ürünleri İncele!
-                </span>
-              </div>
               <Image
                 src={banner.image}
                 alt=""
-                width={420}
-                height={315}
-                className="absolute right-0 bottom-0 h-auto w-[48%] max-w-[16rem] translate-x-4 transition-transform duration-300 group-hover:scale-105"
+                fill
+                sizes="(min-width: 1024px) 50vw, 100vw"
+                className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                style={{ objectPosition: banner.focus }}
               />
+              {/* Left-weighted so the type has a surface and the part does not
+                  disappear under a flat overlay. */}
+              <div
+                aria-hidden="true"
+                className="absolute inset-0 bg-[linear-gradient(95deg,rgba(17,16,42,0.92)_0%,rgba(17,16,42,0.72)_38%,rgba(17,16,42,0.12)_72%,transparent_100%)]"
+              />
+
+              <div className="relative z-10 max-w-[60%] p-8 lg:p-10">
+                <span className="block font-display text-2xl font-extrabold tracking-tight text-white">
+                  {banner.name}
+                </span>
+                <span className="mt-1 block font-display text-lg font-bold tracking-tight text-navy-200 uppercase">
+                  Klima Kompresörü
+                </span>
+                <span className="mt-6 inline-flex h-11 items-center rounded-full bg-brand-500 px-6 text-sm font-bold text-white">
+                  Ürünleri İncele!
+                </span>
+              </div>
             </Link>
           ))}
         </div>
@@ -271,7 +295,7 @@ export default async function HomePage() {
 
       {/* Fitment help — the single biggest source of enquiries in this trade */}
       <Container className="pt-16">
-        <div className="overflow-hidden rounded-card bg-ink-950">
+        <div className="overflow-hidden rounded-card bg-navy-900">
           <div className="grid items-center gap-8 p-8 lg:grid-cols-[1.3fr_1fr] lg:p-12">
             <div>
               <span className="inline-block bg-brand-500 px-2.5 py-1 font-display text-xs font-bold tracking-[0.12em] text-white uppercase">
@@ -280,7 +304,7 @@ export default async function HomePage() {
               <h2 className="mt-4 font-display text-2xl font-extrabold tracking-tight text-white sm:text-3xl">
                 Aracınıza hangi kompresör uyuyor, emin değil misiniz?
               </h2>
-              <p className="mt-3 max-w-xl text-[0.95rem] leading-relaxed text-ink-300">
+              <p className="mt-3 max-w-xl text-[0.95rem] leading-relaxed text-navy-200">
                 Şasi numaranızı ya da sökülen parçanın üzerindeki kodu bize iletin; stoğumuzdaki doğru muadili
                 dakikalar içinde teyit edelim. Yanlış parça göndermemek, iade sürecinden iyidir.
               </p>
@@ -310,7 +334,7 @@ export default async function HomePage() {
               ].map((item) => (
                 <li key={item.step} className="flex items-center gap-4 rounded-md bg-white/5 px-4 py-3.5">
                   <span className="font-display text-2xl font-extrabold text-brand-400 tabular">{item.step}</span>
-                  <span className="text-sm text-ink-200">{item.text}</span>
+                  <span className="text-sm text-navy-100">{item.text}</span>
                 </li>
               ))}
             </ul>
@@ -326,7 +350,7 @@ export default async function HomePage() {
             <li key={brand.slug}>
               <Link
                 href={`/marka/${brand.slug}`}
-                className="inline-flex items-center gap-2 rounded-full border border-ink-300 py-2 pr-3 pl-4 text-sm font-semibold text-ink-800 transition-colors hover:border-ink-950 hover:bg-ink-950 hover:text-brand-400"
+                className="inline-flex items-center gap-2 rounded-full border border-ink-300 py-2 pr-3 pl-4 text-sm font-semibold text-ink-800 transition-colors hover:border-navy-700 hover:bg-navy-900 hover:text-brand-400"
               >
                 {brand.name}
                 <span className="rounded-full bg-ink-100 px-1.5 text-[0.7rem] text-ink-600 tabular">

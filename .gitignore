@@ -42,3 +42,7 @@ next-env.d.ts
 
 # analytics event log (src/lib/analytics/store.ts)
 /.data
+.vercel
+
+# Untouched downloads kept by scripts/strip-watermark.py - never served, never committed
+.cache/

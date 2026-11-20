@@ -113,7 +113,7 @@ function FacetGroup({
                       className={clsx(
                         "grid h-[1.1rem] w-[1.1rem] shrink-0 place-items-center rounded-[3px] border transition-colors",
                         isSelected
-                          ? "border-ink-950 bg-ink-950 text-brand-400"
+                          ? "border-navy-700 bg-navy-900 text-brand-400"
                           : "border-ink-300 bg-white group-hover:border-ink-500",
                       )}
                       aria-hidden="true"
@@ -314,7 +314,7 @@ function SidebarBody({
           <span
             className={clsx(
               "grid h-[1.1rem] w-[1.1rem] shrink-0 place-items-center rounded-[3px] border transition-colors",
-              inStockOnly ? "border-ink-950 bg-ink-950 text-brand-400" : "border-ink-300 bg-white group-hover:border-ink-500",
+              inStockOnly ? "border-navy-700 bg-navy-900 text-brand-400" : "border-ink-300 bg-white group-hover:border-ink-500",
             )}
             aria-hidden="true"
           >
@@ -420,7 +420,7 @@ export function FilterDrawer(props: SidebarProps & { activeCount: number }) {
         <FilterIcon className="h-5 w-5" />
         Filtrele
         {props.activeCount > 0 ? (
-          <span className="grid h-5 min-w-5 place-items-center rounded-full bg-ink-950 px-1 text-[0.68rem] font-bold text-brand-400 tabular">
+          <span className="grid h-5 min-w-5 place-items-center rounded-full bg-navy-900 px-1 text-[0.68rem] font-bold text-brand-400 tabular">
             {props.activeCount}
           </span>
         ) : null}
@@ -432,7 +432,7 @@ export function FilterDrawer(props: SidebarProps & { activeCount: number }) {
             type="button"
             aria-label="Filtreleri kapat"
             onClick={() => setOpen(false)}
-            className="absolute inset-0 bg-ink-950/60"
+            className="absolute inset-0 bg-navy-950/60"
           />
           <div
             role="dialog"

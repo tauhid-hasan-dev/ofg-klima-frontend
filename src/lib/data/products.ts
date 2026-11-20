@@ -1,3 +1,4 @@
+import { photoForFamily } from "@/lib/data/media";
 import type { Product, ProductSpec, StockStatus } from "@/lib/types";
 
 /**
@@ -183,10 +184,16 @@ export function slugify(value: string): string {
  * at these paths.
  */
 export function partFamily(categorySlug: string): string {
-  if (categorySlug.includes("kompresor") && !categorySlug.includes("kapak")) return "kompresor";
-  if (categorySlug.includes("radyator") || categorySlug.includes("kondenser")) return "kondenser";
+  /*
+   * Clutch parts are tested before compressors, not after, because their
+   * slugs contain the word "kompresör" too: "kompresor-yedek-parca" and
+   * "kompresor-kasnagi" are pulleys and coils, not compressors, and the
+   * other order gave both of them a photograph of a whole compressor.
+   */
   if (
     categorySlug.includes("kasnak") ||
+    categorySlug.includes("kasnag") ||
+    categorySlug.includes("yedek-parca") ||
     categorySlug.includes("bobin") ||
     categorySlug.includes("plaka") ||
     categorySlug.includes("playt") ||
@@ -194,6 +201,8 @@ export function partFamily(categorySlug: string): string {
   ) {
     return "kasnak";
   }
+  if (categorySlug.includes("kompresor") && !categorySlug.includes("kapak")) return "kompresor";
+  if (categorySlug.includes("radyator") || categorySlug.includes("kondenser")) return "kondenser";
   if (categorySlug.includes("evaporator") || categorySlug.includes("petegi")) return "evaporator";
   if (categorySlug.includes("drayer") || categorySlug.includes("kurutucu")) return "drayer";
   if (categorySlug.includes("oring") || categorySlug.includes("kece") || categorySlug.includes("pul")) {
@@ -225,17 +234,36 @@ export function partFamily(categorySlug: string): string {
 /**
  * The gallery for one product: all three views of its family.
  *
+ * Still the generated renders rather than photographs, deliberately. Real
+ * per-product photography is the intended end state and the path for it is
+ * documented in `scripts/build-media-manifest.py` — but one photograph per
+ * *family* cannot stand in for it here. Sixty compressor cards showing the
+ * same photograph reads as a broken image loader, where sixty renders that
+ * differ from one another read as a catalogue. Photography is used where one
+ * image genuinely represents the group: see `categoryImage` below.
+ *
  * The lead image alternates between views 1 and 2 so a category grid is not
- * sixty copies of one drawing — that reads as a broken image loader rather
- * than as a catalogue. View 3 is always last and never the thumbnail: it is a
- * close-up of one feature, and a compressor whose card shows only its pulley
- * looks like a pulley for sale.
+ * sixty copies of one drawing. View 3 is always last and never the thumbnail:
+ * it is a close-up of one feature, and a compressor whose card shows only its
+ * pulley looks like a pulley for sale.
  */
 function productImages(categorySlug: string, h: number): string[] {
   const family = partFamily(categorySlug);
   const lead = (h % 2) + 1;
   const second = lead === 1 ? 2 : 1;
   return [lead, second, 3].map((view) => `/parts/${family}-${view}.svg`);
+}
+
+/**
+ * The single image that represents a whole category — the category card on the
+ * home page, the mega-menu panel, the listing header.
+ *
+ * This is the one place a per-family photograph is the right unit, so it uses
+ * a real one wherever `public/categories/` has it and falls back to the
+ * family's render otherwise.
+ */
+export function categoryImage(categorySlug: string, fallback: string): string {
+  return photoForFamily(partFamily(categorySlug)) ?? fallback;
 }
 
 function buildSpecs(row: Row, seed: string): ProductSpec[] {

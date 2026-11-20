@@ -90,7 +90,7 @@ export default function ContactPage() {
             ))}
           </ul>
 
-          <div className="rounded-card bg-ink-950 p-5 text-ink-300">
+          <div className="rounded-card bg-navy-900 p-5 text-navy-200">
             <h2 className="font-display text-sm font-bold tracking-wide text-brand-400 uppercase">
               Bayilik Başvurusu
             </h2>

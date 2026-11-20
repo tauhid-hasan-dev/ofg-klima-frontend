@@ -138,7 +138,7 @@ export function SearchBar({
           event.preventDefault();
           submit();
         }}
-        className="flex h-12 items-stretch overflow-hidden rounded-lg bg-white ring-1 ring-ink-950/10 focus-within:ring-2 focus-within:ring-ink-950"
+        className="flex h-12 items-stretch overflow-hidden rounded-lg bg-white ring-1 ring-navy-900/10 focus-within:ring-2 focus-within:ring-navy-800"
       >
         <label htmlFor={`${listboxId}-input`} className="sr-only">
           Ürün ara
@@ -177,17 +177,25 @@ export function SearchBar({
           </button>
         ) : null}
 
+        {/*
+          Red, not navy. This field sits inside the navy band at lg, and a
+          navy button on a navy band had no edge — it read as part of the
+          strip rather than as the control that runs the search.
+        */}
         <button
           type="submit"
-          className="grid w-14 place-items-center bg-ink-950 text-brand-400 transition-colors hover:bg-ink-800"
+          className="grid w-14 place-items-center gap-1.5 bg-brand-500 text-white transition-colors hover:bg-brand-600 sm:w-[5.5rem] sm:grid-flow-col"
           aria-label="Ara"
         >
           <SearchIcon className="h-5 w-5" />
+          <span className="hidden font-display text-[0.78rem] font-bold tracking-wide uppercase sm:inline">
+            Ara
+          </span>
         </button>
       </form>
 
       {showPanel ? (
-        <div className="absolute inset-x-0 top-[calc(100%+0.5rem)] z-50 overflow-hidden rounded-lg bg-white shadow-menu ring-1 ring-ink-950/10">
+        <div className="absolute inset-x-0 top-[calc(100%+0.5rem)] z-50 overflow-hidden rounded-lg bg-white shadow-menu ring-1 ring-navy-900/10">
           <ul id={listboxId} role="listbox" aria-label="Ürün önerileri" className="max-h-[22rem] overflow-y-auto py-1">
             {suggestions.map((entry, position) => (
               <li key={entry.slug} role="none">

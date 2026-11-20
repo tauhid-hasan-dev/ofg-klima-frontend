@@ -10,15 +10,45 @@
 
 /* ──────────────────────────────────────────────────────────────
    OFG design tokens
-   Industrial auto-parts commerce: OFG red, ink black, WhatsApp green
-   for direct contact.
+   Industrial auto-parts commerce: OFG navy chrome, OFG red accent,
+   WhatsApp green for direct contact.
 
-   The brand red is #E71A21 and it sits at --color-brand-500. Unlike the
-   yellow it replaced, it is a DARK surface: anything on `bg-brand-500`
-   takes white text, never `text-ink-950`. On dark backgrounds use
-   brand-400, which is light enough to clear 4.5:1 against ink-950.
+   Both brand colours are sampled from the client's own logo artwork
+   (public/brand/ofg-logo.png): the "OFG" letterforms are #393185 and the
+   arc beneath them is #e31e24.
+
+   NAVY is the chrome — the nav strip, the utility bar, the footer, every
+   dark panel. It replaced near-black throughout: the business presents as
+   a blue brand, and a black site with a blue logo read as two brands.
+   White on navy-600 is 10.7:1, so every one of these surfaces takes white
+   text.
+
+   RED stays the accent and nothing else: the primary button, the discount
+   badge, the "yeni" flag. Used that sparingly it reads as the logo's red
+   rather than as a second chrome colour competing with the blue.
+
+   On navy surfaces the light accent is navy-200 (or white); brand-400 is
+   the red that clears 4.5:1 there.
    ────────────────────────────────────────────────────────────── */
 @theme {
+  /*
+   * Navy — the dominant surface colour.
+   * navy-600 IS the logo blue; the ramp is built around it, darker below
+   * for panels that need to sit behind navy-600 (the utility bar above the
+   * nav strip, the footer base) and lighter above for tints and hovers.
+   */
+  --color-navy-50:  #f2f2fb;
+  --color-navy-100: #e6e5f7;
+  --color-navy-200: #cfcdef;
+  --color-navy-300: #aca7e2;
+  --color-navy-400: #8178d0;
+  --color-navy-500: #5d52b8;
+  --color-navy-600: #393185;
+  --color-navy-700: #2f2a6e;
+  --color-navy-800: #262257;
+  --color-navy-900: #1c1941;
+  --color-navy-950: #11102a;
+
   /* Brand */
   --color-brand-50:  #fff1f1;
   --color-brand-100: #ffe0e1;
@@ -32,18 +62,26 @@
   --color-brand-900: #561013;
   --color-brand-950: #2e0608;
 
-  /* Ink (neutral ramp, slightly warm so it sits well next to the yellow) */
-  --color-ink-50:  #f7f7f6;
-  --color-ink-100: #eeeeec;
-  --color-ink-200: #dededa;
-  --color-ink-300: #c2c2bd;
-  --color-ink-400: #92928c;
-  --color-ink-500: #6b6b65;
-  --color-ink-600: #4d4d48;
-  --color-ink-700: #373733;
-  --color-ink-800: #212120;
-  --color-ink-900: #141413;
-  --color-ink-950: #0a0a09;
+  /*
+   * Ink — body copy, borders, page greys.
+   *
+   * Cooled from the old warm grey to a faint blue cast (~230°, 4-8%
+   * saturation) so a grey rule or a muted caption sits against the navy
+   * chrome instead of looking beige beside it. Still neutral enough to
+   * read as grey on its own; ink-900/950 remain the near-black used for
+   * headings, which is a *text* colour here — dark surfaces are navy.
+   */
+  --color-ink-50:  #f6f7f9;
+  --color-ink-100: #edeef2;
+  --color-ink-200: #dcdde4;
+  --color-ink-300: #bfc1cc;
+  --color-ink-400: #8e909f;
+  --color-ink-500: #676979;
+  --color-ink-600: #4a4c5a;
+  --color-ink-700: #353742;
+  --color-ink-800: #20212a;
+  --color-ink-900: #14151b;
+  --color-ink-950: #0a0b0f;
 
   /*
    * Signal — destructive actions, discounts, struck-through prices.
@@ -91,11 +129,12 @@
     --header-h: 8rem; /* 128px — identity row (68) + search row (60) */
   }
 
-  /* At lg the utility bar (36) and the red nav strip (48) both appear, and
-     the search moves up into the identity row (72). */
+  /* At lg the utility bar (36) and the navy action band (56) both appear, the
+     search moves down into the band, and the logo steps up to h-12 — making
+     the identity row 73px including its bottom border. */
   @media (min-width: 64rem) {
     :root {
-      --header-h: 9.75rem; /* 156px */
+      --header-h: 10.3125rem; /* 165px */
     }
   }
 
@@ -134,7 +173,9 @@
     border-radius: 2px;
   }
 
-  /* The brand red is dark, so the ink outline disappears into it. */
+  /* Navy and red are both dark surfaces, so the ink outline disappears
+     into them. Applied to the nav strip, the mobile drawer header and
+     anything else sitting on brand colour. */
   .on-brand :focus-visible {
     outline-color: #ffffff;
   }
@@ -147,13 +188,50 @@
 
 @layer utilities {
   /* Diagonal hazard stripe — used sparingly as a section rule.
-     Reads as "workshop / industrial" without resorting to a texture image. */
+     Reads as "workshop / industrial" without resorting to a texture image.
+     Navy and red, so the rule is the two logo colours rather than a third
+     palette appearing once at the foot of the hero. */
   .hazard-rule {
     background-image: repeating-linear-gradient(
       -45deg,
-      var(--color-ink-950) 0 8px,
+      var(--color-navy-700) 0 8px,
       var(--color-brand-500) 8px 16px
     );
+  }
+
+  /*
+   * Photographic scrim.
+   *
+   * Every hero and banner photo on this site is someone else's lighting:
+   * some are bright studio white, some are a dark engine bay. A flat
+   * `bg-black/50` either greys out the bright ones or vanishes on the dark
+   * ones. This ramps navy from near-opaque at the left edge (where the
+   * headline sits) to clear at the right (where the part is), so the copy
+   * keeps its contrast and the photograph keeps its subject.
+   */
+  .photo-scrim {
+    background-image: linear-gradient(
+      100deg,
+      rgb(17 16 42 / 0.94) 0%,
+      rgb(17 16 42 / 0.86) 30%,
+      rgb(28 25 65 / 0.62) 55%,
+      rgb(28 25 65 / 0.18) 78%,
+      rgb(28 25 65 / 0.05) 100%
+    );
+  }
+
+  /* Below lg the copy sits over the middle of the photo rather than beside
+     it, so the scrim has to run bottom-to-top instead of left-to-right. */
+  @media (max-width: 63.999rem) {
+    .photo-scrim {
+      background-image: linear-gradient(
+        to top,
+        rgb(17 16 42 / 0.95) 0%,
+        rgb(17 16 42 / 0.88) 42%,
+        rgb(28 25 65 / 0.62) 70%,
+        rgb(28 25 65 / 0.34) 100%
+      );
+    }
   }
 
   .scrollbar-none {

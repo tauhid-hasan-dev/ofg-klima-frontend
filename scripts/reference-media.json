@@ -1,0 +1,32 @@
+{
+    "_comment":  "Imagery pulled from kafkasotoyedekparca.com for design work. The banners and category photos are their copyright, not OFG\u0027s - replace before launch. public/brands/ are each manufacturer\u0027s own wordmark. See scripts/fetch-reference-media.py.",
+    "banners":  {
+                    "hero-1":  "https://www.kafkasotoyedekparca.com/idea/qw/61/themes/selftpl_689442cae3974/assets/uploads/entry_slider_image_1.jpg",
+                    "hero-2":  "https://www.kafkasotoyedekparca.com/idea/qw/61/themes/selftpl_689442cae3974/assets/uploads/entry_slider_image_2.jpg",
+                    "hero-3":  "https://www.kafkasotoyedekparca.com/idea/qw/61/themes/selftpl_689442cae3974/assets/uploads/entry_slider_image_3.jpg",
+                    "theme-1":  "https://www.kafkasotoyedekparca.com/idea/qw/61/themes/selftpl_689442cae3974/assets/uploads/theme_banner_image_1.png",
+                    "theme-2":  "https://www.kafkasotoyedekparca.com/idea/qw/61/themes/selftpl_689442cae3974/assets/uploads/theme_banner_image_2.png",
+                    "footer-about":  "https://www.kafkasotoyedekparca.com/idea/qw/61/themes/selftpl_689442cae3974/assets/uploads/footer_about_image.png"
+                },
+    "categories":  {
+                       "kompresor":  "https://www.kafkasotoyedekparca.com/idea/qw/61/themes/selftpl_689442cae3974/assets/uploads/category_banner_image_1.png",
+                       "kasnak":  "https://www.kafkasotoyedekparca.com/idea/qw/61/themes/selftpl_689442cae3974/assets/uploads/category_banner_image_2.jpg",
+                       "valf":  "https://www.kafkasotoyedekparca.com/idea/qw/61/themes/selftpl_689442cae3974/assets/uploads/category_banner_image_3.jpg",
+                       "kondenser":  "https://www.kafkasotoyedekparca.com/idea/qw/61/themes/selftpl_689442cae3974/assets/uploads/category_banner_image_4.jpg",
+                       "fan":  "https://www.kafkasotoyedekparca.com/idea/qw/61/themes/selftpl_689442cae3974/assets/uploads/category_banner_image_5.jpg",
+                       "gaz":  "https://www.kafkasotoyedekparca.com/idea/qw/61/themes/selftpl_689442cae3974/assets/uploads/category_banner_image_6.jpg"
+                   },
+    "brands":  {
+                   "sanden":  "https://www.kafkasotoyedekparca.com/idea/qw/61/myassets/brands/10/sanden.png",
+                   "denso":  "https://www.kafkasotoyedekparca.com/idea/qw/61/myassets/brands/11/denso.png",
+                   "valeo":  "https://www.kafkasotoyedekparca.com/idea/qw/61/myassets/brands/12/vaelo.png",
+                   "wutse":  "https://www.kafkasotoyedekparca.com/idea/qw/61/myassets/brands/13/wutse.png",
+                   "mahle":  "https://www.kafkasotoyedekparca.com/idea/qw/61/myassets/brands/14/mahle.png",
+                   "delphi":  "https://www.kafkasotoyedekparca.com/idea/qw/61/myassets/brands/15/delphi.png",
+                   "hanon":  "https://www.kafkasotoyedekparca.com/idea/qw/61/myassets/brands/16/hanon-system.png",
+                   "doowon":  "https://www.kafkasotoyedekparca.com/idea/qw/61/myassets/brands/17/doowon.png",
+                   "ac-edge":  "https://www.kafkasotoyedekparca.com/idea/qw/61/myassets/brands/18/ac-edge.png",
+                   "kohlass":  "https://www.kafkasotoyedekparca.com/idea/qw/61/myassets/brands/19/kohlass.png",
+                   "eg-makina":  "https://www.kafkasotoyedekparca.com/idea/qw/61/myassets/brands/20/eg-makina.png"
+               }
+}

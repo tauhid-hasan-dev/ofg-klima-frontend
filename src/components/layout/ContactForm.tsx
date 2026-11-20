@@ -85,7 +85,7 @@ export function ContactForm() {
     "h-11 w-full rounded-md border bg-white px-3 text-[0.95rem] text-ink-900 outline-none transition-colors placeholder:text-ink-400";
 
   function borderFor(error?: string) {
-    return error ? "border-signal-500 focus:border-signal-500" : "border-ink-300 focus:border-ink-950";
+    return error ? "border-signal-500 focus:border-signal-500" : "border-ink-300 focus:border-navy-700";
   }
 
   if (sent) {

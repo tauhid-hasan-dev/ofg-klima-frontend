@@ -19,7 +19,7 @@ export function ProductGallery({ images, alt }: { images: string[]; alt: string 
 
   return (
     <div>
-      <div className="overflow-hidden rounded-card bg-ink-50 ring-1 ring-ink-200">
+      <div className="overflow-hidden rounded-card bg-white ring-1 ring-ink-200">
         <Image
           src={current}
           alt={alt}
@@ -45,8 +45,8 @@ export function ProductGallery({ images, alt }: { images: string[]; alt: string 
               aria-label={`${index + 1}. görsel`}
               onClick={() => setActive(index)}
               className={clsx(
-                "grid h-16 w-16 place-items-center overflow-hidden rounded-md bg-ink-50 ring-1 transition-all",
-                index === active ? "ring-2 ring-ink-950" : "ring-ink-200 hover:ring-ink-400",
+                "grid h-16 w-16 place-items-center overflow-hidden rounded-md bg-white ring-1 transition-all",
+                index === active ? "ring-2 ring-navy-800" : "ring-ink-200 hover:ring-ink-400",
               )}
             >
               <Image src={image} alt="" width={120} height={120} className="h-full w-full object-contain" />

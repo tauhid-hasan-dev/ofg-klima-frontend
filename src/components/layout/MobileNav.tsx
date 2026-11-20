@@ -54,7 +54,7 @@ export function MobileNav({ tree }: { tree: CategoryNode[] }) {
         onClick={() => setOpen(true)}
         aria-label="Menüyü aç"
         aria-expanded={open}
-        className="grid h-11 w-11 place-items-center rounded-md text-ink-950 transition-colors hover:bg-ink-950/10 lg:hidden"
+        className="grid h-11 w-11 place-items-center rounded-md text-ink-950 transition-colors hover:bg-navy-900/10 lg:hidden"
       >
         <MenuIcon className="h-6 w-6" />
       </button>
@@ -65,7 +65,7 @@ export function MobileNav({ tree }: { tree: CategoryNode[] }) {
             type="button"
             aria-label="Menüyü kapat"
             onClick={() => setOpen(false)}
-            className="absolute inset-0 bg-ink-950/60 backdrop-blur-[2px]"
+            className="absolute inset-0 bg-navy-950/60 backdrop-blur-[2px]"
           />
 
           <div
@@ -75,7 +75,8 @@ export function MobileNav({ tree }: { tree: CategoryNode[] }) {
             className="absolute inset-y-0 left-0 flex w-[min(21rem,85vw)] flex-col bg-white shadow-menu"
             onClick={closeIfLinkClicked}
           >
-            <div className="on-brand flex items-center justify-between gap-3 bg-brand-500 px-4 py-3">
+            {/* Navy, matching the action band the drawer stands in for. */}
+            <div className="on-brand flex items-center justify-between gap-3 bg-navy-600 px-4 py-3">
               <Link href="/" onClick={() => setOpen(false)}>
                 <Logo tone="onBrand" showTagline={false} className="h-8" />
               </Link>
@@ -174,7 +175,7 @@ export function MobileNav({ tree }: { tree: CategoryNode[] }) {
               </a>
               <a
                 href={`tel:${site.phone}`}
-                className="flex h-11 items-center justify-center gap-2 rounded-md bg-ink-950 text-sm font-semibold text-white"
+                className="flex h-11 items-center justify-center gap-2 rounded-md bg-navy-900 text-sm font-semibold text-white"
               >
                 <PhoneIcon className="h-4 w-4" />
                 {formatPhone(site.phone)}

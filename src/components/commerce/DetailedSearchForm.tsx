@@ -62,7 +62,7 @@ export function DetailedSearchForm({
   }
 
   const field =
-    "h-11 w-full rounded-md border border-ink-300 bg-white px-3 text-[0.95rem] text-ink-900 outline-none transition-colors focus:border-ink-950 placeholder:text-ink-400";
+    "h-11 w-full rounded-md border border-ink-300 bg-white px-3 text-[0.95rem] text-ink-900 outline-none transition-colors focus:border-navy-700 placeholder:text-ink-400";
 
   return (
     <form onSubmit={onSubmit} className="rounded-card bg-white p-5 ring-1 ring-ink-200 sm:p-6">

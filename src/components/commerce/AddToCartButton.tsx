@@ -154,7 +154,7 @@ export function CardQuantityAdd({
         aria-live="polite"
         className={clsx(
           "grid h-9 w-10 shrink-0 place-items-center rounded-md transition-colors disabled:opacity-40",
-          added ? "bg-ink-950 text-brand-400" : "bg-brand-500 text-white hover:bg-brand-600",
+          added ? "bg-navy-900 text-brand-400" : "bg-brand-500 text-white hover:bg-brand-600",
         )}
       >
         {added ? <CheckIcon className="h-4 w-4" strokeWidth={2.5} /> : <CartIcon className="h-4 w-4" />}

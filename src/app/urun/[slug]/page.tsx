@@ -140,7 +140,7 @@ async function ProductContent({ params }: PageProps) {
             {brand ? (
               <Link
                 href={`/marka/${brand.slug}`}
-                className="rounded bg-ink-950 px-2 py-1 text-xs font-bold tracking-wide text-brand-400 uppercase"
+                className="rounded bg-navy-900 px-2 py-1 text-xs font-bold tracking-wide text-brand-400 uppercase"
               >
                 {brand.name}
               </Link>

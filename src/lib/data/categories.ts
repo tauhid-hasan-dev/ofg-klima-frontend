@@ -55,9 +55,10 @@ const curated: Category[] = [
   {
     slug: "kompresor-yedek-parca",
     name: "Kompresör Yedek Parça",
-    shortName: "Yedek Parça",
+    shortName: "Kasnak Seti",
     markupPercent: 25,
     image: "/parts/kasnak.svg",
+    inMainNav: true,
     description: "Kompresör kasnağı, manyetik bobin, baskı plakası ve diğer kompresör yedek parçaları.",
   },
   { slug: "klima-kasnak-seti", name: "Klima Kasnak Seti", parent: "kompresor-yedek-parca", groupCode: "KASNAK SETLERİ", image: "/parts/kasnak.svg" },

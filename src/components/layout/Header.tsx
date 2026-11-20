@@ -38,25 +38,46 @@ async function buildTree(): Promise<CategoryNode[]> {
 }
 
 /**
- * Standing entries in the red nav strip.
+ * Standing entries on the navy band, beside the account and basket controls.
  *
  * "Çok Satanlar" and "Yeni Ürünler" are requirement 2 — the client wants both
  * reachable from the top of every page, not just the home page.
  */
 const FIXED_NAV = [
-  { href: "/", label: "Ana Sayfa" },
   { href: "/cok-satanlar", label: "Çok Satanlar" },
   { href: "/yeni-urunler", label: "Yeni Ürünler" },
 ] as const;
 
+/**
+ * Site header.
+ *
+ * Three bands, following the reference storefront:
+ *
+ *   utility   navy-950, lg only — order tracking, delivery, phone
+ *   identity  white — logo, the five headline categories, the WhatsApp number
+ *   action    navy-600, lg only — the KATEGORİLER mega menu, search, the
+ *             standing links, account and basket
+ *
+ * The reference puts its search in the coloured band rather than beside the
+ * logo, and that is the arrangement copied here: it gives the field most of
+ * the width of the page, which matters on a site where people paste
+ * 14-character OEM codes.
+ *
+ * Below lg the action band collapses — the mega menu becomes the drawer in
+ * `MobileNav`, and search moves to its own row under the logo where it can be
+ * full width.
+ *
+ * Heights are load-bearing: `--header-h` in globals.css subtracts them from
+ * 100dvh to size the hero. Changing a band's height means changing that too.
+ */
 export async function Header() {
   const tree = await buildTree();
-  const primaryNav = tree.filter((node) => node.category.inMainNav).slice(0, 4);
+  const primaryNav = tree.filter((node) => node.category.inMainNav).slice(0, 5);
 
   return (
     <header className="sticky top-0 z-50">
-      {/* Utility bar */}
-      <div className="hidden bg-ink-950 text-ink-300 lg:block">
+      {/* ── Utility bar ──────────────────────────────────────────── */}
+      <div className="hidden bg-navy-950 text-navy-200 lg:block">
         <Container className="flex h-9 items-center justify-between text-xs">
           <p className="flex items-center gap-2">
             <TruckIcon className="h-4 w-4 text-brand-400" />
@@ -83,14 +104,13 @@ export async function Header() {
       </div>
 
       {/*
-        Identity band.
-        White rather than brand-coloured: the red is a dark surface, and a full
-        red band behind the logo, the search field and the account links left
-        every one of them fighting the background for attention.
+        ── Identity band ───────────────────────────────────────────
+        White, not navy: the logo's own letterforms are navy, and on a navy
+        band the wordmark lost its edges against the background.
       */}
       <div className="border-b border-ink-200 bg-white">
         <Container>
-          {/* Row 1 — identity, search, account */}
+          {/* Row 1 — identity, headline categories, phone */}
           <div className="flex items-center gap-3 py-3 lg:gap-6">
             <MobileNav tree={tree} />
 
@@ -101,9 +121,24 @@ export async function Header() {
               <Logo priority className="hidden h-11 sm:block lg:h-12" />
             </Link>
 
-            {/* Search owns the middle of the row from lg up; below that it
-                moves to its own row so the logo keeps its size. */}
-            <SearchBar index={searchIndex} className="hidden min-w-0 flex-1 lg:block" />
+            {/*
+              The five headline categories as plain text links, as on the
+              reference. They appear only at xl: between lg and xl the row is
+              ~90px short of fitting them between the logo and the phone
+              number, and the same five sit one click away in the mega menu
+              directly below.
+            */}
+            <nav aria-label="Öne çıkan kategoriler" className="hidden min-w-0 flex-1 xl:block">
+              <ul className="flex items-center justify-center gap-1">
+                {primaryNav.map((node) => (
+                  <li key={node.category.slug}>
+                    <Link href={`/kategori/${node.category.slug}`} className={TOP_LINK}>
+                      {node.category.shortName ?? node.category.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
 
             <div className="ml-auto flex shrink-0 items-center gap-2 lg:gap-3">
               <a
@@ -120,17 +155,9 @@ export async function Header() {
                 </span>
               </a>
 
-              <span aria-hidden="true" className="hidden h-7 w-px bg-ink-200 lg:block" />
-
-              <Link
-                href="/hesap"
-                className="hidden items-center gap-2 rounded-md px-2 py-2 text-ink-800 transition-colors hover:text-brand-600 lg:flex"
-              >
-                <UserIcon className="h-6 w-6" />
-                <span className="text-sm font-semibold">Üye Girişi</span>
-              </Link>
-
-              <CartButton />
+              {/* Account and basket move to the navy band from lg up, so this
+                  copy of the basket is the phone's only one. */}
+              <CartButton className="lg:hidden" />
             </div>
           </div>
 
@@ -142,59 +169,42 @@ export async function Header() {
       </div>
 
       {/*
-        Nav strip.
-        `overflow-x-auto` plus `whitespace-nowrap` on each item is what stops
-        the old two-line wrap: between 1024px and ~1200px the labels no longer
-        fit, and a horizontal scroll is honest where a ragged second line of
-        half-broken category names was not.
+        ── Action band ─────────────────────────────────────────────
+        Navy — the logo's own blue, and the single largest block of brand
+        colour on the page. Carries the three controls that do the most work
+        on a parts catalogue: the category tree, search, and the basket.
       */}
-      <div className="on-brand hidden bg-brand-500 shadow-[0_1px_0_rgba(20,20,19,0.18)] lg:block">
-        <Container className="flex h-12 items-stretch">
+      <div className="on-brand hidden bg-navy-600 shadow-[0_1px_0_rgba(17,16,42,0.25)] lg:block">
+        <Container className="flex h-14 items-stretch gap-4">
           {/*
-            1400px, not xl (1280). Measured: at exactly 1280 the wider trigger,
-            the roomier link padding and the fourth category all switch on at
-            once and the row overflows by ~60px. Everything that costs width
-            waits for the same breakpoint, which is the width where it all
-            actually fits.
+            1400px, not xl (1280). Measured: at exactly 1280 the wider trigger
+            and the "Üye Girişi" label switch on at once and the row overflows
+            by ~60px. Everything that costs width waits for the same
+            breakpoint, which is the width where it all actually fits.
           */}
-          <div className="w-56 shrink-0 min-[1400px]:w-[19rem]">
+          <div className="w-[17rem] shrink-0 min-[1400px]:w-[19rem]">
             <CategoryMenu tree={tree} />
           </div>
 
-          <nav aria-label="Ana menü" className="min-w-0 flex-1">
-            <ul className="scrollbar-none flex h-full items-stretch overflow-x-auto pl-3 min-[1400px]:pl-4">
-              {FIXED_NAV.map((item) => (
-                <li key={item.href} className="flex">
-                  <Link href={item.href} className={NAV_LINK}>
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
+          <div className="flex min-w-0 flex-1 items-center">
+            <SearchBar index={searchIndex} className="w-full" />
+          </div>
 
-              {primaryNav.map((node, position) => (
-                <li
-                  key={node.category.slug}
-                  /*
-                   * The fourth category only appears once there is room for it.
-                   * Below 1400px the row is ~100px short, and showing one
-                   * category fewer is better than leaving a half-cut word at
-                   * the right edge — the mega menu one block to the left has
-                   * every category in it anyway.
-                   */
-                  className={position === 3 ? "hidden min-[1400px]:flex" : "flex"}
-                >
-                  <Link href={`/kategori/${node.category.slug}`} className={NAV_LINK}>
-                    {node.category.shortName ?? node.category.name}
-                  </Link>
-                </li>
-              ))}
+          <nav aria-label="Hesap ve sepet" className="flex shrink-0 items-center gap-1">
+            {FIXED_NAV.map((item) => (
+              <Link key={item.href} href={item.href} className={STRIP_LINK}>
+                {item.label}
+              </Link>
+            ))}
 
-              <li className="flex">
-                <Link href="/iletisim" className={NAV_LINK}>
-                  İletişim
-                </Link>
-              </li>
-            </ul>
+            <span aria-hidden="true" className="mx-1 h-6 w-px bg-white/25" />
+
+            <Link href="/hesap" className={STRIP_LINK}>
+              <UserIcon className="h-5 w-5" />
+              <span className="hidden min-[1400px]:inline">Üye Girişi</span>
+            </Link>
+
+            <CartButton tone="light" />
           </nav>
         </Container>
       </div>
@@ -202,7 +212,13 @@ export async function Header() {
   );
 }
 
-const NAV_LINK =
-  "flex items-center whitespace-nowrap border-b-[3px] border-transparent px-2.5 font-display " +
-  "text-[0.78rem] font-bold tracking-wide text-white uppercase transition-colors " +
-  "hover:border-white hover:bg-brand-600 min-[1400px]:px-4 min-[1400px]:text-[0.82rem]";
+/** Headline category link in the white identity row. */
+const TOP_LINK =
+  "block rounded-md px-2.5 py-2 font-display text-[0.82rem] leading-tight font-bold tracking-tight " +
+  "whitespace-nowrap text-ink-800 uppercase transition-colors hover:bg-navy-50 hover:text-navy-600";
+
+/** Link on the navy action band. */
+const STRIP_LINK =
+  "flex items-center gap-2 whitespace-nowrap rounded-md px-2.5 py-2 font-display text-[0.78rem] " +
+  "font-bold tracking-wide text-white uppercase transition-colors hover:bg-white/15 " +
+  "min-[1400px]:px-3 min-[1400px]:text-[0.8rem]";

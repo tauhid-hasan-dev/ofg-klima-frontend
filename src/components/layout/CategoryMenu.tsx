@@ -73,8 +73,10 @@ export function CategoryMenu({ tree }: { tree: CategoryNode[] }) {
       }}
       onMouseLeave={scheduleClose}
     >
-      {/* Dark block against the red strip — the one element in the nav bar
-          that should read as a button rather than a link. */}
+      {/* A darker navy block against the navy band — the one element in the
+          bar that should read as a button rather than a link. brand-300 for
+          the second line, not brand-400: against navy-900 the darker red is
+          4.4:1, which only clears AA because the label happens to be bold. */}
       <button
         ref={triggerRef}
         type="button"
@@ -82,20 +84,20 @@ export function CategoryMenu({ tree }: { tree: CategoryNode[] }) {
         aria-expanded={open}
         aria-haspopup="true"
         className={clsx(
-          "flex h-full w-full items-center gap-3 bg-ink-950 pr-5 pl-4 text-left text-white transition-colors",
-          "hover:bg-ink-800",
+          "flex h-full w-full items-center gap-3 bg-navy-900 pr-5 pl-4 text-left text-white transition-colors",
+          "hover:bg-navy-950",
         )}
       >
         <MenuIcon className="h-5 w-5 shrink-0" />
         <span className="font-display text-[0.78rem] leading-tight font-bold tracking-wide uppercase">
           Oto Klima Yedek Parça
-          <span className="block text-brand-400">Kategoriler</span>
+          <span className="block text-brand-300">Kategoriler</span>
         </span>
       </button>
 
       {open ? (
         <div
-          className="absolute top-full left-0 z-50 flex w-[min(62rem,calc(100vw-2rem))] overflow-hidden rounded-b-lg bg-white shadow-menu ring-1 ring-ink-950/10"
+          className="absolute top-full left-0 z-50 flex w-[min(62rem,calc(100vw-2rem))] overflow-hidden rounded-b-lg bg-white shadow-menu ring-1 ring-navy-900/10"
           onMouseEnter={cancelClose}
           onMouseLeave={scheduleClose}
         >
@@ -113,7 +115,7 @@ export function CategoryMenu({ tree }: { tree: CategoryNode[] }) {
                     className={clsx(
                       "flex items-center justify-between gap-2 border-l-[3px] px-4 py-2.5 text-sm font-semibold transition-colors",
                       isActive
-                        ? "border-brand-500 bg-white text-ink-950"
+                        ? "border-navy-600 bg-white text-navy-900"
                         : "border-transparent text-ink-700 hover:bg-white hover:text-ink-950",
                     )}
                   >
@@ -153,7 +155,7 @@ export function CategoryMenu({ tree }: { tree: CategoryNode[] }) {
                           onClick={() => setOpen(false)}
                           className="group flex items-center gap-2 py-1.5 text-sm text-ink-700 transition-colors hover:text-ink-950"
                         >
-                          <span className="h-1 w-1 rounded-full bg-ink-300 transition-colors group-hover:bg-brand-500" aria-hidden="true" />
+                          <span className="h-1 w-1 rounded-full bg-ink-300 transition-colors group-hover:bg-navy-600" aria-hidden="true" />
                           {child.name}
                         </Link>
                       </li>
@@ -164,7 +166,7 @@ export function CategoryMenu({ tree }: { tree: CategoryNode[] }) {
                 <Link
                   href={`/kategori/${active.category.slug}`}
                   onClick={() => setOpen(false)}
-                  className="mt-5 inline-flex items-center gap-1.5 border-b-2 border-brand-500 pb-0.5 text-sm font-bold text-ink-950 uppercase"
+                  className="mt-5 inline-flex items-center gap-1.5 border-b-2 border-navy-600 pb-0.5 text-sm font-bold text-ink-950 uppercase"
                 >
                   Tüm ürünleri gör
                   <ChevronRightIcon className="h-4 w-4" />

@@ -46,6 +46,12 @@ export interface Brand {
   name: string;
   kind: BrandKind;
   country?: string;
+  /**
+   * Path to the manufacturer's wordmark under /public, when one has been
+   * supplied. Absent for vehicle makes and for any manufacturer whose artwork
+   * is still missing — callers fall back to setting the name as text.
+   */
+  logo?: string;
   /** Short marketing copy rendered above the brand's product grid. */
   description?: string;
   /** Headline used as the <h1> on /marka/[slug]. */

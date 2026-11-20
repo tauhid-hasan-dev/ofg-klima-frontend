@@ -50,7 +50,7 @@ export function ProductCard({
         className="group flex gap-4 rounded-card bg-white p-4 shadow-card ring-1 ring-ink-200/70 transition-shadow hover:shadow-card-hover sm:gap-6"
       >
         <Link href={href} className="relative block w-28 shrink-0 self-start sm:w-40" tabIndex={-1} aria-hidden="true">
-          <div className="aspect-square overflow-hidden rounded-md bg-ink-50">
+          <div className="aspect-square overflow-hidden rounded-md bg-white">
             <Image
               src={product.images[0]}
               alt=""
@@ -121,7 +121,7 @@ export function ProductCard({
       className="group flex h-full flex-col overflow-hidden rounded-card bg-white shadow-card ring-1 ring-ink-200/70 transition-shadow hover:shadow-card-hover"
     >
       <Link href={href} className="relative block" tabIndex={-1} aria-hidden="true">
-        <div className="aspect-square overflow-hidden bg-ink-50">
+        <div className="aspect-square overflow-hidden bg-white">
           <Image
             src={product.images[0]}
             alt=""

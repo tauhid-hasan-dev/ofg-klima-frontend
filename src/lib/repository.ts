@@ -1,6 +1,7 @@
-import { brands } from "@/lib/data/brands";
-import { categories } from "@/lib/data/categories";
-import { products as sourceProducts, slugify } from "@/lib/data/products";
+import { brands as sourceBrands } from "@/lib/data/brands";
+import { categories as sourceCategories } from "@/lib/data/categories";
+import { logoFor } from "@/lib/data/media";
+import { categoryImage, products as sourceProducts, slugify } from "@/lib/data/products";
 import { usdToTry } from "@/lib/currency";
 import { applyMarkup } from "@/lib/pricing";
 import {
@@ -35,6 +36,34 @@ export const DEFAULT_PER_PAGE = 24;
  * off the same number the shopper is reading.
  */
 const products = sourceProducts.map(applyMarkup);
+
+/**
+ * The category tree as the storefront sees it: each node carrying the lead
+ * photograph for its part family.
+ *
+ * Resolved here rather than written into `src/lib/data/categories.ts` so that
+ * file stays a description of the client's taxonomy — slugs, DIA group codes,
+ * markups — and does not have to be re-edited every time the photography
+ * changes. A family with no photos keeps the generated render named in the
+ * fixture, so every category still draws something.
+ */
+const categories = sourceCategories.map((category) => ({
+  ...category,
+  image: categoryImage(category.slug, category.image),
+}));
+
+/**
+ * Brands as the storefront sees them, each carrying its wordmark where one has
+ * been supplied under public/brands/.
+ *
+ * Resolved here for the same reason as the category images: the fixture
+ * describes the client's brand list, and which logo files happen to exist is
+ * not part of that description.
+ */
+const brands = sourceBrands.map((brand) => {
+  const logo = logoFor(brand.slug);
+  return logo ? { ...brand, logo } : brand;
+});
 
 /* ── Categories ─────────────────────────────────────────────────────────── */
 

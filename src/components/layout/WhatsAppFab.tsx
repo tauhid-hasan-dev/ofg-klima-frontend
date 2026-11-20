@@ -24,7 +24,7 @@ export function WhatsAppFab() {
 
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute right-[calc(100%+0.625rem)] hidden rounded-md bg-ink-950 px-3 py-1.5 text-sm font-semibold whitespace-nowrap text-white opacity-0 transition-opacity duration-150 group-hover:opacity-100 group-focus-visible:opacity-100 sm:block"
+        className="pointer-events-none absolute right-[calc(100%+0.625rem)] hidden rounded-md bg-navy-900 px-3 py-1.5 text-sm font-semibold whitespace-nowrap text-white opacity-0 transition-opacity duration-150 group-hover:opacity-100 group-focus-visible:opacity-100 sm:block"
       >
         WhatsApp Destek
       </span>

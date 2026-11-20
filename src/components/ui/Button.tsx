@@ -14,7 +14,7 @@ const VARIANTS: Record<Variant, string> = {
   // Brand red is the loudest surface on the site — reserve it for the single
   // primary action in any view. It is a dark surface, so the label is white.
   primary: "bg-brand-500 text-white hover:bg-brand-600 shadow-[inset_0_-2px_0_rgba(0,0,0,0.18)]",
-  secondary: "bg-ink-900 text-white hover:bg-ink-800",
+  secondary: "bg-navy-800 text-white hover:bg-navy-700",
   outline: "border border-ink-300 bg-white text-ink-800 hover:border-ink-900 hover:bg-ink-50",
   ghost: "text-ink-700 hover:bg-ink-100 hover:text-ink-900",
   whatsapp: "bg-whatsapp text-white hover:bg-whatsapp-dark",

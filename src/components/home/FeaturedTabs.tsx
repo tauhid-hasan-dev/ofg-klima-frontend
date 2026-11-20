@@ -36,7 +36,7 @@ export function FeaturedTabs({
       <div className="mb-6 flex flex-wrap items-center gap-x-8 gap-y-4">
         <h2 className="relative shrink-0 pb-3 font-display text-xl font-extrabold tracking-tight uppercase sm:text-2xl">
           Öne Çıkan Ürünler
-          <span aria-hidden="true" className="absolute bottom-0 left-0 h-1 w-16 bg-brand-500" />
+          <span aria-hidden="true" className="absolute bottom-0 left-0 h-1 w-16 bg-navy-600" />
         </h2>
 
         <div role="tablist" aria-label="Öne çıkan ürün grupları" className="flex flex-wrap gap-2">
@@ -54,7 +54,7 @@ export function FeaturedTabs({
                 className={clsx(
                   "rounded-full border px-5 py-2.5 text-sm font-bold transition-colors",
                   isActive
-                    ? "border-signal-500 bg-white text-signal-500"
+                    ? "border-navy-600 bg-white text-navy-600"
                     : "border-transparent bg-ink-100 text-ink-700 hover:bg-ink-200",
                 )}
               >

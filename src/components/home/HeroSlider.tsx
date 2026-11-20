@@ -13,22 +13,37 @@ export interface Slide {
   text: string;
   href: string;
   cta: string;
+  /** Full-bleed background photograph. Landscape, 1600px wide or more. */
   image: string;
+  /**
+   * `object-position` for the photograph.
+   *
+   * The copy sits over the left of the frame, so a photo whose subject is on
+   * the left needs pushing right or the headline lands on top of it. Plain
+   * CSS, e.g. "70% center".
+   */
+  focus?: string;
 }
 
 const INTERVAL = 6000;
 
 /**
- * Full-bleed hero.
+ * Full-bleed photographic hero.
  *
  * The section spans the full viewport width (it sits outside the page
  * Container) and fills exactly one screen below the sticky header via
  * `100dvh - --header-h`. `dvh` rather than `vh` so mobile browsers that
  * collapse their chrome on scroll do not leave a gap.
  *
- * Only the inner content is width-constrained, so on ultrawide displays the
- * background runs edge to edge while the text stays aligned with the rest of
- * the page.
+ * Each slide is a photograph rather than a cut-out render, which is what the
+ * reference storefront does and what a parts buyer responds to: a compressor
+ * photographed on a bench reads as stock on a shelf, where the same part
+ * floating on a gradient reads as a catalogue illustration.
+ *
+ * Legibility over photography is the whole problem here, and it is solved in
+ * `.photo-scrim` (globals.css) rather than with a flat black overlay — these
+ * photos run from bright studio white to a dark engine bay, and no single
+ * opacity serves both.
  */
 const FILL_SCREEN = "min-h-[calc(100dvh-var(--header-h))]";
 
@@ -59,19 +74,14 @@ export function HeroSlider({ slides }: { slides: Slide[] }) {
     <section
       aria-roledescription="carousel"
       aria-label="Öne çıkan kampanyalar"
-      className={clsx("relative isolate w-full overflow-hidden bg-ink-950", FILL_SCREEN)}
+      className={clsx("relative isolate w-full overflow-hidden bg-navy-950", FILL_SCREEN)}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onFocusCapture={() => setPaused(true)}
       onBlurCapture={() => setPaused(false)}
     >
-      {/* Atmosphere: a warm pool of light behind the part, plus the workshop
-          hazard rule pinned to the bottom edge. */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_70%_60%_at_75%_45%,rgba(231,26,33,0.22),transparent_70%)]"
-      />
-      <div aria-hidden="true" className="hazard-rule absolute inset-x-0 bottom-0 z-20 h-1.5 opacity-70" />
+      {/* The workshop hazard rule, pinned to the bottom edge. */}
+      <div aria-hidden="true" className="hazard-rule absolute inset-x-0 bottom-0 z-30 h-1.5 opacity-80" />
 
       {slides.map((slide, position) => {
         const isActive = position === index;
@@ -84,62 +94,82 @@ export function HeroSlider({ slides }: { slides: Slide[] }) {
             aria-label={`${position + 1} / ${slides.length}`}
             aria-hidden={!isActive}
             className={clsx(
-              "transition-opacity duration-500 motion-reduce:transition-none",
+              "transition-opacity duration-700 motion-reduce:transition-none",
+              // The active slide is in flow and so sets the section's height;
+              // the rest stack underneath it. Both are positioned, which is
+              // what `fill` on the photograph needs.
               isActive ? "relative" : "pointer-events-none absolute inset-0 opacity-0",
             )}
           >
+            <Image
+              src={slide.image}
+              alt=""
+              fill
+              priority={position === 0}
+              // Full-bleed at every breakpoint, so the browser should always
+              // take the widest candidate it can justify.
+              sizes="100vw"
+              className="-z-10 object-cover"
+              style={{ objectPosition: slide.focus ?? "center" }}
+            />
+            <div aria-hidden="true" className="photo-scrim pointer-events-none absolute inset-0 -z-10" />
+
             <Container
               className={clsx(
                 FILL_SCREEN,
-                "flex flex-col items-start justify-center gap-5 short:gap-3 sm:gap-8",
-                "pt-6 pb-16 short:pt-4 short:pb-12 sm:pt-10 sm:pb-24",
-                "lg:grid lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-12 lg:pb-20",
+                "flex flex-col items-start justify-end pb-20 short:pb-14 sm:pb-24",
+                "lg:justify-center lg:pb-24",
               )}
             >
-              {/* Copy — second on mobile so the part image leads the screen */}
-              <div className="order-2 w-full max-w-2xl lg:order-1">
+              <div className="w-full max-w-2xl lg:max-w-[38rem] xl:max-w-[42rem]">
                 <span className="inline-block bg-brand-500 px-2.5 py-1 font-display text-[0.7rem] font-bold tracking-[0.14em] text-white uppercase sm:text-xs">
                   {slide.eyebrow}
                 </span>
 
-                <h2 className="mt-4 font-display text-[clamp(2rem,7vw,4.5rem)] short:mt-2.5 short:text-[clamp(1.6rem,6vw,3rem)] leading-[1.03] font-extrabold tracking-tight text-white">
+                <h2 className="mt-4 font-display text-[clamp(1.9rem,6vw,4rem)] short:mt-2.5 short:text-[clamp(1.6rem,5vw,2.6rem)] leading-[1.04] font-extrabold tracking-tight text-white [text-shadow:0_2px_24px_rgba(17,16,42,0.55)]">
                   {slide.title}
                 </h2>
 
-                <p className="mt-4 max-w-xl text-[0.95rem] leading-relaxed text-ink-300 short:mt-2.5 short:text-sm sm:mt-5 sm:text-base lg:text-lg">
+                <p className="mt-4 max-w-xl text-[0.95rem] leading-relaxed text-navy-100 short:mt-2.5 short:text-sm sm:mt-5 sm:text-base lg:text-lg">
                   {slide.text}
                 </p>
 
                 <Link
                   href={slide.href}
                   tabIndex={isActive ? 0 : -1}
-                  className="mt-7 inline-flex h-12 items-center gap-2 rounded-md bg-brand-500 px-6 short:mt-4 short:h-11 font-display text-sm font-bold tracking-wide text-white uppercase transition-transform hover:-translate-y-0.5 sm:mt-9 sm:h-14 sm:px-8 sm:text-base"
+                  className="mt-7 inline-flex h-12 items-center gap-2 rounded-md bg-brand-500 px-6 short:mt-4 short:h-11 font-display text-sm font-bold tracking-wide text-white uppercase shadow-[0_10px_30px_-10px_rgba(231,26,33,0.85)] transition-transform hover:-translate-y-0.5 sm:mt-9 sm:h-14 sm:px-8 sm:text-base"
                 >
                   {slide.cta}
                   <ChevronRightIcon className="h-5 w-5" />
                 </Link>
-              </div>
-
-              {/* Part illustration */}
-              <div className="order-1 flex w-full justify-center lg:order-2 lg:justify-end">
-                <Image
-                  src={slide.image}
-                  alt=""
-                  width={620}
-                  height={465}
-                  priority={position === 0}
-                  sizes="(min-width: 1024px) 45vw, 80vw"
-                  className="h-auto max-h-[21vh] w-auto max-w-[17rem] short:max-h-[15vh] [filter:drop-shadow(0_24px_48px_rgba(0,0,0,0.5))] sm:max-h-[30vh] sm:max-w-[28rem] lg:max-h-[52vh] lg:max-w-full"
-                />
               </div>
             </Container>
           </div>
         );
       })}
 
+      {/*
+        All three controls sit together at the bottom.
+
+        The arrows used to be pinned to the left and right edges at the
+        vertical centre, which is exactly where the headline is: at 1440px the
+        left arrow landed on top of the body copy and ate the first two
+        characters of every line it crossed. Grouping them with the dots keeps
+        them off the copy at any width, and puts the three things that do the
+        same job in the same place.
+      */}
       {slides.length > 1 ? (
-        <>
-          <div className="absolute inset-x-0 bottom-7 z-20 flex items-center justify-center gap-2 sm:bottom-9">
+        <div className="absolute inset-x-0 bottom-7 z-20 flex items-center justify-center gap-4 sm:bottom-9">
+          <button
+            type="button"
+            onClick={() => go(index - 1)}
+            aria-label="Önceki slayt"
+            className={ARROW}
+          >
+            <ChevronLeftIcon className="h-5 w-5" />
+          </button>
+
+          <div className="flex items-center gap-2">
             {slides.map((slide, position) => (
               <button
                 key={slide.title}
@@ -149,7 +179,7 @@ export function HeroSlider({ slides }: { slides: Slide[] }) {
                 aria-current={position === index}
                 className={clsx(
                   "h-1.5 rounded-full transition-all duration-300",
-                  position === index ? "w-10 bg-brand-400" : "w-3 bg-white/30 hover:bg-white/60",
+                  position === index ? "w-10 bg-brand-500" : "w-3 bg-white/40 hover:bg-white/70",
                 )}
               />
             ))}
@@ -157,22 +187,18 @@ export function HeroSlider({ slides }: { slides: Slide[] }) {
 
           <button
             type="button"
-            onClick={() => go(index - 1)}
-            aria-label="Önceki slayt"
-            className="absolute top-1/2 left-3 z-20 hidden h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-white/10 text-white backdrop-blur transition-colors hover:bg-brand-500 hover:text-white xl:grid"
-          >
-            <ChevronLeftIcon className="h-5 w-5" />
-          </button>
-          <button
-            type="button"
             onClick={() => go(index + 1)}
             aria-label="Sonraki slayt"
-            className="absolute top-1/2 right-3 z-20 hidden h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-white/10 text-white backdrop-blur transition-colors hover:bg-brand-500 hover:text-white xl:grid"
+            className={ARROW}
           >
             <ChevronRightIcon className="h-5 w-5" />
           </button>
-        </>
+        </div>
       ) : null}
     </section>
   );
 }
+
+const ARROW =
+  "grid h-9 w-9 place-items-center rounded-full bg-white/15 text-white backdrop-blur " +
+  "transition-colors hover:bg-brand-500 hover:text-white";

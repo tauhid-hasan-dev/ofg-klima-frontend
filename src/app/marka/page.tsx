@@ -29,7 +29,7 @@ function BrandTile({
     <li>
       <Link
         href={`/marka/${slug}`}
-        className="group flex h-full min-w-0 flex-col justify-between gap-3 rounded-card bg-white p-4 ring-1 ring-ink-200 transition-all hover:-translate-y-0.5 hover:shadow-card-hover hover:ring-ink-950 sm:p-5"
+        className="group flex h-full min-w-0 flex-col justify-between gap-3 rounded-card bg-white p-4 ring-1 ring-ink-200 transition-all hover:-translate-y-0.5 hover:shadow-card-hover hover:ring-navy-800 sm:p-5"
       >
         <div className="min-w-0">
           {/* Wordmark stand-in: the real brand logos are licensed assets the
