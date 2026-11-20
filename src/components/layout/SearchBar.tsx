@@ -138,9 +138,12 @@ export function SearchBar({
           event.preventDefault();
           submit();
         }}
-        /* A full-strength border, not a 10% tint: the header is white now, and
-           a field outlined at 10% opacity on white had no edge at all. */
-        className="flex h-12 items-stretch overflow-hidden rounded-lg bg-white ring-1 ring-ink-300 focus-within:ring-2 focus-within:ring-navy-600"
+        /*
+          `outline` for the focus state, not `ring`. Tailwind's ring is itself
+          a box-shadow, and it would replace the four-layer shadow that gives
+          `.control-surface` its relief rather than sitting on top of it.
+        */
+        className="control-surface flex h-12 items-stretch overflow-hidden rounded-lg focus-within:outline-2 focus-within:outline-offset-0 focus-within:outline-navy-600"
       >
         <label htmlFor={`${listboxId}-input`} className="sr-only">
           Ürün ara
@@ -180,19 +183,17 @@ export function SearchBar({
         ) : null}
 
         {/*
-          Red, not navy. This field sits inside the navy band at lg, and a
-          navy button on a navy band had no edge — it read as part of the
-          strip rather than as the control that runs the search.
+          Red, and the only red in the header — it is the one control that
+          commits an action. Icon alone: a magnifier inside a red block is
+          already unambiguous, and the label was the widest thing in the row.
+          `aria-label` keeps it announced.
         */}
         <button
           type="submit"
-          className="grid w-14 place-items-center gap-1.5 bg-brand-500 text-white transition-colors hover:bg-brand-600 sm:w-[5.5rem] sm:grid-flow-col"
+          className="grid w-14 place-items-center bg-brand-500 text-white transition-colors hover:bg-brand-600"
           aria-label="Ara"
         >
           <SearchIcon className="h-5 w-5" />
-          <span className="hidden font-display text-[0.78rem] font-bold tracking-wide uppercase sm:inline">
-            Ara
-          </span>
         </button>
       </form>
 

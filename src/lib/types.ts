@@ -69,6 +69,16 @@ export interface Product {
   name: string;
   brandSlug: string;
   categorySlug: string;
+  /**
+   * Manufacturer wordmark for `brandSlug`, when one has been supplied.
+   *
+   * Resolved onto the product in `repository.ts` rather than looked up by the
+   * card. The card is rendered from six different places — including a client
+   * component and the `/api/urunler` route — and threading a second
+   * slug-to-asset map through all of them to reach the same answer would be
+   * six chances to forget one. Absent means render the brand as text.
+   */
+  brandLogo?: string;
   /** Primary OEM / cross-reference code. Rendered in a mono face. */
   oem: string;
   /** "Stok Kodu" on the client's site, e.g. OFG-21025-ORJ. */

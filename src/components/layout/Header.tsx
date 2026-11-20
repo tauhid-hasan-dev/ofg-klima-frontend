@@ -80,7 +80,13 @@ export async function Header() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 border-b border-ink-200 bg-white shadow-[0_1px_2px_rgba(20,20,19,0.05)]">
+    /*
+     * No rules anywhere in here — not between the rows, not under the header.
+     * What stops a white sticky header dissolving into a white listing page
+     * once it starts overlapping content is the soft shadow, which separates
+     * the two surfaces without drawing a line across the design.
+     */
+    <header className="sticky top-0 z-50 bg-white shadow-[0_4px_14px_-6px_rgba(20,20,19,0.18)]">
       <Container>
         {/* Row 1 — identity, nav, phone */}
         <div className="flex items-center gap-3 py-3 lg:gap-5">
@@ -135,25 +141,30 @@ export async function Header() {
         </div>
 
         {/* Row 2 (below lg) — search gets the full width it needs on a phone */}
-        <div className="pb-3 lg:hidden">
+        <div className="pb-5 lg:hidden">
           <SearchBar index={searchIndex} />
         </div>
       </Container>
 
       {/* ── Action band ───────────────────────────────────────────────
-          Also white. The reference puts its search here rather than beside
-          the logo, and that is the arrangement kept: it gives the field most
-          of the width of the page, which matters on a site where people paste
+          Also white, and separated from the row above by spacing rather than
+          by a rule. The reference puts its search here rather than beside the
+          logo, and that is the arrangement kept: it gives the field most of
+          the width of the page, which matters on a site where people paste
           14-character OEM codes. */}
-      <div className="hidden border-t border-ink-200 lg:block">
-        <Container className="flex h-14 items-stretch gap-4">
+      <div className="hidden pb-6 lg:block">
+        <Container className="flex items-center gap-5 min-[1400px]:gap-6">
           {/*
+            h-12, the same as the search field: the trigger is an outlined box
+            now rather than a filled band, and two controls of different
+            heights side by side read as a mistake.
+
             1400px, not xl (1280). Measured: at exactly 1280 the wider trigger
             and the roomier basket label switch on at once and the row
             overflows. Everything that costs width waits for the same
             breakpoint, which is the width where it all actually fits.
           */}
-          <div className="w-[17rem] shrink-0 min-[1400px]:w-[19rem]">
+          <div className="h-12 w-[17rem] shrink-0 min-[1400px]:w-[19rem]">
             <CategoryMenu tree={tree} />
           </div>
 
@@ -162,7 +173,7 @@ export async function Header() {
           </div>
 
           <div className="flex shrink-0 items-center">
-            <CartButton />
+            <CartButton tone="surface" />
           </div>
         </Container>
       </div>

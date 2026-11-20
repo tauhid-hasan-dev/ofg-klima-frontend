@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Container } from "@/components/ui/Container";
 
 /**
  * Manufacturer strip under the hero — requirement 4.
@@ -10,10 +9,16 @@ import { Container } from "@/components/ui/Container";
  * of supplier logos immediately below the banner; each one opens that brand's
  * listing.
  *
+ * It scrolls itself left to right rather than sitting still, which is what
+ * makes eleven logos readable in a row that is only wide enough for seven —
+ * and it is why the section is full-bleed with no background or rule of its
+ * own: a moving row inside a boxed grey band reads as an advert, where the
+ * same row on the page reads as part of the page. It pauses on hover and on
+ * focus so the logos stay clickable.
+ *
  * Where a wordmark exists under public/brands/ it is rendered; a brand with no
- * artwork falls back to its name set in the display face, which is what every
- * one of them used to do. Both shapes occupy the same height, so a mixed row
- * still reads as a logo wall rather than as a list with pictures in it.
+ * artwork falls back to its name set in the display face. Both shapes occupy
+ * the same height, so a mixed row still reads as a logo wall.
  *
  * These are each manufacturer's own mark — Sanden, Denso, Valeo and so on —
  * which is what a parts reseller is in the business of displaying. Do not
@@ -32,54 +37,61 @@ export function BrandStrip({ brands }: { brands: StripBrand[] }) {
   if (brands.length === 0) return null;
 
   return (
-    <section aria-labelledby="marka-serisi" className="border-b border-ink-200 bg-ink-50">
-      <Container>
-        <h2 id="marka-serisi" className="sr-only">
-          Sattığımız markalar
-        </h2>
+    <section aria-labelledby="marka-serisi" className="pt-14 pb-12">
+      <h2 id="marka-serisi" className="sr-only">
+        Sattığımız markalar
+      </h2>
 
+      <div className="brand-marquee flex overflow-hidden">
         {/*
-          Scrolls horizontally rather than wrapping: a logo wall that reflows
-          to two ragged rows stops reading as a wall. On a phone the overflow
-          is the point — you swipe it.
+          The second track is the same list again, purely to fill the gap the
+          first one leaves as it slides. It is hidden from assistive tech and
+          taken out of the tab order so the eleven brands are announced once.
         */}
-        <ul className="scrollbar-none -mx-1 flex items-stretch gap-1 overflow-x-auto py-4">
-          {brands.map((brand) => {
-            const logo = brand.logo;
-
-            return (
-              <li key={brand.slug} className="shrink-0">
-                <Link
-                  href={`/marka/${brand.slug}`}
-                  className="group flex h-[5.5rem] min-w-[10rem] flex-col items-center justify-center rounded-md px-6 transition-colors hover:bg-white"
-                  title={`${brand.name} ürünleri`}
-                >
-                  {logo ? (
-                    <Image
-                      src={logo}
-                      alt={brand.name}
-                      width={512}
-                      height={99}
-                      /* Each maker's own colours. These are the names a parts
-                         buyer is scanning for, so they are shown as supplied
-                         rather than flattened to grey. */
-                      className="h-10 w-auto max-w-[9.5rem] object-contain transition-transform duration-200 group-hover:scale-105"
-                    />
-                  ) : (
-                    <span className="font-display text-lg font-extrabold tracking-[0.06em] text-ink-500 uppercase transition-colors group-hover:text-navy-600">
-                      {brand.name}
-                    </span>
-                  )}
-
-                  <span className="mt-1 text-[0.68rem] font-medium text-ink-400 tabular opacity-0 transition-opacity group-hover:opacity-100">
-                    {brand.productCount} ürün
-                  </span>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-      </Container>
+        <Track brands={brands} />
+        <Track brands={brands} duplicate />
+      </div>
     </section>
+  );
+}
+
+function Track({ brands, duplicate = false }: { brands: StripBrand[]; duplicate?: boolean }) {
+  return (
+    <ul
+      className="brand-marquee-track flex shrink-0 items-center"
+      {...(duplicate ? { "aria-hidden": true } : {})}
+    >
+      {brands.map((brand) => (
+        <li key={brand.slug} className="shrink-0">
+          <Link
+            href={`/marka/${brand.slug}`}
+            tabIndex={duplicate ? -1 : undefined}
+            className="group flex h-28 min-w-[11rem] flex-col items-center justify-center rounded-lg px-8 transition-colors hover:bg-navy-50"
+            title={`${brand.name} ürünleri`}
+          >
+            {brand.logo ? (
+              <Image
+                src={brand.logo}
+                alt={brand.name}
+                width={512}
+                height={99}
+                /* Each maker's own colours. These are the names a parts buyer
+                   is scanning for, so they are shown as supplied rather than
+                   flattened to grey. */
+                className="h-12 w-auto max-w-[10rem] object-contain transition-transform duration-200 group-hover:scale-105"
+              />
+            ) : (
+              <span className="font-display text-xl font-extrabold tracking-[0.06em] text-ink-500 uppercase transition-colors group-hover:text-navy-600">
+                {brand.name}
+              </span>
+            )}
+
+            <span className="mt-1.5 text-[0.7rem] font-medium text-ink-400 tabular opacity-0 transition-opacity group-hover:opacity-100">
+              {brand.productCount} ürün
+            </span>
+          </Link>
+        </li>
+      ))}
+    </ul>
   );
 }

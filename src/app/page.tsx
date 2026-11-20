@@ -116,7 +116,7 @@ function PricedSectionsFallback() {
   return (
     <Container className="pt-14">
       <div className="h-8 w-56 animate-pulse rounded bg-ink-100" />
-      <div className="mt-6 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 xl:grid-cols-4">
+      <div className="mt-6 grid grid-cols-2 gap-5 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4">
         {Array.from({ length: 8 }, (_, index) => (
           <div key={index} className="h-80 animate-pulse rounded-card bg-ink-100" />
         ))}
@@ -179,7 +179,7 @@ export default async function HomePage() {
       {/* Category entry points */}
       <Container className="pt-14">
         <SectionHeading title="Ürün Kategorileri" href="/marka" hrefLabel="Tüm Markalar" />
-        <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <ul className="grid gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
           {categoryCards.map(({ category, children }) => (
             <li key={category.slug}>
               <div className="group flex h-full flex-col overflow-hidden rounded-card bg-white ring-1 ring-ink-200 transition-shadow hover:shadow-card-hover">

@@ -48,7 +48,7 @@ export function ListingSkeleton({ cards = 12 }: { cards?: number }) {
           <div className="h-10 w-44 rounded bg-ink-100" />
         </div>
 
-        <div className="mt-4 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="mt-4 grid grid-cols-2 gap-5 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4">
           {Array.from({ length: cards }).map((_, index) => (
             <div
               key={index}

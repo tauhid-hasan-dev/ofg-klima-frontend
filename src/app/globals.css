@@ -126,15 +126,15 @@
      * no gap from an undershoot. Keep in sync with Header.tsx if its rows
      * change height.
      */
-    --header-h: 8rem; /* 128px — identity row (68) + search row (60) */
+    --header-h: 8.5rem; /* 136px — identity row (68) + search row (48 + 20) */
   }
 
-  /* At lg the search moves down into the action band (56 + 1px rule), and the
-     logo steps up to h-12 — making the identity row 72px. Plus the header's
-     own bottom border. */
+  /* At lg the search moves down into the action band and the logo steps up to
+     h-12, making the identity row 72px; the band is 48 plus the 24 of padding
+     that holds the header off the hero. Measured: 144. */
   @media (min-width: 64rem) {
     :root {
-      --header-h: 8.125rem; /* 130px */
+      --header-h: 9rem; /* 144px */
     }
   }
 
@@ -226,6 +226,81 @@
     }
   }
 
+  /*
+   * Raised control surface — the KATEGORİLER trigger, the search field and
+   * the basket button on the header's action row.
+   *
+   * These were outlined boxes. A border is a hard line, and every hard line
+   * has deliberately been taken out of this header; a tint plus a little
+   * relief says "this is a control" without drawing one. The tint is navy-50,
+   * the lightest step of the brand blue, so the row belongs to the palette
+   * rather than being generic grey chrome.
+   *
+   * The relief is four layers and all four earn their place: a white highlight
+   * along the top edge and a dark one along the bottom give the face its
+   * curvature, a tight contact shadow sits it on the page, and a wider soft
+   * one lifts it off. Dropping any of them flattens it back to a coloured
+   * rectangle.
+   */
+  .control-surface {
+    background-color: var(--color-navy-50);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.95),
+      inset 0 -1px 0 rgb(57 49 133 / 0.07),
+      0 1px 1px rgb(17 16 42 / 0.05),
+      0 3px 8px -3px rgb(17 16 42 / 0.13);
+    transition:
+      background-color 150ms,
+      box-shadow 150ms;
+  }
+
+  .control-surface:hover {
+    background-color: var(--color-navy-100);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.95),
+      inset 0 -1px 0 rgb(57 49 133 / 0.09),
+      0 1px 1px rgb(17 16 42 / 0.06),
+      0 5px 12px -4px rgb(17 16 42 / 0.17);
+  }
+
+  /*
+   * Supplier logo marquee.
+   *
+   * Two identical tracks sit side by side and both slide from -100% of their
+   * own width to 0, which carries the row left-to-right. Because the tracks
+   * are identical, the frame that ends the cycle is the frame that begins it,
+   * so the loop has no seam. The tracks carry no flex `gap` on purpose: a gap
+   * between them would not be part of the translated width and the row would
+   * jump by that much on every repeat. The tiles space themselves with their
+   * own padding instead.
+   *
+   * The mask fades both ends so logos enter and leave rather than being
+   * sliced off at a hard edge.
+   */
+  @keyframes brand-marquee {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  .brand-marquee {
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  }
+
+  .brand-marquee-track {
+    animation: brand-marquee 45s linear infinite;
+  }
+
+  /* Stop it while someone is trying to click a logo. */
+  .brand-marquee:hover .brand-marquee-track,
+  .brand-marquee:focus-within .brand-marquee-track {
+    animation-play-state: paused;
+  }
+
   .scrollbar-none {
     scrollbar-width: none;
   }
@@ -233,22 +308,6 @@
     display: none;
   }
 
-  /* Visible but unobtrusive — used where the content genuinely overflows and
-     the reader has to know it can be scrolled, as in the category mega menu. */
-  .scrollbar-thin {
-    scrollbar-width: thin;
-    scrollbar-color: var(--color-ink-300) transparent;
-  }
-  .scrollbar-thin::-webkit-scrollbar {
-    width: 8px;
-  }
-  .scrollbar-thin::-webkit-scrollbar-thumb {
-    background-color: var(--color-ink-300);
-    border-radius: 4px;
-  }
-  .scrollbar-thin::-webkit-scrollbar-track {
-    background-color: transparent;
-  }
 
 }
 

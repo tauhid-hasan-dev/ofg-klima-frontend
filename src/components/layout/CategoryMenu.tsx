@@ -73,10 +73,11 @@ export function CategoryMenu({ tree }: { tree: CategoryNode[] }) {
       }}
       onMouseLeave={scheduleClose}
     >
-      {/* The one block of colour in an otherwise white header — it has to read
-          as a button, and on white nothing else would. brand-300 for the
-          second line, not brand-400: against navy-600 the darker red is
-          3.3:1, which fails even as large text. */}
+      {/* Built to the same 48px as the search field beside it, on the shared
+          `.control-surface` so the three controls on this row read as one set.
+          The red "Kategoriler" is what carries it — brand-600, not brand-500,
+          because this is small bold type and the darker red clears AA at that
+          size against the navy-50 tint. */}
       <button
         ref={triggerRef}
         type="button"
@@ -84,14 +85,13 @@ export function CategoryMenu({ tree }: { tree: CategoryNode[] }) {
         aria-expanded={open}
         aria-haspopup="true"
         className={clsx(
-          "on-brand flex h-full w-full items-center gap-3 bg-navy-600 pr-5 pl-4 text-left text-white transition-colors",
-          "hover:bg-navy-700",
+          "control-surface flex h-full w-full items-center gap-3 rounded-lg pr-5 pl-4 text-left",
         )}
       >
-        <MenuIcon className="h-5 w-5 shrink-0" />
-        <span className="font-display text-[0.78rem] leading-tight font-bold tracking-wide uppercase">
+        <MenuIcon className="h-5 w-5 shrink-0 text-ink-700" />
+        <span className="font-display text-[0.78rem] leading-tight font-bold tracking-wide text-ink-800 uppercase">
           Oto Klima Yedek Parça
-          <span className="block text-brand-300">Kategoriler</span>
+          <span className="block text-brand-600">Kategoriler</span>
         </span>
       </button>
 
@@ -105,12 +105,12 @@ export function CategoryMenu({ tree }: { tree: CategoryNode[] }) {
          * so the cap tracks the header rather than guessing at it.
          */
         <div
-          className="absolute top-full left-0 z-50 flex max-h-[calc(100dvh-var(--header-h)-1.5rem)] w-[min(62rem,calc(100vw-2rem))] overflow-hidden rounded-b-lg bg-white shadow-menu ring-1 ring-navy-900/10"
+          className="absolute top-full left-0 z-50 mt-1.5 flex max-h-[calc(100dvh-var(--header-h)-1.5rem)] w-[min(62rem,calc(100vw-2rem))] overflow-hidden rounded-lg bg-white shadow-menu ring-1 ring-navy-900/10"
           onMouseEnter={cancelClose}
           onMouseLeave={scheduleClose}
         >
           {/* Column 1 — top-level categories */}
-          <ul className="scrollbar-thin w-[19rem] shrink-0 overflow-y-auto overscroll-contain border-r border-ink-200 bg-ink-50 py-2">
+          <ul className="scrollbar-none w-[19rem] shrink-0 overflow-y-auto overscroll-contain border-r border-ink-200 bg-ink-50 py-2">
             {tree.map((node) => {
               const isActive = node.category.slug === active?.category.slug;
               return (
@@ -139,7 +139,7 @@ export function CategoryMenu({ tree }: { tree: CategoryNode[] }) {
 
           {/* Column 2 — children of the hovered category */}
           {active ? (
-            <div className="scrollbar-thin flex min-w-0 flex-1 gap-6 overflow-y-auto overscroll-contain p-6">
+            <div className="scrollbar-none flex min-w-0 flex-1 gap-6 overflow-y-auto overscroll-contain p-6">
               <div className="min-w-0 flex-1">
                 <Link
                   href={`/kategori/${active.category.slug}`}

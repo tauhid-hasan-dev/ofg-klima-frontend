@@ -6,28 +6,28 @@ import { useCart } from "@/lib/store/cart";
 import { clsx } from "@/lib/utils";
 
 /**
- * `dark` sits on the white identity row (phones), `light` on the navy action
- * band (lg and up). Only one of the two is ever visible at a given viewport —
- * the header hides the other — so the count never renders twice on screen.
+ * `surface` is the header's action row — a raised tile matching the
+ * KATEGORİLER trigger and the search field beside it. `bare` is the phone's
+ * identity row, where there is no room for a tile and the icon stands alone.
+ *
+ * Only one is ever visible at a given viewport — the header hides the other —
+ * so the item count never renders twice on screen.
  */
-type Tone = "dark" | "light";
+type Tone = "bare" | "surface";
 
+/** Rounding and padding live in the tone: the tile needs far more of both. */
 const TONES: Record<Tone, string> = {
-  dark: "text-ink-800 hover:text-brand-600",
-  light: "text-white hover:bg-white/15",
+  bare: "rounded-md px-2 py-2 text-ink-800 hover:text-brand-600",
+  surface: "control-surface h-12 rounded-lg px-4 text-ink-800 hover:text-navy-700",
 };
 
-export function CartButton({ tone = "dark", className }: { tone?: Tone; className?: string }) {
+export function CartButton({ tone = "bare", className }: { tone?: Tone; className?: string }) {
   const { count, ready } = useCart();
 
   return (
     <Link
       href="/sepet"
-      className={clsx(
-        "group flex items-center gap-2 rounded-md px-2 py-2 transition-colors",
-        TONES[tone],
-        className,
-      )}
+      className={clsx("group flex items-center gap-2 transition-colors", TONES[tone], className)}
     >
       <span className="relative">
         <CartIcon className="h-6 w-6" />
@@ -39,16 +39,7 @@ export function CartButton({ tone = "dark", className }: { tone?: Tone; classNam
           </span>
         ) : null}
       </span>
-      <span
-        className={clsx(
-          "hidden text-sm font-semibold sm:inline",
-          // On the navy band the label matches the other strip links rather
-          // than sitting in a different face beside them.
-          tone === "light" && "font-display text-[0.78rem] font-bold tracking-wide uppercase min-[1400px]:text-[0.8rem]",
-        )}
-      >
-        Sepetim
-      </span>
+      <span className="hidden text-sm font-semibold whitespace-nowrap sm:inline">Sepetim</span>
       <span className="sr-only">{ready ? `${count} ürün` : ""}</span>
     </Link>
   );

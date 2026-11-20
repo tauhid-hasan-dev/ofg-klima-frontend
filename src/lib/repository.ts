@@ -35,7 +35,14 @@ export const DEFAULT_PER_PAGE = 24;
  * touching it — and it keeps sorting, the price facet and the cart all working
  * off the same number the shopper is reading.
  */
-const products = sourceProducts.map(applyMarkup);
+const products = sourceProducts.map((product) => {
+  const priced = applyMarkup(product);
+  // Resolved here for the same reason as the category images: which logo
+  // files happen to exist is not part of the catalogue's description of a
+  // product, and every renderer wants the answer already attached.
+  const brandLogo = logoFor(product.brandSlug);
+  return brandLogo ? { ...priced, brandLogo } : priced;
+});
 
 /**
  * The category tree as the storefront sees it: each node carrying the lead

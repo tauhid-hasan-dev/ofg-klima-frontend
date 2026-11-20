@@ -18,6 +18,45 @@ function enquiryLink(product: Product, rates?: ExchangeRates): string {
   );
 }
 
+/**
+ * Manufacturer wordmark, pinned to the top-right of the product image.
+ *
+ * Top-right because the stock and best-seller flags already own the top-left
+ * — and because it is the corner the part itself is least likely to reach on
+ * a square studio shot, which is centred.
+ *
+ * The chip is an opaque white tile rather than a bare logo: these marks are
+ * supplied as transparent PNGs in a dozen different colours, and several of
+ * them (Mahle's navy, Wutse's grey) all but vanished when laid straight onto
+ * a photograph of a grey aluminium casting.
+ *
+ * `alt=""` is deliberate — the brand name is already a real link in the card's
+ * meta row below, and the whole image block is `aria-hidden`, so announcing
+ * the logo here would only repeat it.
+ */
+function BrandBadge({
+  logo,
+  className,
+  logoClassName,
+}: {
+  logo?: string;
+  className: string;
+  logoClassName: string;
+}) {
+  if (!logo) return null;
+
+  return (
+    <span
+      className={clsx(
+        "absolute grid place-items-center rounded-md bg-white/95 shadow-[0_1px_3px_rgba(20,20,19,0.14)] ring-1 ring-ink-200/80 backdrop-blur-[1px]",
+        className,
+      )}
+    >
+      <Image src={logo} alt="" width={512} height={99} className={clsx("w-auto object-contain", logoClassName)} />
+    </span>
+  );
+}
+
 export function ProductCard({
   product,
   brandName,
@@ -47,7 +86,7 @@ export function ProductCard({
         // attributed to this product (requirement 16).
         data-product-id={product.id}
         data-product-name={product.name}
-        className="group flex gap-4 rounded-card bg-white p-4 shadow-card ring-1 ring-ink-200/70 transition-shadow hover:shadow-card-hover sm:gap-6"
+        className="group flex gap-4 rounded-card bg-white p-4 shadow-card ring-1 ring-navy-300 transition-shadow hover:shadow-card-hover hover:ring-navy-500 sm:gap-6"
       >
         <Link href={href} className="relative block w-28 shrink-0 self-start sm:w-40" tabIndex={-1} aria-hidden="true">
           <div className="aspect-square overflow-hidden rounded-md bg-white">
@@ -59,6 +98,7 @@ export function ProductCard({
               className="h-full w-full object-contain p-1 transition-transform duration-300 group-hover:scale-[1.04]"
             />
           </div>
+          <BrandBadge logo={product.brandLogo} className="top-1 right-1 h-5 px-1.5" logoClassName="h-2.5 max-w-[3rem]" />
         </Link>
 
         <div className="flex min-w-0 flex-1 flex-col gap-2">
@@ -118,7 +158,7 @@ export function ProductCard({
     <article
       data-product-id={product.id}
       data-product-name={product.name}
-      className="group flex h-full flex-col overflow-hidden rounded-card bg-white shadow-card ring-1 ring-ink-200/70 transition-shadow hover:shadow-card-hover"
+      className="group flex h-full flex-col overflow-hidden rounded-card bg-white shadow-card ring-1 ring-navy-300 transition-shadow hover:shadow-card-hover hover:ring-navy-500"
     >
       <Link href={href} className="relative block" tabIndex={-1} aria-hidden="true">
         <div className="aspect-square overflow-hidden bg-white">
@@ -145,6 +185,8 @@ export function ProductCard({
             </span>
           ) : null}
         </div>
+
+        <BrandBadge logo={product.brandLogo} className="top-2.5 right-2.5 h-7 px-2" logoClassName="h-3.5 max-w-[4.5rem]" />
       </Link>
 
       <div className="flex flex-1 flex-col gap-2 p-4">
@@ -224,7 +266,7 @@ export function ProductGrid({
   return (
     <div
       className={clsx(
-        "grid gap-3 sm:gap-4",
+        "grid gap-5 sm:gap-6",
         columns === 2 && "grid-cols-1 sm:grid-cols-2",
         columns === 3 && "grid-cols-2 lg:grid-cols-3",
         columns === 4 && "grid-cols-2 lg:grid-cols-3 xl:grid-cols-4",
