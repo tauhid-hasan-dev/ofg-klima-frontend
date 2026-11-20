@@ -140,10 +140,41 @@ export async function getBrand(slug: string): Promise<Brand | undefined> {
   return brands.find((brand) => brand.slug === slug);
 }
 
+/**
+ * How many products a vehicle make has parts for.
+ *
+ * Keyed on the first word of each fitment line — "RENAULT MEGANE IV 1.5 dCi"
+ * counts towards `renault` — which is the same rule the vehicle facet uses, so
+ * the number here and the number in the listing sidebar cannot disagree. A
+ * product is counted once per make however many of its lines match.
+ */
+const vehicleProductCounts = (() => {
+  const counts = new Map<string, number>();
+  for (const product of products) {
+    const makes = new Set(product.vehicles.map((line) => slugify(line.split(" ")[0] ?? "")));
+    for (const make of makes) {
+      if (make) counts.set(make, (counts.get(make) ?? 0) + 1);
+    }
+  }
+  return counts;
+})();
+
 export async function getBrandsWithCounts(): Promise<Array<Brand & { productCount: number }>> {
   return brands.map((brand) => ({
     ...brand,
-    productCount: products.filter((product) => product.brandSlug === brand.slug).length,
+    /*
+     * Two different questions, so two different counts.
+     *
+     * A manufacturer owns its products outright, so `brandSlug` is the
+     * answer. A vehicle make owns none of them — a Sanden compressor that
+     * fits a Megane is a Sanden product — and what a buyer means by
+     * "Renault" is "parts listed as fitting a Renault", which lives in
+     * `vehicles`. Counting makes by `brandSlug` returned 0 for every one.
+     */
+    productCount:
+      brand.kind === "vehicle"
+        ? (vehicleProductCounts.get(brand.slug) ?? 0)
+        : products.filter((product) => product.brandSlug === brand.slug).length,
   }));
 }
 

@@ -2,23 +2,25 @@ import Image from "next/image";
 import Link from "next/link";
 
 /**
- * Manufacturer strip under the hero — requirement 4.
+ * Manufacturer strip — requirement 4.
  *
  * "banner altı sattığımız ürünlerin iconları görünmesi. ve ilgili icona
  * tıklandığında o markanın ürünleri görünmesi." The reference site runs a row
- * of supplier logos immediately below the banner; each one opens that brand's
+ * of supplier logos near the top of the page; each one opens that brand's
  * listing.
  *
- * It scrolls itself left to right rather than sitting still, which is what
- * makes eleven logos readable in a row that is only wide enough for seven —
- * and it is why the section is full-bleed with no background or rule of its
- * own: a moving row inside a boxed grey band reads as an advert, where the
- * same row on the page reads as part of the page. It pauses on hover and on
- * focus so the logos stay clickable.
+ * No heading and no frames around the marks — just the logos, moving. A
+ * supplier row directly under the hero is read, not studied: a title would
+ * announce it as a section to be worked through, and a card around each logo
+ * would compete with the real cards further down the page for the same
+ * attention. The stock count stays under each mark, because "49 ürün" is the
+ * part of a logo wall a trade buyer is actually checking.
  *
- * Where a wordmark exists under public/brands/ it is rendered; a brand with no
- * artwork falls back to its name set in the display face. Both shapes occupy
- * the same height, so a mixed row still reads as a logo wall.
+ * It moves because eleven marks will not sit legibly in a row the page is
+ * wide enough for, and a static overflow row hides whatever falls off the
+ * right edge for good. The track carries on left to right and pauses the
+ * moment a pointer or the keyboard reaches it — see `.brand-marquee` in
+ * globals.css for how the loop is made seamless.
  *
  * These are each manufacturer's own mark — Sanden, Denso, Valeo and so on —
  * which is what a parts reseller is in the business of displaying. Do not
@@ -37,17 +39,11 @@ export function BrandStrip({ brands }: { brands: StripBrand[] }) {
   if (brands.length === 0) return null;
 
   return (
-    <section aria-labelledby="marka-serisi" className="pt-14 pb-12">
-      <h2 id="marka-serisi" className="sr-only">
-        Sattığımız markalar
-      </h2>
-
+    <section aria-label="Sattığımız markalar" className="pt-14 pb-12">
+      {/* Full-bleed on purpose: the track has to run off both edges of the
+          page for the loop to read as continuous rather than as a row
+          shuffling inside a box. */}
       <div className="brand-marquee flex overflow-hidden">
-        {/*
-          The second track is the same list again, purely to fill the gap the
-          first one leaves as it slides. It is hidden from assistive tech and
-          taken out of the tab order so the eleven brands are announced once.
-        */}
         <Track brands={brands} />
         <Track brands={brands} duplicate />
       </div>
@@ -59,15 +55,26 @@ function Track({ brands, duplicate = false }: { brands: StripBrand[]; duplicate?
   return (
     <ul
       className="brand-marquee-track flex shrink-0 items-center"
+      /*
+       * The second track is the same list again, there only to fill the space
+       * the first one leaves as it slides. Hidden from assistive tech and
+       * taken out of the tab order so the eleven brands are announced once.
+       */
       {...(duplicate ? { "aria-hidden": true } : {})}
     >
       {brands.map((brand) => (
-        <li key={brand.slug} className="shrink-0">
+        /* The spacing lives on the item, not as a flex `gap`: a gap between
+           the two tracks would not be part of the translated width and the
+           row would jump by that much on every repeat. */
+        <li key={brand.slug} className="shrink-0 px-2.5">
           <Link
             href={`/marka/${brand.slug}`}
             tabIndex={duplicate ? -1 : undefined}
-            className="group flex h-28 min-w-[11rem] flex-col items-center justify-center rounded-lg px-8 transition-colors hover:bg-navy-50"
             title={`${brand.name} ürünleri`}
+            /* No frame: the ring and the card went with the heading. What
+               marks the hover is a tint and a lift, which is enough on a row
+               that is already moving. */
+            className="group flex h-28 w-[13rem] flex-col items-center justify-center gap-2 rounded-xl px-6 transition-all duration-200 hover:-translate-y-0.5 hover:bg-navy-50"
           >
             {brand.logo ? (
               <Image
@@ -78,7 +85,7 @@ function Track({ brands, duplicate = false }: { brands: StripBrand[]; duplicate?
                 /* Each maker's own colours. These are the names a parts buyer
                    is scanning for, so they are shown as supplied rather than
                    flattened to grey. */
-                className="h-12 w-auto max-w-[10rem] object-contain transition-transform duration-200 group-hover:scale-105"
+                className="h-11 w-auto max-w-[9.5rem] object-contain transition-transform duration-200 group-hover:scale-105"
               />
             ) : (
               <span className="font-display text-xl font-extrabold tracking-[0.06em] text-ink-500 uppercase transition-colors group-hover:text-navy-600">
@@ -86,7 +93,7 @@ function Track({ brands, duplicate = false }: { brands: StripBrand[]; duplicate?
               </span>
             )}
 
-            <span className="mt-1.5 text-[0.7rem] font-medium text-ink-400 tabular opacity-0 transition-opacity group-hover:opacity-100">
+            <span className="text-[0.68rem] font-medium text-ink-400 tabular transition-colors group-hover:text-navy-600">
               {brand.productCount} ürün
             </span>
           </Link>

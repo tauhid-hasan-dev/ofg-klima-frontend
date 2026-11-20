@@ -57,9 +57,18 @@ async function BrandResults({
   const resolved = await searchParams;
   const query = parseProductQuery(resolved);
 
-  // The page's own brand is pinned; the sidebar's brand facet is therefore
-  // suppressed and the user filters by vehicle, stock and price instead.
-  const result = await listProducts({ ...query, brand: [brand.slug] });
+  /*
+   * The page's own brand is pinned; the sidebar's brand facet is therefore
+   * suppressed and the user filters by vehicle, stock and price instead.
+   *
+   * Which field gets pinned depends on what kind of brand this is. A
+   * manufacturer is the product's own `brandSlug`. A vehicle make never is —
+   * a Sanden compressor that fits a Megane is a Sanden product — so pinning
+   * `brand: ["renault"]` matched nothing and every one of the fourteen make
+   * pages rendered empty. For those the fitment list is the right field.
+   */
+  const pinned = brand.kind === "vehicle" ? { vehicle: [brand.slug] } : { brand: [brand.slug] };
+  const result = await listProducts({ ...query, ...pinned });
 
   /*
    * On a brand page the rail is narrowed to the groups this brand actually

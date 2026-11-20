@@ -1,12 +1,13 @@
 {
-    "_comment":  "Imagery pulled from kafkasotoyedekparca.com for design work. The banners and category photos are their copyright, not OFG\u0027s - replace before launch. public/brands/ are each manufacturer\u0027s own wordmark. See scripts/fetch-reference-media.py.",
+    "_comment":  "Imagery for design work. banners/* and categories/* are kafkasotoyedekparca.com\u0027s copyright and must be replaced before launch - EXCEPT banners/payment.jpg, which is CC0 (public domain) from rawpixel and is cleared for any use. brands/* are each manufacturer\u0027s own wordmark. See scripts/fetch-reference-media.py.",
     "banners":  {
                     "hero-1":  "https://www.kafkasotoyedekparca.com/idea/qw/61/themes/selftpl_689442cae3974/assets/uploads/entry_slider_image_1.jpg",
                     "hero-2":  "https://www.kafkasotoyedekparca.com/idea/qw/61/themes/selftpl_689442cae3974/assets/uploads/entry_slider_image_2.jpg",
                     "hero-3":  "https://www.kafkasotoyedekparca.com/idea/qw/61/themes/selftpl_689442cae3974/assets/uploads/entry_slider_image_3.jpg",
                     "theme-1":  "https://www.kafkasotoyedekparca.com/idea/qw/61/themes/selftpl_689442cae3974/assets/uploads/theme_banner_image_1.png",
                     "theme-2":  "https://www.kafkasotoyedekparca.com/idea/qw/61/themes/selftpl_689442cae3974/assets/uploads/theme_banner_image_2.png",
-                    "footer-about":  "https://www.kafkasotoyedekparca.com/idea/qw/61/themes/selftpl_689442cae3974/assets/uploads/footer_about_image.png"
+                    "footer-about":  "https://www.kafkasotoyedekparca.com/idea/qw/61/themes/selftpl_689442cae3974/assets/uploads/footer_about_image.png",
+                    "payment":  "https://images.rawpixel.com/editor_1024/cHJpdmF0ZS9zdGF0aWMvaW1hZ2Uvd2Vic2l0ZS8yMDIyLTA0L2xyL2ZyYnJ1Y2VtYXJzMDAwNzktaW1hZ2Uta3d2eDI5dnYuanBn.jpg"
                 },
     "categories":  {
                        "kompresor":  "https://www.kafkasotoyedekparca.com/idea/qw/61/themes/selftpl_689442cae3974/assets/uploads/category_banner_image_1.png",

@@ -7,6 +7,7 @@ import { ProductGrid } from "@/components/commerce/ProductCard";
 import { BrandStrip } from "@/components/home/BrandStrip";
 import { FeaturedTabs } from "@/components/home/FeaturedTabs";
 import { HeroSlider, type Slide } from "@/components/home/HeroSlider";
+import { VehicleBrandGrid } from "@/components/home/VehicleBrandGrid";
 import { Container, SectionHeading } from "@/components/ui/Container";
 import { ChevronRightIcon, SearchIcon, WhatsAppIcon } from "@/components/ui/icons";
 import { ButtonLink } from "@/components/ui/Button";
@@ -141,10 +142,12 @@ export default async function HomePage() {
     .filter((brand) => brand.kind === "manufacturer" && brand.productCount > 0)
     .sort((a, b) => b.productCount - a.productCount);
 
+  // All fourteen. The cap existed because the old pill list went ragged past
+  // twelve; the grid lays them out in rows, so there is no reason to withhold
+  // two makes a buyer might be looking for.
   const vehicleBrands = allBrands
     .filter((brand) => brand.kind === "vehicle")
-    .sort((a, b) => compareTr(a.name, b.name))
-    .slice(0, 12);
+    .sort((a, b) => compareTr(a.name, b.name));
 
   const organisationJsonLd = {
     "@context": "https://schema.org",
@@ -173,7 +176,7 @@ export default async function HomePage() {
       {/* Full-bleed: deliberately outside Container so it spans the viewport. */}
       <HeroSlider slides={slides} />
 
-      {/* Requirement 4 — supplier logos directly under the banner. */}
+      {/* Requirement 4 — supplier logos near the top of the page. */}
       <BrandStrip brands={manufacturers.map(({ slug, name, productCount, logo }) => ({ slug, name, productCount, logo }))} />
 
       {/* Category entry points */}
@@ -342,26 +345,6 @@ export default async function HomePage() {
         </div>
       </Container>
 
-      {/* Vehicle brands */}
-      <Container className="pt-14">
-        <SectionHeading title="Araç Markasına Göre Parça" href="/marka" />
-        <ul className="flex flex-wrap gap-2">
-          {vehicleBrands.map((brand) => (
-            <li key={brand.slug}>
-              <Link
-                href={`/marka/${brand.slug}`}
-                className="inline-flex items-center gap-2 rounded-full border border-ink-300 py-2 pr-3 pl-4 text-sm font-semibold text-ink-800 transition-colors hover:border-navy-700 hover:bg-navy-900 hover:text-brand-400"
-              >
-                {brand.name}
-                <span className="rounded-full bg-ink-100 px-1.5 text-[0.7rem] text-ink-600 tabular">
-                  {brand.productCount}
-                </span>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </Container>
-
       {/* SEO copy */}
       <Container className="pt-16">
         <div className="max-w-4xl">
@@ -389,6 +372,20 @@ export default async function HomePage() {
           </div>
         </div>
       </Container>
+
+      {/*
+        Last section on the page, sitting directly on top of the footer's
+        promises strip.
+
+        It reads as the closing question — "so, which car is it?" — for
+        someone who has scrolled the whole page without finding their way in
+        by category or by supplier. It carries top padding only; the gap to
+        the strip below is the footer's own top margin, so the spacing stays
+        the same here as it is on every other page.
+      */}
+      <VehicleBrandGrid
+        brands={vehicleBrands.map(({ slug, name, productCount }) => ({ slug, name, productCount }))}
+      />
 
       <script
         type="application/ld+json"

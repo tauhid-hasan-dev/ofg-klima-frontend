@@ -291,8 +291,10 @@
     mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
   }
 
+  /* 70s over ~2460px of track is roughly 35px a second — slow enough to read
+     a wordmark as it goes past rather than catch it. */
   .brand-marquee-track {
-    animation: brand-marquee 45s linear infinite;
+    animation: brand-marquee 70s linear infinite;
   }
 
   /* Stop it while someone is trying to click a logo. */

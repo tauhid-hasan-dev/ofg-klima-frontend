@@ -3,18 +3,14 @@ import Link from "next/link";
 import { Logo } from "@/components/brand/Logo";
 import { Container } from "@/components/ui/Container";
 import {
-  CardIcon,
   ChevronDownIcon,
   ChevronRightIcon,
   ClockIcon,
   FacebookIcon,
-  HeadsetIcon,
   InstagramIcon,
   MailIcon,
   MapPinIcon,
   PhoneIcon,
-  ShieldIcon,
-  TruckIcon,
   WhatsAppIcon,
   YoutubeIcon,
 } from "@/components/ui/icons";
@@ -22,7 +18,22 @@ import { formatPhone, whatsappLink } from "@/lib/format";
 import { getCategoryRail } from "@/lib/repository";
 import { footerLinks, site } from "@/lib/site";
 
-const HIGHLIGHT_ICONS = [TruckIcon, ShieldIcon, HeadsetIcon, CardIcon] as const;
+/**
+ * A photograph per promise, in the order `site.highlights` declares them.
+ *
+ * Three come from the project's own product photography and earn their place
+ * literally: the boxed part for same-day despatch, a branded compressor for
+ * genuine-and-equivalent, a hand on the work for technical support. The
+ * fourth is a card payment, which no amount of compressor photography can
+ * stand in for — that one is CC0 (public domain) and, unlike the rest of
+ * public/banners, is cleared for any use.
+ */
+const PROMISE_PHOTOS = [
+  { src: "/banners/hero-3.jpg", focus: "68% center" },
+  { src: "/banners/hero-1.jpg", focus: "62% center" },
+  { src: "/banners/footer-about.png", focus: "center" },
+  { src: "/banners/payment.jpg", focus: "center" },
+] as const;
 
 /** Manufacturers given their own line in the compressor column. */
 const FOOTER_BRANDS = ["sanden", "wutse", "denso", "valeo"] as const;
@@ -50,9 +61,9 @@ const mapsUrl = `https://www.google.com/maps?q=${encodeURIComponent(
  *
  * Four bands:
  *
- *   promises    light — the four trust badges
- *   main        navy — brand block (logo, workshop photo, blurb, social) on the
- *               left; "Bize Ulaşın" plus the corporate and help columns right
+ *   promises    white — four photo cards, one per service promise
+ *   main        navy — brand block (logo, photo, blurb, social) on the left;
+ *               "Bize Ulaşın" plus the corporate and help columns right
  *   directory   navy — a wide category menu, three groups across
  *   legal       navy — copyright and the small print
  *
@@ -106,23 +117,45 @@ export async function Footer() {
 
   return (
     <footer className="mt-16">
-      {/* Service promises — the strip that answers "can I trust this shop?" */}
-      <div className="border-y border-ink-200 bg-ink-50">
+      {/*
+        Service promises — the strip that answers "can I trust this shop?".
+
+        Photographs rather than glyphs. Four line icons in a row is the stock
+        answer and reads as stock: a photograph of the actual boxed product,
+        of a hand on the actual part, is the claim itself rather than a
+        pictogram of it. No background or rule either — on a white page the
+        cards are their own container, and the band the strip used to sit in
+        only served to fence it off from the section above.
+      */}
+      <div className="py-14">
         <Container>
-          <ul className="grid grid-cols-2 gap-x-6 gap-y-6 py-8 lg:grid-cols-4">
+          <ul className="grid gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
             {site.highlights.map((highlight, index) => {
-              const Icon = HIGHLIGHT_ICONS[index] ?? TruckIcon;
+              const photo = PROMISE_PHOTOS[index] ?? PROMISE_PHOTOS[0];
               return (
-                <li key={highlight.title} className="flex items-start gap-3">
-                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-lg bg-brand-500 text-white">
-                    <Icon className="h-6 w-6" />
-                  </span>
-                  <span>
-                    <span className="block font-display text-sm font-bold tracking-tight text-ink-950 uppercase">
+                <li
+                  key={highlight.title}
+                  className="group overflow-hidden rounded-2xl bg-white shadow-card ring-1 ring-ink-200 transition-shadow duration-200 hover:shadow-card-hover"
+                >
+                  {/* navy-950 underneath so a photo that has not decoded yet
+                      shows as the dark band it will become, not as white. */}
+                  <div className="relative aspect-[16/10] overflow-hidden bg-navy-950">
+                    <Image
+                      src={photo.src}
+                      alt=""
+                      fill
+                      sizes="(min-width: 1024px) 23vw, (min-width: 640px) 46vw, 92vw"
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      style={{ objectPosition: photo.focus }}
+                    />
+                  </div>
+
+                  <div className="p-5">
+                    <h3 className="font-display text-sm font-bold tracking-tight text-ink-950 uppercase">
                       {highlight.title}
-                    </span>
-                    <span className="mt-0.5 block text-sm leading-snug text-ink-600">{highlight.text}</span>
-                  </span>
+                    </h3>
+                    <p className="mt-1.5 text-[0.85rem] leading-snug text-ink-600">{highlight.text}</p>
+                  </div>
                 </li>
               );
             })}
@@ -130,7 +163,10 @@ export async function Footer() {
         </Container>
       </div>
 
-      <div className="bg-navy-900 text-navy-200">
+      {/* Deep blue, graded rather than flat: the band is tall enough that one
+          solid navy read as a slab, and lightening the top edge lets it
+          receive the white section above instead of butting against it. */}
+      <div className="bg-gradient-to-b from-navy-800 via-navy-900 to-navy-950 text-navy-200">
         <Container>
           {/* ── Brand block + contact + link columns ─────────────────── */}
           <div className="grid gap-10 py-14 lg:grid-cols-[21rem_1fr] lg:gap-14">
@@ -138,24 +174,31 @@ export async function Footer() {
               <Logo tone="onDark" className="h-14" />
 
               {/*
-                Photo beside the blurb, as on the reference. A picture of the
-                work rather than of the product: the trade strip above already
-                shows parts, and what this paragraph is claiming is that
-                someone competent is on the other end of the phone.
+                Photo above the blurb and running the full width of the
+                column, rather than a thumbnail with the text wrapped beside
+                it. At 120px the old one was too small to read as anything;
+                given the whole column it is a picture of the stock.
+
+                hero-2 rather than the workshop shot that used to be here —
+                that one moved up to the promises strip, where "a hand on the
+                work" is exactly what "Teknik Destek" needed. 2560px wide, so
+                it has the resolution this size now demands.
               */}
-              <div className="mt-6 flex items-start gap-4">
+              <div className="relative mt-6 aspect-[16/9] overflow-hidden rounded-xl bg-navy-950 ring-1 ring-white/10">
                 <Image
-                  src="/banners/footer-about.png"
+                  src="/banners/hero-2.jpg"
                   alt=""
-                  width={298}
-                  height={200}
-                  className="h-20 w-[7.5rem] shrink-0 rounded-md object-cover ring-1 ring-white/15"
+                  fill
+                  sizes="(min-width: 1024px) 21rem, 92vw"
+                  className="object-cover"
+                  style={{ objectPosition: "64% center" }}
                 />
-                <p className="text-sm leading-relaxed text-navy-300">
-                  Oto klima yedek parça ihtiyaçlarınızda doğru parçayı birlikte seçelim —{" "}
-                  <span className="font-semibold text-white">{site.legalName}</span> güvencesiyle.
-                </p>
               </div>
+
+              <p className="mt-4 text-sm leading-relaxed text-navy-300">
+                Oto klima yedek parça ihtiyaçlarınızda doğru parçayı birlikte seçelim —{" "}
+                <span className="font-semibold text-white">{site.legalName}</span> güvencesiyle.
+              </p>
 
               <div className="mt-6 flex items-center gap-2">
                 {[
