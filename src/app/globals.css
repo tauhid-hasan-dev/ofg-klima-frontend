@@ -129,12 +129,12 @@
     --header-h: 8rem; /* 128px — identity row (68) + search row (60) */
   }
 
-  /* At lg the utility bar (36) and the navy action band (56) both appear, the
-     search moves down into the band, and the logo steps up to h-12 — making
-     the identity row 73px including its bottom border. */
+  /* At lg the search moves down into the action band (56 + 1px rule), and the
+     logo steps up to h-12 — making the identity row 72px. Plus the header's
+     own bottom border. */
   @media (min-width: 64rem) {
     :root {
-      --header-h: 10.3125rem; /* 165px */
+      --header-h: 8.125rem; /* 130px */
     }
   }
 
@@ -174,8 +174,12 @@
   }
 
   /* Navy and red are both dark surfaces, so the ink outline disappears
-     into them. Applied to the nav strip, the mobile drawer header and
-     anything else sitting on brand colour. */
+     into them. Applied to the mega-menu trigger, the mobile drawer header
+     and anything else sitting on brand colour.
+
+     Both selectors are needed: the trigger carries the class itself, while
+     the drawer header carries it on a wrapper around its controls. */
+  .on-brand:focus-visible,
   .on-brand :focus-visible {
     outline-color: #ffffff;
   }
@@ -187,18 +191,6 @@
 }
 
 @layer utilities {
-  /* Diagonal hazard stripe — used sparingly as a section rule.
-     Reads as "workshop / industrial" without resorting to a texture image.
-     Navy and red, so the rule is the two logo colours rather than a third
-     palette appearing once at the foot of the hero. */
-  .hazard-rule {
-    background-image: repeating-linear-gradient(
-      -45deg,
-      var(--color-navy-700) 0 8px,
-      var(--color-brand-500) 8px 16px
-    );
-  }
-
   /*
    * Photographic scrim.
    *
@@ -239,6 +231,23 @@
   }
   .scrollbar-none::-webkit-scrollbar {
     display: none;
+  }
+
+  /* Visible but unobtrusive — used where the content genuinely overflows and
+     the reader has to know it can be scrolled, as in the category mega menu. */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-ink-300) transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 8px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: var(--color-ink-300);
+    border-radius: 4px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background-color: transparent;
   }
 
 }

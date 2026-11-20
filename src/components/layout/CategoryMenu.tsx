@@ -73,10 +73,10 @@ export function CategoryMenu({ tree }: { tree: CategoryNode[] }) {
       }}
       onMouseLeave={scheduleClose}
     >
-      {/* A darker navy block against the navy band — the one element in the
-          bar that should read as a button rather than a link. brand-300 for
-          the second line, not brand-400: against navy-900 the darker red is
-          4.4:1, which only clears AA because the label happens to be bold. */}
+      {/* The one block of colour in an otherwise white header — it has to read
+          as a button, and on white nothing else would. brand-300 for the
+          second line, not brand-400: against navy-600 the darker red is
+          3.3:1, which fails even as large text. */}
       <button
         ref={triggerRef}
         type="button"
@@ -84,8 +84,8 @@ export function CategoryMenu({ tree }: { tree: CategoryNode[] }) {
         aria-expanded={open}
         aria-haspopup="true"
         className={clsx(
-          "flex h-full w-full items-center gap-3 bg-navy-900 pr-5 pl-4 text-left text-white transition-colors",
-          "hover:bg-navy-950",
+          "on-brand flex h-full w-full items-center gap-3 bg-navy-600 pr-5 pl-4 text-left text-white transition-colors",
+          "hover:bg-navy-700",
         )}
       >
         <MenuIcon className="h-5 w-5 shrink-0" />
@@ -96,13 +96,21 @@ export function CategoryMenu({ tree }: { tree: CategoryNode[] }) {
       </button>
 
       {open ? (
+        /*
+         * The panel is capped at the space left under the header and both
+         * columns scroll inside it. There are eighteen top-level groups and
+         * several have long child lists: unbounded, the panel ran well past
+         * the fold and the last five categories could not be reached at all
+         * on a laptop. `--header-h` is kept current by `HeaderHeightSync`,
+         * so the cap tracks the header rather than guessing at it.
+         */
         <div
-          className="absolute top-full left-0 z-50 flex w-[min(62rem,calc(100vw-2rem))] overflow-hidden rounded-b-lg bg-white shadow-menu ring-1 ring-navy-900/10"
+          className="absolute top-full left-0 z-50 flex max-h-[calc(100dvh-var(--header-h)-1.5rem)] w-[min(62rem,calc(100vw-2rem))] overflow-hidden rounded-b-lg bg-white shadow-menu ring-1 ring-navy-900/10"
           onMouseEnter={cancelClose}
           onMouseLeave={scheduleClose}
         >
           {/* Column 1 — top-level categories */}
-          <ul className="w-[19rem] shrink-0 border-r border-ink-200 bg-ink-50 py-2">
+          <ul className="scrollbar-thin w-[19rem] shrink-0 overflow-y-auto overscroll-contain border-r border-ink-200 bg-ink-50 py-2">
             {tree.map((node) => {
               const isActive = node.category.slug === active?.category.slug;
               return (
@@ -131,7 +139,7 @@ export function CategoryMenu({ tree }: { tree: CategoryNode[] }) {
 
           {/* Column 2 — children of the hovered category */}
           {active ? (
-            <div className="flex min-w-0 flex-1 gap-6 p-6">
+            <div className="scrollbar-thin flex min-w-0 flex-1 gap-6 overflow-y-auto overscroll-contain p-6">
               <div className="min-w-0 flex-1">
                 <Link
                   href={`/kategori/${active.category.slug}`}

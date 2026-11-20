@@ -54,7 +54,7 @@ const mapsUrl = `https://www.google.com/maps?q=${encodeURIComponent(
  *   main        navy — brand block (logo, workshop photo, blurb, social) on the
  *               left; "Bize Ulaşın" plus the corporate and help columns right
  *   directory   navy — a wide category menu, three groups across
- *   legal       navy — hazard rule, copyright, contracts
+ *   legal       navy — copyright and the small print
  *
  * The directory is the part worth keeping: on a catalogue this size it is the
  * one place every group is reachable in a single view, and it is what makes
@@ -230,8 +230,7 @@ export async function Footer() {
           </div>
         </Container>
 
-        {/* Hazard rule — a small nod to the workshop context */}
-        <div aria-hidden="true" className="hazard-rule h-1.5 opacity-80" />
+        <div aria-hidden="true" className="border-t border-white/10" />
 
         <Container>
           {/* navy-300, not ink-500: the neutral grey that worked on the old

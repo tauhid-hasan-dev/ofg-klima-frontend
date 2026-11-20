@@ -80,9 +80,6 @@ export function HeroSlider({ slides }: { slides: Slide[] }) {
       onFocusCapture={() => setPaused(true)}
       onBlurCapture={() => setPaused(false)}
     >
-      {/* The workshop hazard rule, pinned to the bottom edge. */}
-      <div aria-hidden="true" className="hazard-rule absolute inset-x-0 bottom-0 z-30 h-1.5 opacity-80" />
-
       {slides.map((slide, position) => {
         const isActive = position === index;
 

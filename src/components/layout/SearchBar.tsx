@@ -138,7 +138,9 @@ export function SearchBar({
           event.preventDefault();
           submit();
         }}
-        className="flex h-12 items-stretch overflow-hidden rounded-lg bg-white ring-1 ring-navy-900/10 focus-within:ring-2 focus-within:ring-navy-800"
+        /* A full-strength border, not a 10% tint: the header is white now, and
+           a field outlined at 10% opacity on white had no edge at all. */
+        className="flex h-12 items-stretch overflow-hidden rounded-lg bg-white ring-1 ring-ink-300 focus-within:ring-2 focus-within:ring-navy-600"
       >
         <label htmlFor={`${listboxId}-input`} className="sr-only">
           Ürün ara

@@ -43,7 +43,7 @@ export function BrandStrip({ brands }: { brands: StripBrand[] }) {
           to two ragged rows stops reading as a wall. On a phone the overflow
           is the point — you swipe it.
         */}
-        <ul className="scrollbar-none -mx-1 flex items-stretch gap-1 overflow-x-auto py-3">
+        <ul className="scrollbar-none -mx-1 flex items-stretch gap-1 overflow-x-auto py-4">
           {brands.map((brand) => {
             const logo = brand.logo;
 
@@ -51,7 +51,7 @@ export function BrandStrip({ brands }: { brands: StripBrand[] }) {
               <li key={brand.slug} className="shrink-0">
                 <Link
                   href={`/marka/${brand.slug}`}
-                  className="group flex h-16 min-w-[8.5rem] flex-col items-center justify-center rounded-md px-5 transition-colors hover:bg-white"
+                  className="group flex h-[5.5rem] min-w-[10rem] flex-col items-center justify-center rounded-md px-6 transition-colors hover:bg-white"
                   title={`${brand.name} ürünleri`}
                 >
                   {logo ? (
@@ -60,23 +60,18 @@ export function BrandStrip({ brands }: { brands: StripBrand[] }) {
                       alt={brand.name}
                       width={512}
                       height={99}
-                      /*
-                       * Desaturated until hovered. Eleven logos in eleven
-                       * different brand colours, in a strip sitting directly
-                       * under a photographic hero, pulled the eye away from
-                       * the catalogue below. Grey makes the row read as one
-                       * object, and the hover picks out the one being
-                       * considered.
-                       */
-                      className="h-7 w-auto max-w-[7.5rem] object-contain opacity-60 grayscale transition duration-200 group-hover:opacity-100 group-hover:grayscale-0"
+                      /* Each maker's own colours. These are the names a parts
+                         buyer is scanning for, so they are shown as supplied
+                         rather than flattened to grey. */
+                      className="h-10 w-auto max-w-[9.5rem] object-contain transition-transform duration-200 group-hover:scale-105"
                     />
                   ) : (
-                    <span className="font-display text-base font-extrabold tracking-[0.06em] text-ink-400 uppercase transition-colors group-hover:text-navy-600">
+                    <span className="font-display text-lg font-extrabold tracking-[0.06em] text-ink-500 uppercase transition-colors group-hover:text-navy-600">
                       {brand.name}
                     </span>
                   )}
 
-                  <span className="mt-0.5 text-[0.65rem] font-medium text-ink-400 tabular opacity-0 transition-opacity group-hover:opacity-100">
+                  <span className="mt-1 text-[0.68rem] font-medium text-ink-400 tabular opacity-0 transition-opacity group-hover:opacity-100">
                     {brand.productCount} ürün
                   </span>
                 </Link>
